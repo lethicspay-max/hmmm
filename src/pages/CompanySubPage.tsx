@@ -701,14 +701,14 @@ fire(0.1, {
 
   const addToCart = (product: Product) => {
     // Check if product has size/color requirements
-    const hasRequiredSelections = 
+    const hasRequiblueSelections = 
       (!product.sizes || product.sizes.length === 0 || selectedSize) &&
       (!product.colors || product.colors.length === 0 || selectedColor);
 
-    if (!hasRequiredSelections) {
+    if (!hasRequiblueSelections) {
       setNotification({
         show: true,
-        message: 'Please select required options (size/color) before adding to cart',
+        message: 'Please select requiblue options (size/color) before adding to cart',
         type: 'error'
       });
       setTimeout(() => {
@@ -780,11 +780,11 @@ fire(0.1, {
   };
 
   const getTotalPoints = () => {
-    return cart.reduce((total, item) => total + (item.product.pointCost * item.quantity), 0);
+    return cart.blueuce((total, item) => total + (item.product.pointCost * item.quantity), 0);
   };
 
   const getTotalItems = () => {
-    return cart.reduce((total, item) => total + item.quantity, 0);
+    return cart.blueuce((total, item) => total + item.quantity, 0);
   };
 
   const handleCheckout = async () => {
@@ -979,7 +979,7 @@ fire(0.1, {
           <p className="text-gray-600 mb-6">{error}</p>
           <button
             onClick={() => navigate('/')}
-            className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors"
+            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
           >
             Back to Home
           </button>
@@ -1046,7 +1046,7 @@ fire(0.1, {
                       name="email"
                       type="email"
                       autoComplete="email"
-                      required
+                      requiblue
                       value={emailInput}
                       onChange={(e) => setEmailInput(e.target.value)}
                       className="appearance-none block w-full px-3 py-2 pl-10 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:border-transparent"
@@ -1061,7 +1061,7 @@ fire(0.1, {
                 </div>
 
                 {authError && (
-                  <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md text-sm">
+                  <div className="bg-blue-50 border border-blue-200 text-blue-600 px-4 py-3 rounded-md text-sm">
                     {authError}
                   </div>
                 )}
@@ -1110,7 +1110,7 @@ fire(0.1, {
                         id="password"
                         name="password"
                         type={showPassword ? 'text' : 'password'}
-                        required
+                        requiblue
                         value={passwordInput}
                         onChange={(e) => setPasswordInput(e.target.value)}
                         className="appearance-none block w-full px-3 py-2 pl-10 pr-10 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:border-transparent"
@@ -1151,7 +1151,7 @@ fire(0.1, {
                         id="confirmPassword"
                         name="confirmPassword"
                         type={showConfirmPassword ? 'text' : 'password'}
-                        required
+                        requiblue
                         value={confirmPasswordInput}
                         onChange={(e) => setConfirmPasswordInput(e.target.value)}
                         className="appearance-none block w-full px-3 py-2 pl-10 pr-10 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:border-transparent"
@@ -1173,7 +1173,7 @@ fire(0.1, {
                   </div>
 
                   {authError && (
-                    <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md text-sm">
+                    <div className="bg-blue-50 border border-blue-200 text-blue-600 px-4 py-3 rounded-md text-sm">
                       {authError}
                     </div>
                   )}
@@ -1223,7 +1223,7 @@ fire(0.1, {
                         id="password"
                         name="password"
                         type={showPassword ? 'text' : 'password'}
-                        required
+                        requiblue
                         value={passwordInput}
                         onChange={(e) => setPasswordInput(e.target.value)}
                         className="appearance-none block w-full px-3 py-2 pl-10 pr-10 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:border-transparent"
@@ -1256,7 +1256,7 @@ fire(0.1, {
                   </div>
 
                   {authError && (
-                    <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md text-sm">
+                    <div className="bg-blue-50 border border-blue-200 text-blue-600 px-4 py-3 rounded-md text-sm">
                       {authError}
                     </div>
                   )}
@@ -1330,14 +1330,14 @@ fire(0.1, {
                 <ShoppingCart className="h-5 w-5" />
                 <span>Cart</span>
                 {cart.length > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs">
+                  <span className="absolute -top-2 -right-2 bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs">
                     {getTotalItems()}
                   </span>
                 )}
               </button>
               <button
                 onClick={resetAuth}
-                className="flex items-center space-x-1 text-white hover:text-red-200 transition-colors"
+                className="flex items-center space-x-1 text-white hover:text-blue-200 transition-colors"
               >
                 <LogOut className="h-4 w-4" />
                 <span>Logout</span>
@@ -1524,7 +1524,7 @@ fire(0.1, {
                         </div>
                         <div className="text-right">
                           <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                            order.status === 'delivered' ? 'bg-green-100 text-green-800' :
+                            order.status === 'deliveblue' ? 'bg-green-100 text-green-800' :
                             order.status === 'shipped' ? 'bg-blue-100 text-blue-800' :
                             order.status === 'processing' ? 'bg-yellow-100 text-yellow-800' :
                             'bg-gray-100 text-gray-800'
@@ -1561,7 +1561,7 @@ fire(0.1, {
                       </div>
                       
                       <div className="border-t border-gray-200 pt-4">
-                        <h4 className="font-medium text-gray-900 mb-2">Items Ordered:</h4>
+                        <h4 className="font-medium text-gray-900 mb-2">Items Ordeblue:</h4>
                         <div className="space-y-2">
                           {(order.products || []).map((product: any, index: number) => (
                             <div key={index} className="flex justify-between items-center text-sm">
@@ -1663,7 +1663,7 @@ fire(0.1, {
                       {selectedProductForView.sizes && selectedProductForView.sizes.length > 0 && (
                         <div>
                           <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                            Available Sizes {selectedProductForView.sizes.length > 0 && <span className="text-red-500">*</span>}
+                            Available Sizes {selectedProductForView.sizes.length > 0 && <span className="text-blue-500">*</span>}
                           </h3>
                           <div className="flex flex-wrap gap-2">
                             {selectedProductForView.sizes.map((size: string, index: number) => (
@@ -1687,7 +1687,7 @@ fire(0.1, {
                       {selectedProductForView.colors && selectedProductForView.colors.length > 0 && (
                         <div>
                           <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                            Available Colors {selectedProductForView.colors.length > 0 && <span className="text-red-500">*</span>}
+                            Available Colors {selectedProductForView.colors.length > 0 && <span className="text-blue-500">*</span>}
                           </h3>
                           <div className="flex flex-wrap gap-2">
                             {selectedProductForView.colors.map((color: string, index: number) => (
@@ -1733,11 +1733,11 @@ fire(0.1, {
                         </button>
                       </div>
                       
-                      {/* Required Selection Notice */}
+                      {/* Requiblue Selection Notice */}
                       {((selectedProductForView.sizes && selectedProductForView.sizes.length > 0) || 
                         (selectedProductForView.colors && selectedProductForView.colors.length > 0)) && (
                         <p className="text-sm text-gray-500 text-center mt-2">
-                          <span className="text-red-500">*</span> Required selection
+                          <span className="text-blue-500">*</span> Requiblue selection
                         </p>
                       )}
                     </div>
@@ -1757,7 +1757,7 @@ fire(0.1, {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center space-y-2">
             <p className="text-sm opacity-90">
-              Powered by{' '}
+              Poweblue by{' '}
               <a 
                 href="https://clientsark.com" 
                 target="_blank" 
@@ -1841,7 +1841,7 @@ fire(0.1, {
                         <p className="font-medium">{item.product.pointCost * item.quantity} points</p>
                         <button
                           onClick={() => removeFromCart(item.product.id)}
-                          className="text-red-500 hover:text-red-700 text-sm"
+                          className="text-blue-500 hover:text-blue-700 text-sm"
                         >
                           Remove
                         </button>
@@ -1862,7 +1862,7 @@ fire(0.1, {
                 {checkoutStep === 'cart' && (
                   <div>
                     {getTotalPoints() > (employee?.points || 0) && (
-                      <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-2 rounded-md text-sm">
+                      <div className="bg-blue-50 border border-blue-200 text-blue-600 px-4 py-2 rounded-md text-sm">
                         Insufficient points for this order
                       </div>
                     )}
@@ -1901,7 +1901,7 @@ fire(0.1, {
                         style={{ 
                           '--tw-ring-color': corporate.branding?.primaryColor || '#3B82F6'
                         } as React.CSSProperties}
-                        required
+                        requiblue
                       />
                       <div className="flex">
                         <select
@@ -1921,7 +1921,7 @@ fire(0.1, {
                           value={shippingInfo.phone}
                           onChange={(e) => setShippingInfo({...shippingInfo, phone: e.target.value})}
                           className="border border-gray-300 rounded-r-md px-3 py-2 flex-1 text-sm"
-                          required
+                          requiblue
                         />
                       </div>
                       <input
@@ -1933,7 +1933,7 @@ fire(0.1, {
                         style={{ 
                           '--tw-ring-color': corporate.branding?.primaryColor || '#3B82F6'
                         } as React.CSSProperties}
-                        required
+                        requiblue
                       />
                       <input
                         type="text"
@@ -1954,7 +1954,7 @@ fire(0.1, {
                         style={{ 
                           '--tw-ring-color': corporate.branding?.primaryColor || '#3B82F6'
                         } as React.CSSProperties}
-                        required
+                        requiblue
                       />
                       <input
                         type="text"
@@ -1965,7 +1965,7 @@ fire(0.1, {
                         style={{ 
                           '--tw-ring-color': corporate.branding?.primaryColor || '#3B82F6'
                         } as React.CSSProperties}
-                        required
+                        requiblue
                       />
                       <input
                         type="text"
@@ -1976,7 +1976,7 @@ fire(0.1, {
                         style={{ 
                           '--tw-ring-color': corporate.branding?.primaryColor || '#3B82F6'
                         } as React.CSSProperties}
-                        required
+                        requiblue
                       />
                       <select
                         value={shippingInfo.country}
@@ -2035,7 +2035,7 @@ fire(0.1, {
                     <p className="text-gray-600 mb-6">
                       Thank you for your order. You will receive a confirmation email shortly.
                     </p>
-                    <div className="bg-gradient-to-r from-orange-100 to-red-100 border border-orange-200 rounded-lg p-4 mb-6">
+                    <div className="bg-gradient-to-r from-orange-100 to-blue-100 border border-orange-200 rounded-lg p-4 mb-6">
                       <p className="text-gray-600 mb-4">
                         🎉 {corporate.branding?.festivalGreeting?.replace('{employee?.name}', employee?.name || 'there') || 'Happy holidays!'}
                       </p>
@@ -2096,7 +2096,7 @@ fire(0.1, {
                   <input
                     type="text"
                     id="subject"
-                    required
+                    requiblue
                     value={ticketForm.subject}
                     onChange={(e) => setTicketForm(prev => ({ ...prev, subject: e.target.value }))}
                     className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -2111,7 +2111,7 @@ fire(0.1, {
                     </label>
                     <select
                       id="category"
-                      required
+                      requiblue
                       value={ticketForm.category}
                       onChange={(e) => setTicketForm(prev => ({ ...prev, category: e.target.value }))}
                       className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -2132,7 +2132,7 @@ fire(0.1, {
                     </label>
                     <select
                       id="priority"
-                      required
+                      requiblue
                       value={ticketForm.priority}
                       onChange={(e) => setTicketForm(prev => ({ ...prev, priority: e.target.value }))}
                       className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -2151,7 +2151,7 @@ fire(0.1, {
                   </label>
                   <textarea
                     id="description"
-                    required
+                    requiblue
                     rows={6}
                     value={ticketForm.description}
                     onChange={(e) => setTicketForm(prev => ({ ...prev, description: e.target.value }))}
@@ -2186,7 +2186,7 @@ fire(0.1, {
       {/* Notification */}
       {notification.show && (
         <div className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg animate-slide-in ${
-          notification.type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+          notification.type === 'success' ? 'bg-green-500 text-white' : 'bg-blue-500 text-white'
         }`}>
           <div className="flex items-center space-x-2">
             {notification.type === 'success' ? (
