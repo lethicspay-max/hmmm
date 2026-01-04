@@ -560,7 +560,7 @@ export function HomePage() {
                 </div>
               </div>
               <p className="text-gray-600 mb-4">
-                "I've been working with TapWell for the past 4 years now & I love the passion & professionalism they have maintained."
+                "I've been working with Suraj International for the past 4 years now & I love the passion & professionalism they have maintained."
               </p>
               <div className="flex items-center">
                 <img 
