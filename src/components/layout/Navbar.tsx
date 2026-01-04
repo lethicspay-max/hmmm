@@ -111,7 +111,7 @@ export function Navbar() {
             <Link to="/" className="flex items-center space-x-2">
               <img 
                 src="https://surajintl.com/img/logo.png" 
-                alt="Tapwell" 
+                alt="Suraj International" 
                 className="h-8 w-auto"
               />
               <span className="font-bold text-xl text-gray-900">Tapwell</span>
