@@ -5,11 +5,11 @@ export function PrivacyPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-600 to-blue-700 text-white py-16">
+      <section className="bg-gradient-to-br from-red-600 to-red-700 text-white py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <Shield className="h-16 w-16 mx-auto mb-4" />
           <h1 className="text-4xl md:text-5xl font-bold mb-6">Privacy Policy</h1>
-          <p className="text-xl md:text-2xl text-blue-100">
+          <p className="text-xl md:text-2xl text-red-100">
             Your privacy and data security are our top priorities
           </p>
         </div>
@@ -26,7 +26,7 @@ export function PrivacyPage() {
           {/* Introduction */}
           <section className="mb-12">
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
-              <Lock className="h-6 w-6 text-blue-600 mr-2" />
+              <Lock className="h-6 w-6 text-red-600 mr-2" />
               Introduction
             </h2>
             <p className="text-gray-600 leading-relaxed mb-4">
@@ -40,7 +40,7 @@ export function PrivacyPage() {
           {/* Information We Collect */}
           <section className="mb-12">
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
-              <Database className="h-6 w-6 text-blue-600 mr-2" />
+              <Database className="h-6 w-6 text-red-600 mr-2" />
               Information We Collect
             </h2>
             
@@ -80,12 +80,12 @@ export function PrivacyPage() {
           {/* How We Use Information */}
           <section className="mb-12">
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
-              <Eye className="h-6 w-6 text-blue-600 mr-2" />
+              <Eye className="h-6 w-6 text-red-600 mr-2" />
               How We Use Your Information
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-blue-50 p-6 rounded-lg">
+              <div className="bg-red-50 p-6 rounded-lg">
                 <h3 className="text-lg font-semibold text-gray-900 mb-3">Service Delivery</h3>
                 <ul className="text-gray-600 space-y-2 text-sm">
                   <li>• Process gift orders and manage fulfillment</li>
@@ -110,7 +110,7 @@ export function PrivacyPage() {
           {/* Data Security */}
           <section className="mb-12">
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
-              <Shield className="h-6 w-6 text-blue-600 mr-2" />
+              <Shield className="h-6 w-6 text-red-600 mr-2" />
               Data Security
             </h2>
             
@@ -188,8 +188,8 @@ export function PrivacyPage() {
             
             <div className="space-y-4">
               <div className="flex items-start space-x-3">
-                <div className="bg-blue-100 p-2 rounded-full mt-1">
-                  <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                <div className="bg-red-100 p-2 rounded-full mt-1">
+                  <div className="w-2 h-2 bg-red-600 rounded-full"></div>
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-900">Essential Cookies</h4>
@@ -223,14 +223,14 @@ export function PrivacyPage() {
           <section className="mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Contact Us About Privacy</h2>
             
-            <div className="bg-blue-50 p-6 rounded-lg">
+            <div className="bg-red-50 p-6 rounded-lg">
               <p className="text-gray-600 leading-relaxed mb-4">
                 If you have any questions about this Privacy Policy or our data practices, please contact us:
               </p>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex items-center space-x-3">
-                  <Mail className="h-5 w-5 text-blue-600" />
+                  <Mail className="h-5 w-5 text-red-600" />
                   <div>
                     <p className="font-medium text-gray-900">Email</p>
                     <p className="text-gray-600">rases@tapwell.co.in</p>
@@ -238,7 +238,7 @@ export function PrivacyPage() {
                 </div>
                 
                 <div className="flex items-center space-x-3">
-                  <Phone className="h-5 w-5 text-blue-600" />
+                  <Phone className="h-5 w-5 text-red-600" />
                   <div>
                     <p className="font-medium text-gray-900">Phone</p>
                     <p className="text-gray-600">(+91) 9769378543</p>
