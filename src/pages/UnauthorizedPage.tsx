@@ -7,7 +7,7 @@ export function UnauthorizedPage() {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full text-center">
         <div className="mb-8">
-          <Shield className="h-24 w-24 text-red-500 mx-auto" />
+          <Shield className="h-24 w-24 text-blue-500 mx-auto" />
         </div>
         
         <h1 className="text-4xl font-bold text-gray-900 mb-4">
