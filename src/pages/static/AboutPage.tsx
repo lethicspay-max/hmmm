@@ -189,7 +189,7 @@ export function AboutPage() {
             Ready to Transform Your Corporate Gifting?
           </h2>
           <p className="text-xl mb-8 text-blue-100">
-            Join hundreds of companies already using Tapwell to create meaningful employee experiences.
+            Join hundreds of companies already using Suraj International to create meaningful employee experiences.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
