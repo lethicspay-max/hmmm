@@ -91,7 +91,7 @@ export function Navbar() {
                 alt="Suraj International" 
                 className="h-8 w-auto"
               />
-                <span className="font-bold text-xl text-gray-900">Tapwell</span>
+                <span className="font-bold text-xl text-gray-900">Suraj International</span>
               </Link>
             </div>
             <div className="flex items-center">
