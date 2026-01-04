@@ -30,7 +30,7 @@ export function FAQPage() {
     },
     {
       question: "How do employees access their gifting portal?",
-      answer: "Once you add employees to your account, they receive access to your company's custom sub-page (e.g., /company/tapwell). They can log in using their email if it matches what you've provided.",
+      answer: "Once you add employees to your account, they receive access to your company's custom sub-page (e.g., /company/Corporate-name). They can log in using their email if it matches what you've provided.",
       category: "employees"
     },
     {
