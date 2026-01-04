@@ -1768,7 +1768,7 @@ fire(0.1, {
               </a>
             </p>
             <p className="text-xs opacity-75">
-              © 2025 Suraj International. All rights reserved.
+              © 2026 Suraj International. All rights reserved.
             </p>
           </div>
         </div>
