@@ -197,7 +197,7 @@ export function Navbar() {
               </Link>
               <Link
                 to="/faq"
-                className="block px-3 py-2 text-gray-700 hover:text-blue-600"
+                className="block px-3 py-2 text-gray-700 hover:text-red-600"
                 onClick={() => setIsMenuOpen(false)}
               >
                 FAQ
