@@ -56,14 +56,14 @@ export function HomePage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-red-600 to-red-700 text-white">
+      <section className="bg-gradient-to-br from-blue-600 to-blue-700 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
               Streamline Corporate Gifting
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-blue-100 max-w-3xl mx-auto">
-              Transform your corporate gifting with our points-based redemption platform. 
+              Transform your corporate gifting with our points-based blueemption platform. 
               No payments needed, just seamless employee experiences.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -119,7 +119,7 @@ export function HomePage() {
               </div>
               <h3 className="text-xl font-semibold mb-2">Points-Based System</h3>
               <p className="text-gray-600">
-                No payment processing needed. Employees redeem gifts using allocated points.
+                No payment processing needed. Employees blueeem gifts using allocated points.
               </p>
             </div>
             
@@ -380,7 +380,7 @@ export function HomePage() {
               )}
             </div>
 
-            {/* FAQ 4: Recipients redeem */}
+            {/* FAQ 4: Recipients blueeem */}
             <div className="bg-white rounded-lg shadow-md overflow-hidden">
               <button
                 onClick={() => toggleFAQ(4)}
@@ -388,7 +388,7 @@ export function HomePage() {
               >
                 <div className="flex items-center space-x-4">
                   <div className="bg-orange-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">4</div>
-                  <h3 className="text-lg font-medium text-gray-900">Recipients redeem</h3>
+                  <h3 className="text-lg font-medium text-gray-900">Recipients blueeem</h3>
                 </div>
                 <div className="flex-shrink-0">
                   {openFAQ === 4 ? (
@@ -495,8 +495,8 @@ export function HomePage() {
               </p>
             </div>
 
-            <div className="bg-gradient-to-br from-red-50 to-red-100 p-6 rounded-lg">
-              <div className="bg-red-600 text-white rounded-full w-12 h-12 flex items-center justify-center mb-4">
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-lg">
+              <div className="bg-blue-600 text-white rounded-full w-12 h-12 flex items-center justify-center mb-4">
                 <Star className="h-6 w-6" />
               </div>
               <h3 className="text-xl font-semibold mb-3 text-gray-900">Anniversary Gifts</h3>
@@ -633,7 +633,7 @@ export function HomePage() {
             Ready to Transform Your Corporate Gifting?
           </h2>
           <p className="text-xl mb-8 text-blue-100">
-            Join hundreds of companies already using Suraj International to delight their employees.
+            Join hundblues of companies already using Suraj International to delight their employees.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
