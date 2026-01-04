@@ -1764,7 +1764,7 @@ fire(0.1, {
                 rel="noopener noreferrer"
                 className="font-semibold hover:opacity-80 transition-opacity"
               >
-                Tapwell
+                Suraj International
               </a>
             </p>
             <p className="text-xs opacity-75">
