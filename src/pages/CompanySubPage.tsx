@@ -1304,7 +1304,7 @@ fire(0.1, {
                 />
               ) : (
                 <img 
-                  src="https://companyshop.in/images/logo-1.png" 
+                  src="https://surajintl.com/img/logo.png" 
                   alt="Default logo"
                   className="h-10 w-10 object-contain"
                 />
