@@ -11,7 +11,7 @@ export function Footer() {
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
               <img 
-                src="https://surajintl.com/img/logo.png 
+                src="https://surajintl.com/img/logo.png"
                 alt="Tapwell" 
                 className="h-8 w-auto"
               />
