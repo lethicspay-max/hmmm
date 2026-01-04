@@ -20,7 +20,7 @@ export function AboutPage() {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Mission</h2>
             <p className="text-xl text-gray-600">
-              At tapWell, our mission is simple: to empower businesses to strengthen relationships and leave a lasting impression through thoughtful and personalized corporate gifts. We strive to provide innovative solutions that meet our clients' diverse needs, making the process of ordering and distributing gifts seamless and stress-free.
+              At Suraj International, our mission is simple: to empower businesses to strengthen relationships and leave a lasting impression through thoughtful and personalized corporate gifts. We strive to provide innovative solutions that meet our clients' diverse needs, making the process of ordering and distributing gifts seamless and stress-free.
             </p>
           </div>
 
