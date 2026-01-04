@@ -183,7 +183,7 @@ export function Navbar() {
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t border-gray-200">
               <Link
                 to="/about"
-                className="block px-3 py-2 text-gray-700 hover:text-blue-600"
+                className="block px-3 py-2 text-gray-700 hover:text-red-600"
                 onClick={() => setIsMenuOpen(false)}
               >
                 About
