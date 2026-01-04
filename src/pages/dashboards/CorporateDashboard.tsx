@@ -623,7 +623,7 @@ export function CorporateDashboard() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-red-600 mx-auto"></div>
           <p className="mt-4 text-gray-600">Loading dashboard...</p>
         </div>
       </div>
@@ -654,7 +654,7 @@ export function CorporateDashboard() {
           
           <div className="bg-white p-6 rounded-lg shadow">
             <div className="flex items-center">
-              <Users className="h-8 w-8 text-blue-600" />
+              <Users className="h-8 w-8 text-red-600" />
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Total Employees</p>
                 <p className="text-2xl font-semibold text-gray-900">{stats.totalEmployees}</p>
@@ -686,8 +686,8 @@ export function CorporateDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="bg-white p-6 rounded-lg shadow-md">
             <div className="flex items-center">
-              <div className="bg-blue-100 p-3 rounded-full">
-                <Truck className="h-6 w-6 text-blue-600" />
+              <div className="bg-red-100 p-3 rounded-full">
+                <Truck className="h-6 w-6 text-red-600" />
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-500">Orders Shipped</p>
@@ -733,7 +733,7 @@ export function CorporateDashboard() {
                       onClick={() => setActiveTab(tab)}
                       className={`py-2 px-4 border-b-2 font-medium text-sm capitalize ${
                         activeTab === tab
-                          ? 'border-blue-500 text-blue-600'
+                          ? 'border-red-500 text-red-600'
                           : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                       }`}
                     >
@@ -757,7 +757,7 @@ export function CorporateDashboard() {
                                 <p className="font-medium">{employee.name}</p>
                                 <p className="text-sm text-gray-600">{employee.email}</p>
                               </div>
-                              <span className="text-blue-600 font-medium">{employee.points} points</span>
+                              <span className="text-red-600 font-medium">{employee.points} points</span>
                             </div>
                           ))}
                         </div>
@@ -774,7 +774,7 @@ export function CorporateDashboard() {
                               </div>
                               <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                                 order.status === 'delivered' ? 'bg-green-100 text-green-800' :
-                                order.status === 'shipped' ? 'bg-blue-100 text-blue-800' :
+                                order.status === 'shipped' ? 'bg-red-100 text-red-800' :
                                 order.status === 'processing' ? 'bg-yellow-100 text-yellow-800' :
                                 'bg-gray-100 text-gray-800'
                               }`}>
@@ -791,7 +791,7 @@ export function CorporateDashboard() {
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <button
                           onClick={() => setActiveTab('employees')}
-                          className="flex items-center justify-center p-4 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors"
+                          className="flex items-center justify-center p-4 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors"
                         >
                           <Plus className="h-5 w-5 mr-2" />
                           Add Employee
@@ -850,7 +850,7 @@ export function CorporateDashboard() {
                           />
                           <button
                             type="submit"
-                            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700"
+                            className="w-full bg-red-600 text-white py-2 rounded-md hover:bg-red-700"
                           >
                             Add Employee
                           </button>
@@ -884,7 +884,7 @@ export function CorporateDashboard() {
                                   reader.readAsText(file);
                                 }
                               }}
-                              className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                              className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100"
                             />
                             <p className="text-xs text-gray-500 mt-1">
                               Upload a CSV file with columns: Name, Email, Points
@@ -918,8 +918,8 @@ export function CorporateDashboard() {
                       </div>
                       
                       {/* Bulk Add Points to All Employees */}
-                      <div className="px-6 py-4 bg-blue-50 border-b border-blue-200">
-                        <h4 className="text-md font-semibold text-blue-900 mb-3">Add Points to All Employees</h4>
+                      <div className="px-6 py-4 bg-red-50 border-b border-red-200">
+                        <h4 className="text-md font-semibold text-red-900 mb-3">Add Points to All Employees</h4>
                         <div className="flex items-center space-x-4">
                           <div className="flex-1">
                             <input
@@ -927,20 +927,20 @@ export function CorporateDashboard() {
                               value={bulkPointsForAll}
                               onChange={(e) => setBulkPointsForAll(e.target.value)}
                               placeholder="Enter points to add to all employees"
-                              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                               min="1"
                             />
                           </div>
                           <button
                             onClick={handleBulkAddPointsToAll}
                             disabled={loading || !bulkPointsForAll || employees.length === 0}
-                            className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+                            className="bg-red-600 text-white px-6 py-2 rounded-md hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
                           >
                             <Gift className="h-4 w-4" />
                             <span>Add to All ({employees.length})</span>
                           </button>
                         </div>
-                        <p className="text-sm text-blue-700 mt-2">
+                        <p className="text-sm text-red-700 mt-2">
                           Total points needed: {bulkPointsForAll ? Number(bulkPointsForAll) * employees.length : 0} | 
                           Available: {corporatePoints.available}
                         </p>
@@ -995,7 +995,7 @@ export function CorporateDashboard() {
                           placeholder="Search products by name, description, or category..."
                           value={productSearchTerm}
                           onChange={(e) => setProductSearchTerm(e.target.value)}
-                          className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
                         />
                       </div>
                       {productSearchTerm && (
@@ -1028,7 +1028,7 @@ export function CorporateDashboard() {
                             </div>
                             <p className="text-gray-600 text-sm mb-2">{product.description}</p>
                             <div className="flex justify-between items-center">
-                              <span className="text-blue-600 font-medium">{product.pointCost} points</span>
+                              <span className="text-red-600 font-medium">{product.pointCost} points</span>
                               <button
                                 onClick={() => handleViewProduct(product)}
                                 className="bg-gray-600 text-white px-3 py-2 rounded-md hover:bg-gray-700 text-sm"
@@ -1071,14 +1071,14 @@ export function CorporateDashboard() {
                           placeholder="Search by employee name, email, or order ID..."
                           value={orderSearchTerm}
                           onChange={(e) => setOrderSearchTerm(e.target.value)}
-                          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                         />
                       </div>
                       <div>
                         <select
                           value={orderStatusFilter}
                           onChange={(e) => setOrderStatusFilter(e.target.value)}
-                          className="border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          className="border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                         >
                           <option value="all">All Status</option>
                           <option value="pending">Pending</option>
@@ -1136,7 +1136,7 @@ export function CorporateDashboard() {
                                   <td className="px-6 py-4 whitespace-nowrap">
                                     <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                                       order.status === 'delivered' ? 'bg-green-100 text-green-800' :
-                                      order.status === 'shipped' ? 'bg-blue-100 text-blue-800' :
+                                      order.status === 'shipped' ? 'bg-red-100 text-red-800' :
                                       order.status === 'processing' ? 'bg-yellow-100 text-yellow-800' :
                                       'bg-gray-100 text-gray-800'
                                     }`}>
@@ -1197,7 +1197,7 @@ export function CorporateDashboard() {
                                 </div>
                                 <div className="w-full bg-gray-200 rounded-full h-2">
                                   <div 
-                                    className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                                    className="bg-red-600 h-2 rounded-full transition-all duration-300"
                                     style={{ width: `${Math.min(usagePercentage, 100)}%` }}
                                   ></div>
                                 </div>
@@ -1211,9 +1211,9 @@ export function CorporateDashboard() {
                       <div className="bg-white p-6 rounded-lg border">
                         <h3 className="text-lg font-medium mb-4">Usage Summary</h3>
                         <div className="space-y-4">
-                          <div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
-                            <span className="font-medium text-blue-900">Total Points Allocated</span>
-                            <span className="text-blue-600 font-bold">
+                          <div className="flex justify-between items-center p-3 bg-red-50 rounded-lg">
+                            <span className="font-medium text-red-900">Total Points Allocated</span>
+                            <span className="text-red-600 font-bold">
                               {employees.reduce((sum, emp) => sum + emp.points, 0)}
                             </span>
                           </div>
@@ -1264,7 +1264,7 @@ export function CorporateDashboard() {
                                     <span className="text-sm font-medium text-gray-500">#{index + 1}</span>
                                     <span className="text-sm font-medium text-gray-900">{employee.name}</span>
                                   </div>
-                                  <span className="text-sm text-blue-600 font-medium">
+                                  <span className="text-sm text-red-600 font-medium">
                                     {employee.usedPoints} points
                                   </span>
                                 </div>
@@ -1326,7 +1326,7 @@ export function CorporateDashboard() {
                                         {ticket.description.substring(0, 100)}...
                                         <button
                                           onClick={() => setSelectedTicket(ticket)}
-                                          className="ml-2 text-blue-600 hover:text-blue-800 text-xs"
+                                          className="ml-2 text-red-600 hover:text-red-800 text-xs"
                                         >
                                           View Full
                                         </button>
@@ -1347,7 +1347,7 @@ export function CorporateDashboard() {
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                   <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                                    ticket.status === 'open' ? 'bg-blue-100 text-blue-800' :
+                                    ticket.status === 'open' ? 'bg-red-100 text-red-800' :
                                     ticket.status === 'in-progress' ? 'bg-yellow-100 text-yellow-800' :
                                     'bg-green-100 text-green-800'
                                   }`}>
@@ -1360,7 +1360,7 @@ export function CorporateDashboard() {
                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                   <button
                                     onClick={() => setSelectedTicket(ticket)}
-                                    className="text-blue-600 hover:text-blue-900 mr-3"
+                                    className="text-red-600 hover:text-red-900 mr-3"
                                   >
                                     View
                                   </button>
@@ -1385,9 +1385,9 @@ export function CorporateDashboard() {
                       <div className="bg-white p-6 rounded-lg border">
                         <h3 className="text-lg font-medium mb-4">Point Summary</h3>
                         <div className="space-y-4">
-                          <div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
-                            <span className="font-medium text-blue-900">Total Points Allocated</span>
-                            <span className="text-blue-600 font-bold">{corporatePoints.total}</span>
+                          <div className="flex justify-between items-center p-3 bg-red-50 rounded-lg">
+                            <span className="font-medium text-red-900">Total Points Allocated</span>
+                            <span className="text-red-600 font-bold">{corporatePoints.total}</span>
                           </div>
                           <div className="flex justify-between items-center p-3 bg-red-50 rounded-lg">
                             <span className="font-medium text-red-900">Points Used</span>
@@ -1424,8 +1424,8 @@ export function CorporateDashboard() {
 
                       <div className="bg-white p-6 rounded-lg border">
                         <h3 className="text-lg font-medium mb-4">Employee Access Link</h3>
-                        <div className="bg-blue-50 p-4 rounded-lg">
-                          <p className="text-sm text-blue-800 mb-2">
+                        <div className="bg-red-50 p-4 rounded-lg">
+                          <p className="text-sm text-red-800 mb-2">
                             Share this link with your employees to access their gifting portal:
                           </p>
                           <div className="flex items-center space-x-2">
@@ -1438,7 +1438,7 @@ export function CorporateDashboard() {
                                 navigator.clipboard.writeText(link);
                                 alert('Link copied to clipboard!');
                               }}
-                              className="bg-blue-600 text-white px-3 py-2 rounded text-sm hover:bg-blue-700"
+                              className="bg-red-600 text-white px-3 py-2 rounded text-sm hover:bg-red-700"
                             >
                               Copy
                             </button>
@@ -1506,7 +1506,7 @@ export function CorporateDashboard() {
                     type="url"
                     id="companyBannerUrl"
                     name="companyBannerUrl"
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                     placeholder="https://example.com/banner-image.jpg"
                   />
                 </div>
@@ -1524,7 +1524,7 @@ export function CorporateDashboard() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <h4 className="font-medium text-gray-900 mb-1">Points Required</h4>
-                    <p className="text-2xl font-bold text-blue-600">{selectedProductForView.pointCost}</p>
+                    <p className="text-2xl font-bold text-red-600">{selectedProductForView.pointCost}</p>
                   </div>
                   <div>
                     <h4 className="font-medium text-gray-900 mb-1">Category</h4>
@@ -1574,7 +1574,7 @@ export function CorporateDashboard() {
                   <button
                     onClick={handleSelectFromView}
                     disabled={selectedProducts.includes(selectedProductForView.id)}
-                    className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors font-medium"
+                    className="flex-1 bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors font-medium"
                   >
                     {selectedProducts.includes(selectedProductForView.id) ? 'Already Selected' : 'Select Product'}
                   </button>
@@ -1634,7 +1634,7 @@ export function CorporateDashboard() {
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
                     <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                      selectedTicket.status === 'open' ? 'bg-blue-100 text-blue-800' :
+                      selectedTicket.status === 'open' ? 'bg-red-100 text-red-800' :
                       selectedTicket.status === 'in-progress' ? 'bg-yellow-100 text-yellow-800' :
                       'bg-green-100 text-green-800'
                     }`}>
@@ -1734,7 +1734,7 @@ function CompanyInfoSettings({
                 type="text"
                 value={companyInfo.companyName}
                 onChange={(e) => setCompanyInfo({...companyInfo, companyName: e.target.value})}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                 required
               />
             </div>
@@ -1746,7 +1746,7 @@ function CompanyInfoSettings({
                 type="text"
                 value={companyInfo.contactName}
                 onChange={(e) => setCompanyInfo({...companyInfo, contactName: e.target.value})}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                 required
               />
             </div>
@@ -1758,7 +1758,7 @@ function CompanyInfoSettings({
                 type="email"
                 value={companyInfo.email}
                 onChange={(e) => setCompanyInfo({...companyInfo, email: e.target.value})}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                 required
               />
             </div>
@@ -1770,7 +1770,7 @@ function CompanyInfoSettings({
                 type="tel"
                 value={companyInfo.phone}
                 onChange={(e) => setCompanyInfo({...companyInfo, phone: e.target.value})}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                 required
               />
             </div>
@@ -1835,7 +1835,7 @@ function CompanyInfoSettings({
             <button
               type="button"
               onClick={() => setEditing(true)}
-              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 flex items-center space-x-2"
+              className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 flex items-center space-x-2"
             >
               <Edit className="h-4 w-4" />
               <span>Edit Information</span>
@@ -1931,7 +1931,7 @@ function BrandingSettings({ corporateId, onUpdate }: { corporateId: string, onUp
           type="url"
           value={branding.logo}
           onChange={(e) => setBranding({...branding, logo: e.target.value})}
-          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
           placeholder="https://example.com/logo.png"
         />
         {branding.logo && (
@@ -1963,7 +1963,7 @@ function BrandingSettings({ corporateId, onUpdate }: { corporateId: string, onUp
           type="text"
           value={branding.greeting}
           onChange={(e) => setBranding({...branding, greeting: e.target.value})}
-          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
           placeholder="Welcome to our Employee Portal"
         />
       </div>
@@ -1976,7 +1976,7 @@ function BrandingSettings({ corporateId, onUpdate }: { corporateId: string, onUp
           type="text"
           value={branding.festivalGreeting}
           onChange={(e) => setBranding({...branding, festivalGreeting: e.target.value})}
-          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
           placeholder="Happy Holidays from our team!"
         />
       </div>
@@ -1984,7 +1984,7 @@ function BrandingSettings({ corporateId, onUpdate }: { corporateId: string, onUp
       <button
         type="submit"
         disabled={loading}
-        className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {loading ? 'Saving...' : 'Save Branding Settings'}
       </button>
