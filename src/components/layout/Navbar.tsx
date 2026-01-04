@@ -234,7 +234,7 @@ export function Navbar() {
                   </Link>
                   <Link
                     to="/corporate/register"
-                    className="block px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 ml-3 mr-3"
+                    className="block px-3 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 ml-3 mr-3"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Sign Up
