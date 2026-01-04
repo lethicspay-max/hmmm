@@ -227,7 +227,7 @@ export function Navbar() {
                 <>
                   <Link
                     to="/corporate/login"
-                    className="block px-3 py-2 text-blue-600 hover:text-blue-700"
+                    className="block px-3 py-2 text-red-600 hover:text-red-700"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Corporate Login
