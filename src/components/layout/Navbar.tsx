@@ -87,7 +87,7 @@ export function Navbar() {
             <div className="flex items-center">
               <Link to="/" className="flex items-center space-x-2">
                 <img 
-                src="https://companyshop.in/images/logo-1.png" 
+                src="https://surajintl.com/img/logo.png" 
                 alt="Tapwell" 
                 className="h-8 w-auto"
               />
