@@ -120,11 +120,11 @@ export function FAQPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-600 to-blue-700 text-white py-16">
+      <section className="bg-gradient-to-br from-red-600 to-red-700 text-white py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <HelpCircle className="h-16 w-16 mx-auto mb-4" />
           <h1 className="text-4xl md:text-5xl font-bold mb-6">Frequently Asked Questions</h1>
-          <p className="text-xl md:text-2xl text-blue-100">
+          <p className="text-xl md:text-2xl text-red-100">
             Find answers to common questions about Suraj International
           </p>
         </div>
@@ -141,13 +141,13 @@ export function FAQPage() {
                 placeholder="Search for answers..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
               />
             </div>
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
             >
               {categories.map(category => (
                 <option key={category.value} value={category.value}>
@@ -208,7 +208,7 @@ export function FAQPage() {
                   setSearchTerm('');
                   setSelectedCategory('all');
                 }}
-                className="text-blue-600 hover:text-blue-700 font-medium"
+                className="text-red-600 hover:text-red-700 font-medium"
               >
                 Clear all filters
               </button>
@@ -217,7 +217,7 @@ export function FAQPage() {
         </div>
 
         {/* Contact CTA */}
-        <div className="mt-16 bg-blue-50 p-8 rounded-lg text-center">
+        <div className="mt-16 bg-red-50 p-8 rounded-lg text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
             Still have questions?
           </h2>
@@ -227,13 +227,13 @@ export function FAQPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="/contact"
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+              className="bg-red-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-red-700 transition-colors"
             >
               Contact Support
             </a>
             <a
               href="mailto:rases@tapwell.co.in"
-              className="border border-blue-600 text-blue-600 px-6 py-3 rounded-lg font-medium hover:bg-blue-600 hover:text-white transition-colors"
+              className="border border-red-600 text-red-600 px-6 py-3 rounded-lg font-medium hover:bg-red-600 hover:text-white transition-colors"
             >
               Email Us
             </a>
