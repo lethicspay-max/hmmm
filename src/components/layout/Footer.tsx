@@ -12,7 +12,7 @@ export function Footer() {
             <div className="flex items-center space-x-2">
               <img 
                 src="https://surajintl.com/img/logo.png"
-                alt="Tapwell" 
+                alt="Suraj International" 
                 className="h-8 w-auto"
               />
               <span className="font-bold text-xl">Tapwell</span>
