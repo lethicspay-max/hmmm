@@ -19,7 +19,7 @@ export function PrivacyPage() {
         <div className="bg-white rounded-lg shadow-md p-8">
           <div className="mb-8">
             <p className="text-gray-600 text-lg">
-              <strong>Last updated:</strong> January 15, 2025
+              <strong>Last updated:</strong> January 2, 2026
             </p>
           </div>
 
