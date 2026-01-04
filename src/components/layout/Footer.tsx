@@ -15,7 +15,7 @@ export function Footer() {
                 alt="Suraj International" 
                 className="h-8 w-auto"
               />
-              <span className="font-bold text-xl">Tapwell</span>
+              <span className="font-bold text-xl">Suraj International</span>
             </div>
             <p className="text-gray-300">
               Streamlining corporate gifting with innovative points-based redemption systems.
