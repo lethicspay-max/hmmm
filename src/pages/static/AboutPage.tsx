@@ -5,10 +5,10 @@ export function AboutPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-600 to-blue-700 text-white py-16">
+      <section className="bg-gradient-to-br from-red-600 to-red-700 text-white py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">About Suraj International</h1>
-          <p className="text-xl md:text-2xl text-blue-100">
+          <p className="text-xl md:text-2xl text-red-100">
             Revolutionizing corporate gifting through innovative points-based technology
           </p>
         </div>
@@ -37,8 +37,8 @@ export function AboutPage() {
                 giving employees the freedom to choose while keeping corporate administrators in control.
               </p>
             </div>
-            <div className="bg-blue-50 p-8 rounded-lg">
-              <Gift className="h-16 w-16 text-blue-600 mb-4" />
+            <div className="bg-red-50 p-8 rounded-lg">
+              <Gift className="h-16 w-16 text-red-600 mb-4" />
               <h4 className="text-xl font-semibold text-gray-900 mb-2">Points-Based Innovation</h4>
               <p className="text-gray-600">
                 No payments, no complex approvals. Just simple point allocation and seamless redemption.
@@ -60,7 +60,7 @@ export function AboutPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="bg-blue-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <div className="bg-red-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <Shield className="h-8 w-8" />
               </div>
               <h3 className="text-xl font-semibold mb-2">Transparency</h3>
@@ -99,7 +99,7 @@ export function AboutPage() {
             <h2 className="text-3xl font-bold text-gray-900 mb-4">How It Started</h2>
           </div>
           
-          <div className="bg-white border-l-4 border-blue-600 pl-8 py-6">
+          <div className="bg-white border-l-4 border-red-600 pl-8 py-6">
             <blockquote className="text-lg text-gray-700 italic mb-4">
               "After managing corporate gifts for our 500+ employee company, I realized there had to be a better way. 
               The traditional approach was time-consuming, expensive, and often resulted in gifts that employees didn't want."
@@ -145,7 +145,7 @@ export function AboutPage() {
                 className="w-20 h-20 rounded-full object-cover mx-auto mb-4"
               />
               <h3 className="text-xl font-semibold mb-1">Rases Changoiwala</h3>
-              <p className="text-blue-600 mb-2">Founder & CEO</p>
+              <p className="text-red-600 mb-2">Founder & CEO</p>
               <p className="text-gray-600">Technology leader</p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-md text-center">
@@ -183,24 +183,24 @@ export function AboutPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-blue-600 text-white py-16">
+      <section className="bg-red-600 text-white py-16">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             Ready to Transform Your Corporate Gifting?
           </h2>
-          <p className="text-xl mb-8 text-blue-100">
+          <p className="text-xl mb-8 text-red-100">
             Join hundreds of companies already using Suraj International to create meaningful employee experiences.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="/corporate/register"
-              className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
+              className="bg-white text-red-600 px-8 py-3 rounded-lg font-semibold hover:bg-red-50 transition-colors"
             >
               Get Started Today
             </a>
             <a
               href="/contact"
-              className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors"
+              className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-red-600 transition-colors"
             >
               Contact Us
             </a>
