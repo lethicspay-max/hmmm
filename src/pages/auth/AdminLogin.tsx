@@ -27,12 +27,12 @@ export function AdminLogin() {
       setLoading(true);
       await login(email, password);
       
-      // Wait a moment for auth state to update, then redirect
+      // Wait a moment for auth state to update, then blueirect
       setTimeout(() => {
         navigate('/admin/dashboard');
       }, 1000);
     } catch (error) {
-      setError('Failed to sign in. Please check your credentials.');
+      setError('Failed to sign in. Please check your cblueentials.');
       setLoading(false);
     }
   };
@@ -55,7 +55,7 @@ export function AdminLogin() {
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={handleSubmit}>
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md">
+              <div className="bg-blue-50 border border-blue-200 text-blue-600 px-4 py-3 rounded-md">
                 {error}
               </div>
             )}
@@ -70,7 +70,7 @@ export function AdminLogin() {
                   name="email"
                   type="email"
                   autoComplete="email"
-                  required
+                  requiblue
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="appearance-none block w-full px-3 py-2 pl-10 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
@@ -90,7 +90,7 @@ export function AdminLogin() {
                   name="password"
                   type={showPassword ? 'text' : 'password'}
                   autoComplete="current-password"
-                  required
+                  requiblue
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="appearance-none block w-full px-3 py-2 pl-10 pr-10 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
