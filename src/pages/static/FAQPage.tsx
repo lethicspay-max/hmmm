@@ -85,7 +85,7 @@ export function FAQPage() {
     },
     {
       question: "How do I contact support?",
-      answer: "You can reach our support team via email at rases@tapwell.co.in, through the contact form on our website, or by phone during business hours. We typically respond within 24 hours.",
+      answer: "You can reach our support team via email at Prema.surajinternational@gmail.com | vignesh.surajinternationa@gmail.com | info@surajintl.com, through the contact form on our website, or by phone during business hours. We typically respond within 24 hours.",
       category: "support"
     }
   ];
