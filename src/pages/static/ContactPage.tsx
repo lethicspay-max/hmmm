@@ -81,7 +81,7 @@ export function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900">Email Us</h3>
-                    <p className="text-gray-600">rases@tapwell.co.in</p>
+                    <p className="text-gray-600">Prema.surajinternational@gmail.com | vignesh.surajinternationa@gmail.com | info@surajintl.com</p>
                     
                   </div>
                 </div>
