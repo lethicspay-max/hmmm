@@ -979,7 +979,7 @@ fire(0.1, {
           <p className="text-gray-600 mb-6">{error}</p>
           <button
             onClick={() => navigate('/')}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+            className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors"
           >
             Back to Home
           </button>
