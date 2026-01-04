@@ -125,7 +125,7 @@ export function FAQPage() {
           <HelpCircle className="h-16 w-16 mx-auto mb-4" />
           <h1 className="text-4xl md:text-5xl font-bold mb-6">Frequently Asked Questions</h1>
           <p className="text-xl md:text-2xl text-blue-100">
-            Find answers to common questions about Tapwell
+            Find answers to common questions about Suraj International
           </p>
         </div>
       </section>
