@@ -58,10 +58,10 @@ export function ContactPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-600 to-blue-700 text-white py-16">
+      <section className="bg-gradient-to-br from-red-600 to-red-700 text-white py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">Contact Us</h1>
-          <p className="text-xl md:text-2xl text-blue-100">
+          <p className="text-xl md:text-2xl text-red-100">
             Get in touch with our team for support, questions, or partnerships
           </p>
         </div>
@@ -76,8 +76,8 @@ export function ContactPage() {
               
               <div className="space-y-6">
                 <div className="flex items-start space-x-4">
-                  <div className="bg-blue-100 p-3 rounded-full">
-                    <Mail className="h-6 w-6 text-blue-600" />
+                  <div className="bg-red-100 p-3 rounded-full">
+                    <Mail className="h-6 w-6 text-red-600" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900">Email Us</h3>
@@ -130,16 +130,16 @@ Western express highway malad east,<br />
             <div className="bg-white p-8 rounded-lg shadow-md mt-6">
               <h3 className="text-xl font-bold text-gray-900 mb-4">Quick Links</h3>
               <div className="space-y-2">
-                <a href="/faq" className="block text-blue-600 hover:text-blue-700 transition-colors">
+                <a href="/faq" className="block text-red-600 hover:text-red-700 transition-colors">
                   Frequently Asked Questions
                 </a>
-                <a href="/admin/login" className="block text-blue-600 hover:text-blue-700 transition-colors">
+                <a href="/admin/login" className="block text-red-600 hover:text-red-700 transition-colors">
                   Admin Portal Login
                 </a>
-                <a href="/corporate/login" className="block text-blue-600 hover:text-blue-700 transition-colors">
+                <a href="/corporate/login" className="block text-red-600 hover:text-red-700 transition-colors">
                   Corporate Login
                 </a>
-                <a href="/about" className="block text-blue-600 hover:text-blue-700 transition-colors">
+                <a href="/about" className="block text-red-600 hover:text-red-700 transition-colors">
                   About Our Company
                 </a>
               </div>
@@ -150,7 +150,7 @@ Western express highway malad east,<br />
           <div className="lg:col-span-2">
             <div className="bg-white p-8 rounded-lg shadow-md">
               <div className="flex items-center mb-6">
-                <MessageSquare className="h-8 w-8 text-blue-600 mr-3" />
+                <MessageSquare className="h-8 w-8 text-red-600 mr-3" />
                 <h2 className="text-2xl font-bold text-gray-900">Send us a Message</h2>
               </div>
 
@@ -173,7 +173,7 @@ Western express highway malad east,<br />
                         required
                         value={formData.name}
                         onChange={handleChange}
-                        className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                         placeholder="Your full name"
                       />
                     </div>
@@ -189,7 +189,7 @@ Western express highway malad east,<br />
                         required
                         value={formData.email}
                         onChange={handleChange}
-                        className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                         placeholder="your@email.com"
                       />
                     </div>
@@ -206,7 +206,7 @@ Western express highway malad east,<br />
                         name="company"
                         value={formData.company}
                         onChange={handleChange}
-                        className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                         placeholder="Your company name"
                       />
                     </div>
@@ -221,7 +221,7 @@ Western express highway malad east,<br />
                         required
                         value={formData.subject}
                         onChange={handleChange}
-                        className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                       >
                         <option value="">Select a subject</option>
                         <option value="general">General Inquiry</option>
@@ -245,7 +245,7 @@ Western express highway malad east,<br />
                       rows={6}
                       value={formData.message}
                       onChange={handleChange}
-                      className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                       placeholder="Please provide details about your inquiry..."
                     />
                   </div>
@@ -253,7 +253,7 @@ Western express highway malad east,<br />
                   <div>
                     <button
                       type="submit"
-                      className="w-full bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2"
+                      className="w-full bg-red-600 text-white px-6 py-3 rounded-md hover:bg-red-700 transition-colors flex items-center justify-center space-x-2"
                     >
                       <Send className="h-5 w-5" />
                       <span>Send Message</span>
@@ -302,7 +302,7 @@ Western express highway malad east,<br />
             <div className="mt-6 text-center">
               <a
                 href="mailto:rases@tapwell.co.in"
-                className="text-blue-600 hover:text-blue-700 font-medium"
+                className="text-red-600 hover:text-red-700 font-medium"
               >
                 View all FAQs →
               </a>
