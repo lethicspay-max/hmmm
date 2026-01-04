@@ -18,9 +18,6 @@ export default {
         }
       }
     },
-    extend: {
-  colors: {
-    blue: { ... },
     red: {
       50: '#fef2f2',
       100: '#fee2e2',
@@ -33,8 +30,6 @@ export default {
       800: '#991b1b',
       900: '#7f1d1d',
     }
-  }
-}
   },
   plugins: [],
 };
