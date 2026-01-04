@@ -979,7 +979,7 @@ fire(0.1, {
           <p className="text-gray-600 mb-6">{error}</p>
           <button
             onClick={() => navigate('/')}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+            className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors"
           >
             Back to Home
           </button>
@@ -996,7 +996,7 @@ fire(0.1, {
           <p className="text-gray-600 mb-6">This company page is currently not available.</p>
           <button
             onClick={() => navigate('/')}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+            className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors"
           >
             Back to Home
           </button>
@@ -1061,7 +1061,7 @@ fire(0.1, {
                 </div>
 
                 {authError && (
-                  <div className="bg-blue-50 border border-blue-200 text-blue-600 px-4 py-3 rounded-md text-sm">
+                  <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md text-sm">
                     {authError}
                   </div>
                 )}
@@ -1135,7 +1135,7 @@ fire(0.1, {
                     <div className="text-sm">
                       <a 
                         href="/forgot-password?type=employee" 
-                        className="text-blue-600 hover:text-blue-500"
+                        className="text-red-600 hover:text-red-500"
                       >
                         Forgot your password?
                       </a>
@@ -1173,7 +1173,7 @@ fire(0.1, {
                   </div>
 
                   {authError && (
-                    <div className="bg-blue-50 border border-blue-200 text-blue-600 px-4 py-3 rounded-md text-sm">
+                    <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md text-sm">
                       {authError}
                     </div>
                   )}
@@ -1248,7 +1248,7 @@ fire(0.1, {
                     <div className="text-sm">
                       <a 
                         href="/forgot-password?type=employee" 
-                        className="text-blue-600 hover:text-blue-500"
+                        className="text-red-600 hover:text-red-500"
                       >
                         Forgot your password?
                       </a>
@@ -1256,7 +1256,7 @@ fire(0.1, {
                   </div>
 
                   {authError && (
-                    <div className="bg-blue-50 border border-blue-200 text-blue-600 px-4 py-3 rounded-md text-sm">
+                    <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md text-sm">
                       {authError}
                     </div>
                   )}
@@ -1330,14 +1330,14 @@ fire(0.1, {
                 <ShoppingCart className="h-5 w-5" />
                 <span>Cart</span>
                 {cart.length > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs">
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs">
                     {getTotalItems()}
                   </span>
                 )}
               </button>
               <button
                 onClick={resetAuth}
-                className="flex items-center space-x-1 text-white hover:text-blue-200 transition-colors"
+                className="flex items-center space-x-1 text-white hover:text-red-200 transition-colors"
               >
                 <LogOut className="h-4 w-4" />
                 <span>Logout</span>
@@ -1358,7 +1358,7 @@ fire(0.1, {
               onClick={() => setActiveTab('products')}
               className={`py-4 px-1 border-b-2 font-medium text-sm ${
                 activeTab === 'products'
-                  ? 'border-blue-500 text-blue-600'
+                  ? 'border-red-500 text-red-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
             >
@@ -1368,7 +1368,7 @@ fire(0.1, {
               onClick={() => setActiveTab('orders')}
               className={`py-4 px-1 border-b-2 font-medium text-sm ${
                 activeTab === 'orders'
-                  ? 'border-blue-500 text-blue-600'
+                  ? 'border-red-500 text-red-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
             >
@@ -1380,7 +1380,7 @@ fire(0.1, {
 
       {/* Greeting Section */}
       {corporate.branding?.greeting && (
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 py-8">
+        <div className="bg-gradient-to-r from-red-50 to-indigo-50 py-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             {corporate.branding.festivalGreeting && (
               <h2 className="text-2xl font-bold text-gray-900 mb-2">
@@ -1525,7 +1525,7 @@ fire(0.1, {
                         <div className="text-right">
                           <span className={`px-3 py-1 rounded-full text-sm font-medium ${
                             order.status === 'deliveblue' ? 'bg-green-100 text-green-800' :
-                            order.status === 'shipped' ? 'bg-blue-100 text-blue-800' :
+                            order.status === 'shipped' ? 'bg-red-100 text-red-800' :
                             order.status === 'processing' ? 'bg-yellow-100 text-yellow-800' :
                             'bg-gray-100 text-gray-800'
                           }`}>
@@ -1538,7 +1538,7 @@ fire(0.1, {
                                 href={`https://shiprocket.co/tracking/${order.trackingNumber}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                                className="text-red-600 hover:text-red-700 text-sm font-medium"
                               >
                                 Track on Shiprocket →
                               </a>
@@ -1663,7 +1663,7 @@ fire(0.1, {
                       {selectedProductForView.sizes && selectedProductForView.sizes.length > 0 && (
                         <div>
                           <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                            Available Sizes {selectedProductForView.sizes.length > 0 && <span className="text-blue-500">*</span>}
+                            Available Sizes {selectedProductForView.sizes.length > 0 && <span className="text-red-500">*</span>}
                           </h3>
                           <div className="flex flex-wrap gap-2">
                             {selectedProductForView.sizes.map((size: string, index: number) => (
@@ -1687,7 +1687,7 @@ fire(0.1, {
                       {selectedProductForView.colors && selectedProductForView.colors.length > 0 && (
                         <div>
                           <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                            Available Colors {selectedProductForView.colors.length > 0 && <span className="text-blue-500">*</span>}
+                            Available Colors {selectedProductForView.colors.length > 0 && <span className="text-red-500">*</span>}
                           </h3>
                           <div className="flex flex-wrap gap-2">
                             {selectedProductForView.colors.map((color: string, index: number) => (
@@ -1727,7 +1727,7 @@ fire(0.1, {
                         </button>
                         <button
                           onClick={() => addToCart(selectedProductForView)}
-                          className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+                          className="flex-1 bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors"
                         >
                           Add to Cart
                         </button>
@@ -1737,7 +1737,7 @@ fire(0.1, {
                       {((selectedProductForView.sizes && selectedProductForView.sizes.length > 0) || 
                         (selectedProductForView.colors && selectedProductForView.colors.length > 0)) && (
                         <p className="text-sm text-gray-500 text-center mt-2">
-                          <span className="text-blue-500">*</span> Requiblue selection
+                          <span className="text-red-500">*</span> Requiblue selection
                         </p>
                       )}
                     </div>
@@ -1841,7 +1841,7 @@ fire(0.1, {
                         <p className="font-medium">{item.product.pointCost * item.quantity} points</p>
                         <button
                           onClick={() => removeFromCart(item.product.id)}
-                          className="text-blue-500 hover:text-blue-700 text-sm"
+                          className="text-red-500 hover:text-red-700 text-sm"
                         >
                           Remove
                         </button>
@@ -1862,7 +1862,7 @@ fire(0.1, {
                 {checkoutStep === 'cart' && (
                   <div>
                     {getTotalPoints() > (employee?.points || 0) && (
-                      <div className="bg-blue-50 border border-blue-200 text-blue-600 px-4 py-2 rounded-md text-sm">
+                      <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-2 rounded-md text-sm">
                         Insufficient points for this order
                       </div>
                     )}
@@ -1887,7 +1887,7 @@ fire(0.1, {
                   <div className="space-y-4">
                     <h3 className="font-medium">Shipping Information</h3>
                     {detectedCountry && (
-                      <div className="bg-blue-50 border border-blue-200 text-blue-800 px-3 py-2 rounded-md text-sm">
+                      <div className="bg-red-50 border border-red-200 text-red-800 px-3 py-2 rounded-md text-sm">
                         📍 Auto-detected location: {countries.find(c => c.code === detectedCountry)?.name}
                       </div>
                     )}
@@ -2035,7 +2035,7 @@ fire(0.1, {
                     <p className="text-gray-600 mb-6">
                       Thank you for your order. You will receive a confirmation email shortly.
                     </p>
-                    <div className="bg-gradient-to-r from-orange-100 to-blue-100 border border-orange-200 rounded-lg p-4 mb-6">
+                    <div className="bg-gradient-to-r from-orange-100 to-red-100 border border-orange-200 rounded-lg p-4 mb-6">
                       <p className="text-gray-600 mb-4">
                         🎉 {corporate.branding?.festivalGreeting?.replace('{employee?.name}', employee?.name || 'there') || 'Happy holidays!'}
                       </p>
@@ -2080,9 +2080,9 @@ fire(0.1, {
               </div>
 
               {selectedOrderForTicket && (
-                <div className="bg-blue-50 p-4 rounded-lg mb-6">
-                  <h3 className="font-medium text-blue-900 mb-2">Related Order</h3>
-                  <p className="text-sm text-blue-700">
+                <div className="bg-red-50 p-4 rounded-lg mb-6">
+                  <h3 className="font-medium text-red-900 mb-2">Related Order</h3>
+                  <p className="text-sm text-red-700">
                     Order #{selectedOrderForTicket.id.slice(-6)} - {selectedOrderForTicket.totalPoints} points
                   </p>
                 </div>
@@ -2099,7 +2099,7 @@ fire(0.1, {
                     requiblue
                     value={ticketForm.subject}
                     onChange={(e) => setTicketForm(prev => ({ ...prev, subject: e.target.value }))}
-                    className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                     placeholder="Brief description of your issue"
                   />
                 </div>
@@ -2114,7 +2114,7 @@ fire(0.1, {
                       requiblue
                       value={ticketForm.category}
                       onChange={(e) => setTicketForm(prev => ({ ...prev, category: e.target.value }))}
-                      className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                     >
                       <option value="order_issue">Order Issue</option>
                       <option value="product_defect">Product Defect</option>
@@ -2135,7 +2135,7 @@ fire(0.1, {
                       requiblue
                       value={ticketForm.priority}
                       onChange={(e) => setTicketForm(prev => ({ ...prev, priority: e.target.value }))}
-                      className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                     >
                       <option value="low">Low</option>
                       <option value="medium">Medium</option>
@@ -2155,7 +2155,7 @@ fire(0.1, {
                     rows={6}
                     value={ticketForm.description}
                     onChange={(e) => setTicketForm(prev => ({ ...prev, description: e.target.value }))}
-                    className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                     placeholder="Please provide detailed information about your issue..."
                   />
                 </div>
@@ -2171,7 +2171,7 @@ fire(0.1, {
                   <button
                     type="submit"
                     disabled={ticketSubmitting}
-                    className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+                    className="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
                   >
                     <Send className="h-4 w-4" />
                     <span>{ticketSubmitting ? 'Submitting...' : 'Submit Ticket'}</span>
@@ -2186,7 +2186,7 @@ fire(0.1, {
       {/* Notification */}
       {notification.show && (
         <div className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg animate-slide-in ${
-          notification.type === 'success' ? 'bg-green-500 text-white' : 'bg-blue-500 text-white'
+          notification.type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
         }`}>
           <div className="flex items-center space-x-2">
             {notification.type === 'success' ? (
