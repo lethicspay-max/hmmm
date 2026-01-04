@@ -30,7 +30,7 @@ export function PrivacyPage() {
               Introduction
             </h2>
             <p className="text-gray-600 leading-relaxed mb-4">
-              Tapwell ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our corporate gifting platform.
+              Suraj International ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our corporate gifting platform.
             </p>
             <p className="text-gray-600 leading-relaxed">
               By using our service, you agree to the collection and use of information in accordance with this policy.
