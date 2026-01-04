@@ -1458,7 +1458,7 @@ export function CorporateDashboard() {
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-2">Account Pending Approval</h2>
             <p className="text-gray-600 mb-4">
-              Thank you for registering with Tapwell. Your corporate account is currently under review 
+              Thank you for registering with Suraj International. Your corporate account is currently under review 
               by our admin team. You will receive an email notification once your account has been approved.
             </p>
             <p className="text-sm text-gray-500">
