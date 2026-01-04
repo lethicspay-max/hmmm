@@ -633,7 +633,7 @@ export function HomePage() {
             Ready to Transform Your Corporate Gifting?
           </h2>
           <p className="text-xl mb-8 text-blue-100">
-            Join hundreds of companies already using Tapwell to delight their employees.
+            Join hundreds of companies already using Suraj International to delight their employees.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
