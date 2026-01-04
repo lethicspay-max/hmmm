@@ -86,7 +86,11 @@ export function Navbar() {
           <div className="flex justify-between h-16">
             <div className="flex items-center">
               <Link to="/" className="flex items-center space-x-2">
-                <Gift className="h-8 w-8 text-blue-600" />
+                <img 
+                src="https://companyshop.in/images/logo-1.png" 
+                alt="Tapwell" 
+                className="h-8 w-auto"
+              />
                 <span className="font-bold text-xl text-gray-900">Tapwell</span>
               </Link>
             </div>
@@ -105,7 +109,11 @@ export function Navbar() {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-2">
-              <Gift className="h-8 w-8 text-blue-600" />
+              <img 
+                src="https://companyshop.in/images/logo-1.png" 
+                alt="Tapwell" 
+                className="h-8 w-auto"
+              />
               <span className="font-bold text-xl text-gray-900">Tapwell</span>
             </Link>
           </div>
