@@ -56,26 +56,26 @@ export function HomePage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-600 to-blue-700 text-white">
+      <section className="bg-gradient-to-br from-red-600 to-red-700 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
               Streamline Corporate Gifting
             </h1>
-            <p className="text-xl md:text-2xl mb-8 text-blue-100 max-w-3xl mx-auto">
+            <p className="text-xl md:text-2xl mb-8 text-red-100 max-w-3xl mx-auto">
               Transform your corporate gifting with our points-based blueemption platform. 
               No payments needed, just seamless employee experiences.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/corporate/register"
-                className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
+                className="bg-white text-red-600 px-8 py-3 rounded-lg font-semibold hover:bg-red-50 transition-colors"
               >
                 Sign Up as Corporate
               </Link>
               <Link
                 to="/contact"
-                className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors"
+                className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-red-600 transition-colors"
               >
                 Contact Gifting Company
               </Link>
@@ -114,7 +114,7 @@ export function HomePage() {
             </div>
 
             <div className="text-center p-6">
-              <div className="bg-blue-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <div className="bg-red-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <Gift className="h-8 w-8" />
               </div>
               <h3 className="text-xl font-semibold mb-2">Points-Based System</h3>
@@ -124,7 +124,7 @@ export function HomePage() {
             </div>
             
             <div className="text-center p-6">
-              <div className="bg-blue-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <div className="bg-red-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <Users className="h-8 w-8" />
               </div>
               <h3 className="text-xl font-semibold mb-2">Custom Sub-Pages</h3>
@@ -137,7 +137,7 @@ export function HomePage() {
           {/* Additional Features Row */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8 max-w-4xl mx-auto">
             <div className="text-center p-6">
-              <div className="bg-blue-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <div className="bg-red-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <Truck className="h-8 w-8" />
               </div>
               <h3 className="text-xl font-semibold mb-2">Centralized Fulfillment</h3>
@@ -147,7 +147,7 @@ export function HomePage() {
             </div>
             
             <div className="text-center p-6">
-              <div className="bg-blue-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <div className="bg-red-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <Award className="h-8 w-8" />
               </div>
               <h3 className="text-xl font-semibold mb-2">Expert Support</h3>
@@ -186,7 +186,7 @@ export function HomePage() {
                         .map((client, index) => (
                           <div 
                             key={`${slideIndex}-${index}`}
-                            className="flex-shrink-0 w-32 h-20 md:w-40 md:h-24 bg-white rounded-lg flex items-center justify-center border hover:shadow-md transition-all duration-300 hover:border-blue-300 p-4"
+                            className="flex-shrink-0 w-32 h-20 md:w-40 md:h-24 bg-white rounded-lg flex items-center justify-center border hover:shadow-md transition-all duration-300 hover:border-red-300 p-4"
                           >
                             <img 
                               src={client.logo} 
@@ -199,7 +199,7 @@ export function HomePage() {
                                 const parent = target.parentElement;
                                 if (parent) {
                                   const fallback = document.createElement('div');
-                                  fallback.className = 'text-lg md:text-xl font-bold text-blue-600';
+                                  fallback.className = 'text-lg md:text-xl font-bold text-red-600';
                                   fallback.textContent = client.name.substring(0, 2).toUpperCase();
                                   parent.insertBefore(fallback, target.nextSibling);
                                 }
@@ -235,7 +235,7 @@ export function HomePage() {
                   key={index}
                   onClick={() => setCurrentSlide(index)}
                   className={`w-3 h-3 rounded-full transition-colors ${
-                    index === currentSlide ? 'bg-blue-600' : 'bg-gray-300'
+                    index === currentSlide ? 'bg-red-600' : 'bg-gray-300'
                   }`}
                 />
               ))}
@@ -264,7 +264,7 @@ export function HomePage() {
                 className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
               >
                 <div className="flex items-center space-x-4">
-                  <div className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">1</div>
+                  <div className="bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">1</div>
                   <h3 className="text-lg font-medium text-gray-900">Corporate signs up</h3>
                 </div>
                 <div className="flex-shrink-0">
@@ -281,15 +281,15 @@ export function HomePage() {
                   <div className="border-t border-gray-200 pt-4">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div className="text-center p-4">
-                        <div className="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center mx-auto mb-2 text-sm font-bold">1</div>
+                        <div className="bg-red-100 text-red-600 rounded-full w-8 h-8 flex items-center justify-center mx-auto mb-2 text-sm font-bold">1</div>
                         <p className="text-gray-700 font-medium">Register your company</p>
                       </div>
                       <div className="text-center p-4">
-                        <div className="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center mx-auto mb-2 text-sm font-bold">2</div>
+                        <div className="bg-red-100 text-red-600 rounded-full w-8 h-8 flex items-center justify-center mx-auto mb-2 text-sm font-bold">2</div>
                         <p className="text-gray-700 font-medium">Get your custom sub-page</p>
                       </div>
                       <div className="text-center p-4">
-                        <div className="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center mx-auto mb-2 text-sm font-bold">3</div>
+                        <div className="bg-red-100 text-red-600 rounded-full w-8 h-8 flex items-center justify-center mx-auto mb-2 text-sm font-bold">3</div>
                         <p className="text-gray-700 font-medium">Start adding employees</p>
                       </div>
                     </div>
@@ -425,7 +425,7 @@ export function HomePage() {
       </section>
 
       {/* Get Started CTA */}
-      <section className="py-12 bg-blue-50">
+      <section className="py-12 bg-red-50">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
             Ready to Get Started?
@@ -435,7 +435,7 @@ export function HomePage() {
           </p>
           <Link
             to="/corporate/register"
-            className="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+            className="inline-block bg-red-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors"
           >
             Get Started. It's Free
           </Link>
@@ -455,8 +455,8 @@ export function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-lg">
-              <div className="bg-blue-600 text-white rounded-full w-12 h-12 flex items-center justify-center mb-4">
+            <div className="bg-gradient-to-br from-red-50 to-red-100 p-6 rounded-lg">
+              <div className="bg-red-600 text-white rounded-full w-12 h-12 flex items-center justify-center mb-4">
                 <Award className="h-6 w-6" />
               </div>
               <h3 className="text-xl font-semibold mb-3 text-gray-900">Employee Recognition</h3>
@@ -495,8 +495,8 @@ export function HomePage() {
               </p>
             </div>
 
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-lg">
-              <div className="bg-blue-600 text-white rounded-full w-12 h-12 flex items-center justify-center mb-4">
+            <div className="bg-gradient-to-br from-red-50 to-red-100 p-6 rounded-lg">
+              <div className="bg-red-600 text-white rounded-full w-12 h-12 flex items-center justify-center mb-4">
                 <Star className="h-6 w-6" />
               </div>
               <h3 className="text-xl font-semibold mb-3 text-gray-900">Anniversary Gifts</h3>
@@ -523,14 +523,14 @@ export function HomePage() {
             <div className="mb-4">
               <Link
                 to="/corporate/register"
-                className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors inline-block"
+                className="bg-red-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors inline-block"
               >
                 Get Started Today
               </Link>
             </div>
             <Link
               to="/contact"
-              className="text-blue-600 hover:text-blue-700 font-medium"
+              className="text-red-600 hover:text-red-700 font-medium"
             >
               Discuss your specific use case with our team →
             </Link>
@@ -627,24 +627,24 @@ export function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-blue-600 text-white py-16">
+      <section className="bg-red-600 text-white py-16">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             Ready to Transform Your Corporate Gifting?
           </h2>
-          <p className="text-xl mb-8 text-blue-100">
+          <p className="text-xl mb-8 text-red-100">
             Join hundblues of companies already using Suraj International to delight their employees.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/corporate/register"
-              className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
+              className="bg-white text-red-600 px-8 py-3 rounded-lg font-semibold hover:bg-red-50 transition-colors"
             >
               Get Started Today
             </Link>
             <Link
               to="/contact"
-              className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors"
+              className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-red-600 transition-colors"
             >
               Contact Us
             </Link>
