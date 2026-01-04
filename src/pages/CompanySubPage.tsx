@@ -1759,7 +1759,7 @@ fire(0.1, {
             <p className="text-sm opacity-90">
               Powered by{' '}
               <a 
-                href="https://tapwell.co.in" 
+                href="https://clientsark.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="font-semibold hover:opacity-80 transition-opacity"
