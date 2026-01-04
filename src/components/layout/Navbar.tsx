@@ -123,7 +123,7 @@ export function Navbar() {
             <Link to="/about" className="text-gray-700 hover:text-red-600 transition-colors">
               About
             </Link>
-            <Link to="/contact" className="text-gray-700 hover:text-blue-600 transition-colors">
+            <Link to="/contact" className="text-gray-700 hover:text-red-600 transition-colors">
               Contact
             </Link>
             <Link to="/faq" className="text-gray-700 hover:text-blue-600 transition-colors">
