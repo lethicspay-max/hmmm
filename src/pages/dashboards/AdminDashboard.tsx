@@ -828,7 +828,7 @@ export function AdminDashboard() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-red-600"></div>
       </div>
     );
   }
@@ -856,7 +856,7 @@ export function AdminDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="bg-white p-6 rounded-lg shadow">
             <div className="flex items-center">
-              <Truck className="h-8 w-8 text-blue-600" />
+              <Truck className="h-8 w-8 text-red-600" />
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Total Orders</p>
                 <p className="text-2xl font-semibold text-gray-900">{stats.totalOrders}</p>
@@ -926,7 +926,7 @@ export function AdminDashboard() {
                   onClick={() => setActiveTab(tab)}
                   className={`py-2 px-4 border-b-2 font-medium text-sm capitalize ${
                     activeTab === tab
-                      ? 'border-blue-500 text-blue-600'
+                      ? 'border-red-500 text-red-600'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                   }`}
                 >
@@ -966,7 +966,7 @@ export function AdminDashboard() {
                           </div>
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                             order.status === 'delivered' ? 'bg-green-100 text-green-800' :
-                            order.status === 'shipped' ? 'bg-blue-100 text-blue-800' :
+                            order.status === 'shipped' ? 'bg-red-100 text-red-800' :
                             order.status === 'processing' ? 'bg-yellow-100 text-yellow-800' :
                             'bg-gray-100 text-gray-800'
                           }`}>
@@ -985,14 +985,14 @@ export function AdminDashboard() {
                         .slice(0, 5)
                         .map(submission => (
                         <div key={submission.id} className={`flex justify-between items-center p-3 rounded-lg ${
-                          submission.status === 'new' ? 'bg-blue-50' : 'bg-gray-50'
+                          submission.status === 'new' ? 'bg-red-50' : 'bg-gray-50'
                         }`}>
                           <div>
                             <p className="font-medium">{submission.name}</p>
                             <p className="text-sm text-gray-600">{submission.subject}</p>
                           </div>
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                            submission.status === 'new' ? 'bg-blue-100 text-blue-800' :
+                            submission.status === 'new' ? 'bg-red-100 text-red-800' :
                             submission.status === 'read' ? 'bg-yellow-100 text-yellow-800' :
                             'bg-green-100 text-green-800'
                           }`}>
@@ -1035,7 +1035,7 @@ export function AdminDashboard() {
                           type="text"
                           value={newProduct.name}
                           onChange={(e) => setNewProduct({...newProduct, name: e.target.value})}
-                          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                           placeholder="Enter product name"
                           required
                         />
@@ -1049,7 +1049,7 @@ export function AdminDashboard() {
                           type="text"
                           value={newProduct.sku}
                           onChange={(e) => setNewProduct({...newProduct, sku: e.target.value.toUpperCase()})}
-                          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                           placeholder="Enter unique SKU (e.g., MUG-001)"
                           required
                         />
@@ -1063,7 +1063,7 @@ export function AdminDashboard() {
                           type="number"
                           value={newProduct.pointCost}
                           onChange={(e) => setNewProduct({...newProduct, pointCost: parseInt(e.target.value)})}
-                          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                           placeholder="Enter point cost"
                           min="1"
                           required
@@ -1078,7 +1078,7 @@ export function AdminDashboard() {
                           type="number"
                           value={newProduct.stock}
                           onChange={(e) => setNewProduct({...newProduct, stock: parseInt(e.target.value)})}
-                          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                           placeholder="Enter stock quantity"
                           min="0"
                         />
@@ -1092,7 +1092,7 @@ export function AdminDashboard() {
                           type="text"
                           value={newProduct.category}
                           onChange={(e) => setNewProduct({...newProduct, category: e.target.value})}
-                          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                           placeholder="Enter category"
                         />
                       </div>
@@ -1105,7 +1105,7 @@ export function AdminDashboard() {
                           type="url"
                           value={newProduct.imageUrl}
                           onChange={(e) => setNewProduct({...newProduct, imageUrl: e.target.value})}
-                          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                           placeholder="Enter image URL"
                         />
                       </div>
@@ -1118,7 +1118,7 @@ export function AdminDashboard() {
                           type="text"
                           value={newProduct.weight}
                           onChange={(e) => setNewProduct({...newProduct, weight: e.target.value})}
-                          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                           placeholder="e.g., 250g, 1.5kg, 2 lbs"
                         />
                       </div>
@@ -1139,7 +1139,7 @@ export function AdminDashboard() {
                                 onClick={() => toggleSize(size)}
                                 className={`px-3 py-1 text-sm rounded-md border transition-colors ${
                                   newProduct.sizes.includes(size)
-                                    ? 'bg-blue-600 text-white border-blue-600'
+                                    ? 'bg-red-600 text-white border-red-600'
                                     : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                                 }`}
                               >
@@ -1158,13 +1158,13 @@ export function AdminDashboard() {
                               value={customSize}
                               onChange={(e) => setCustomSize(e.target.value)}
                               onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCustomSize())}
-                              className="flex-1 border border-gray-300 rounded-md px-3 py-1 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                              className="flex-1 border border-gray-300 rounded-md px-3 py-1 text-sm focus:ring-2 focus:ring-red-500 focus:border-red-500"
                               placeholder="e.g., 32, 34, One Size"
                             />
                             <button
                               type="button"
                               onClick={addCustomSize}
-                              className="px-3 py-1 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700"
+                              className="px-3 py-1 bg-red-600 text-white text-sm rounded-md hover:bg-red-700"
                             >
                               Add
                             </button>
@@ -1179,13 +1179,13 @@ export function AdminDashboard() {
                               {newProduct.sizes.map(size => (
                                 <span
                                   key={size}
-                                  className="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 text-sm rounded-md"
+                                  className="inline-flex items-center px-2 py-1 bg-red-100 text-red-800 text-sm rounded-md"
                                 >
                                   {size}
                                   <button
                                     type="button"
                                     onClick={() => removeSize(size)}
-                                    className="ml-1 text-blue-600 hover:text-blue-800"
+                                    className="ml-1 text-red-600 hover:text-red-800"
                                   >
                                     ×
                                   </button>
@@ -1231,7 +1231,7 @@ export function AdminDashboard() {
                               value={customColor}
                               onChange={(e) => setCustomColor(e.target.value)}
                               onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCustomColor())}
-                              className="flex-1 border border-gray-300 rounded-md px-3 py-1 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                              className="flex-1 border border-gray-300 rounded-md px-3 py-1 text-sm focus:ring-2 focus:ring-red-500 focus:border-red-500"
                               placeholder="e.g., Maroon, Teal, Gold"
                             />
                             <button
@@ -1276,7 +1276,7 @@ export function AdminDashboard() {
                         <textarea
                           value={newProduct.description}
                           onChange={(e) => setNewProduct({...newProduct, description: e.target.value})}
-                          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                           rows={3}
                           placeholder="Enter product description"
                         />
@@ -1286,7 +1286,7 @@ export function AdminDashboard() {
                     <div className="mt-6 flex space-x-4">
                       <button
                         type="submit"
-                        className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors"
+                        className="bg-red-600 text-white px-6 py-2 rounded-md hover:bg-red-700 transition-colors"
                       >
                         {editingProduct ? 'Update Product' : 'Add Product'}
                       </button>
@@ -1428,7 +1428,7 @@ export function AdminDashboard() {
                                     colors: product.colors || []
                                   });
                                 }}
-                                className="text-blue-600 hover:text-blue-900"
+                                className="text-red-600 hover:text-red-900"
                               >
                                 <Edit className="h-4 w-4" />
                               </button>
@@ -1470,7 +1470,7 @@ export function AdminDashboard() {
                     <button
                       onClick={refreshAllOrderStatuses}
                       disabled={isRefreshingStatus}
-                      className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors flex items-center disabled:opacity-50"
+                      className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors flex items-center disabled:opacity-50"
                     >
                       <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshingStatus ? 'animate-spin' : ''}`} />
                       {isRefreshingStatus ? 'Refreshing...' : 'Refresh Status'}
@@ -1491,7 +1491,7 @@ export function AdminDashboard() {
                           placeholder="Search by employee, company, or order ID..."
                           value={orderSearch}
                           onChange={(e) => setOrderSearch(e.target.value)}
-                          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                         />
                       </div>
                       <div>
@@ -1501,7 +1501,7 @@ export function AdminDashboard() {
                         <select
                           value={orderStatusFilter}
                           onChange={(e) => setOrderStatusFilter(e.target.value)}
-                          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                         >
                           <option value="all">All Statuses</option>
                           <option value="pending">Pending</option>
@@ -1608,7 +1608,7 @@ export function AdminDashboard() {
                               <td className="px-6 py-4 whitespace-nowrap">
                                 <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                                   order.status === 'delivered' ? 'bg-green-100 text-green-800' :
-                                  order.status === 'shipped' ? 'bg-blue-100 text-blue-800' :
+                                  order.status === 'shipped' ? 'bg-red-100 text-red-800' :
                                   order.status === 'processing' ? 'bg-yellow-100 text-yellow-800' :
                                   'bg-gray-100 text-gray-800'
                                 }`}>
@@ -1621,7 +1621,7 @@ export function AdminDashboard() {
                               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                                 <button
                                   onClick={() => setSelectedOrderDetails(order)}
-                                  className="text-blue-600 hover:text-blue-700"
+                                  className="text-red-600 hover:text-red-700"
                                 >
                                   <Eye className="h-4 w-4" />
                                 </button>
@@ -1630,7 +1630,7 @@ export function AdminDashboard() {
                                     setSelectedOrderDetails(order);
                                     setShowTrackingModal(true);
                                   }}
-                                  className="text-blue-600 hover:text-blue-800 p-1"
+                                  className="text-red-600 hover:text-red-800 p-1"
                                 >
                                   <Truck className="h-4 w-4" />
                                 </button>
@@ -1669,7 +1669,7 @@ export function AdminDashboard() {
                       <select
                         value={corporateStatusFilter}
                         onChange={(e) => setCorporateStatusFilter(e.target.value)}
-                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                       >
                         <option value="all">All Statuses</option>
                         <option value="pending">Pending</option>
@@ -1799,7 +1799,7 @@ export function AdminDashboard() {
                                   });
                                   setShowPointModal(true);
                                 }}
-                                className="text-blue-600 hover:text-blue-900 ml-2"
+                                className="text-red-600 hover:text-red-900 ml-2"
                                 title="Allocate Points"
                               >
                                 <DollarSign className="h-4 w-4" />
@@ -1836,7 +1836,7 @@ export function AdminDashboard() {
                   <h2 className="text-xl font-semibold">Point Management</h2>
                   <button
                     onClick={() => setShowPointModal(true)}
-                    className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 flex items-center space-x-2"
+                    className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 flex items-center space-x-2"
                   >
                     <Plus className="h-4 w-4" />
                     <span>Allocate Points</span>
@@ -1847,7 +1847,7 @@ export function AdminDashboard() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                   <div className="bg-white p-6 rounded-lg border">
                     <h3 className="text-lg font-medium mb-2">Total Points Allocated</h3>
-                    <p className="text-3xl font-bold text-blue-600">
+                    <p className="text-3xl font-bold text-red-600">
                       {corporates.reduce((sum, corp) => sum + (corp.totalPoints || 0), 0)}
                     </p>
                   </div>
@@ -1927,7 +1927,7 @@ export function AdminDashboard() {
                                     });
                                     setShowPointModal(true);
                                   }}
-                                  className="text-blue-600 hover:text-blue-900"
+                                  className="text-red-600 hover:text-red-900"
                                 >
                                   Allocate Points
                                 </button>
@@ -1970,7 +1970,7 @@ export function AdminDashboard() {
                       <select
                         value={contactStatusFilter}
                         onChange={(e) => setContactStatusFilter(e.target.value)}
-                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                       >
                         <option value="all">All Statuses</option>
                         <option value="new">New</option>
@@ -2017,7 +2017,7 @@ export function AdminDashboard() {
                       {filteredContactSubmissions
                         .sort((a, b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime())
                         .map(submission => (
-                        <tr key={submission.id} className={submission.status === 'new' ? 'bg-blue-50' : ''}>
+                        <tr key={submission.id} className={submission.status === 'new' ? 'bg-red-50' : ''}>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                             {submission.name}
                           </td>
@@ -2040,7 +2040,7 @@ export function AdminDashboard() {
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                              submission.status === 'new' ? 'bg-blue-100 text-blue-800' :
+                              submission.status === 'new' ? 'bg-red-100 text-red-800' :
                               submission.status === 'read' ? 'bg-yellow-100 text-yellow-800' :
                               'bg-green-100 text-green-800'
                             }`}>
@@ -2071,7 +2071,7 @@ export function AdminDashboard() {
                     <p className="text-gray-600">Try adjusting your filter settings.</p>
                     <button
                       onClick={() => setContactStatusFilter('all')}
-                      className="mt-4 text-blue-600 hover:text-blue-700 font-medium"
+                      className="mt-4 text-red-600 hover:text-red-700 font-medium"
                     >
                       Clear filters
                     </button>
@@ -2103,7 +2103,7 @@ export function AdminDashboard() {
                         <select
                           value={ticketStatusFilter}
                           onChange={(e) => setTicketStatusFilter(e.target.value)}
-                          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                         >
                           <option value="all">All Statuses</option>
                           <option value="open">Open</option>
@@ -2119,7 +2119,7 @@ export function AdminDashboard() {
                         <select
                           value={ticketPriorityFilter}
                           onChange={(e) => setTicketPriorityFilter(e.target.value)}
-                          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                         >
                           <option value="all">All Priorities</option>
                           <option value="urgent">Urgent</option>
@@ -2139,7 +2139,7 @@ export function AdminDashboard() {
                             setTicketStatusFilter('all');
                             setTicketPriorityFilter('all');
                           }}
-                          className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                          className="text-red-600 hover:text-red-700 text-sm font-medium"
                         >
                           Clear filters
                         </button>
@@ -2151,7 +2151,7 @@ export function AdminDashboard() {
                 
                 {ticketsLoading ? (
                   <div className="text-center py-12">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto mb-4"></div>
                     <p className="text-gray-600">Loading support tickets...</p>
                   </div>
                 ) : ticketsError ? (
@@ -2161,7 +2161,7 @@ export function AdminDashboard() {
                     <p className="text-gray-600 mb-4">{ticketsError}</p>
                     <button
                       onClick={loadData}
-                      className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                      className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
                     >
                       Retry
                     </button>
@@ -2173,7 +2173,7 @@ export function AdminDashboard() {
                     <p className="text-gray-600">Support tickets will appear here when employees raise issues.</p>
                     <button
                       onClick={loadData}
-                      className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                      className="mt-4 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
                     >
                       Refresh
                     </button>
@@ -2188,7 +2188,7 @@ export function AdminDashboard() {
                         setTicketStatusFilter('all');
                         setTicketPriorityFilter('all');
                       }}
-                      className="mt-4 text-blue-600 hover:text-blue-700 font-medium"
+                      className="mt-4 text-red-600 hover:text-red-700 font-medium"
                     >
                       Clear filters
                     </button>
@@ -2222,7 +2222,7 @@ export function AdminDashboard() {
                           return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
                         })
                         .map((ticket) => (
-                        <div key={ticket.id} className="bg-white rounded-lg shadow-md p-6 border-l-4 border-l-blue-500">
+                        <div key={ticket.id} className="bg-white rounded-lg shadow-md p-6 border-l-4 border-l-red-500">
                           <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center space-x-3">
                               <span className="text-sm text-gray-500 font-mono">#{ticket.id.slice(-6)}</span>
@@ -2253,7 +2253,7 @@ export function AdminDashboard() {
                                 </select>
                                 <button
                                   onClick={() => setSelectedTicket(ticket)}
-                                  className="bg-blue-100 text-blue-700 px-3 py-1 rounded-md hover:bg-blue-200 transition-colors text-sm"
+                                  className="bg-red-100 text-red-700 px-3 py-1 rounded-md hover:bg-red-200 transition-colors text-sm"
                                 >
                                   Respond
                                 </button>
@@ -2286,7 +2286,7 @@ export function AdminDashboard() {
                                 {ticket.responses.slice(-2).map((response, index) => (
                                   <div key={index} className={`p-3 rounded-lg ${
                                     response.authorType === 'admin' ? 'bg-green-50' :
-                                    response.authorType === 'corporate' ? 'bg-blue-50' : 'bg-gray-50'
+                                    response.authorType === 'corporate' ? 'bg-red-50' : 'bg-gray-50'
                                   }`}>
                                     <div className="flex items-center justify-between mb-1">
                                       <span className="text-sm font-medium">
@@ -2414,7 +2414,7 @@ export function AdminDashboard() {
                     type="submit"
                     className={`flex-1 text-white py-2 rounded-md ${
                       pointAllocationForm.operation === 'add' 
-                        ? 'bg-blue-600 hover:bg-blue-700' 
+                        ? 'bg-red-600 hover:bg-red-700' 
                         : 'bg-red-600 hover:bg-red-700'
                     }`}
                   >
@@ -2453,12 +2453,12 @@ export function AdminDashboard() {
                   value={trackingNumber}
                   onChange={(e) => setTrackingNumber(e.target.value)}
                   placeholder={selectedOrderDetails.trackingNumber || 'Enter tracking number'}
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                 />
               </div>
               
-              <div className="bg-blue-50 p-3 rounded-md mb-4">
-                <p className="text-sm text-blue-800">
+              <div className="bg-red-50 p-3 rounded-md mb-4">
+                <p className="text-sm text-red-800">
                   <strong>Note:</strong> Adding a tracking number will automatically set the order status to "Shipped" and start monitoring delivery status from Shiprocket.
                 </p>
               </div>
@@ -2467,7 +2467,7 @@ export function AdminDashboard() {
                 <button
                   onClick={handleAddTracking}
                   disabled={!trackingNumber.trim()}
-                  className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors disabled:opacity-50"
+                  className="flex-1 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors disabled:opacity-50"
                 >
                   {selectedOrderDetails.trackingNumber ? 'Update' : 'Add'} Tracking
                 </button>
@@ -2551,7 +2551,7 @@ export function AdminDashboard() {
                   
                   <button
                     onClick={resetBulkTrackingModal}
-                    className="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                    className="w-full bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
                   >
                     Close
                   </button>
@@ -2604,7 +2604,7 @@ export function AdminDashboard() {
                       {selectedTicket.responses.map((response, index) => (
                         <div key={index} className={`p-3 rounded-lg ${
                           response.authorType === 'admin' ? 'bg-green-50' :
-                          response.authorType === 'corporate' ? 'bg-blue-50' : 'bg-gray-50'
+                          response.authorType === 'corporate' ? 'bg-red-50' : 'bg-gray-50'
                         }`}>
                           <div className="flex items-center justify-between mb-1">
                             <span className="text-sm font-medium">
@@ -2630,7 +2630,7 @@ export function AdminDashboard() {
                       id="status"
                       value={ticketStatus}
                       onChange={(e) => setTicketStatus(e.target.value)}
-                      className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                     >
                       <option value="">Keep current status</option>
                       <option value="open">Open</option>
@@ -2650,7 +2650,7 @@ export function AdminDashboard() {
                       rows={4}
                       value={ticketResponse}
                       onChange={(e) => setTicketResponse(e.target.value)}
-                      className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                       placeholder="Type your admin response here..."
                     />
                   </div>
@@ -2666,7 +2666,7 @@ export function AdminDashboard() {
                     <button
                       type="submit"
                       disabled={respondingToTicket}
-                      className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {respondingToTicket ? 'Sending...' : 'Send Response'}
                     </button>
@@ -2702,7 +2702,7 @@ export function AdminDashboard() {
                     <p><span className="font-medium">Status:</span> 
                       <span className={`ml-2 px-2 py-1 rounded-full text-xs font-medium ${
                         selectedOrderDetails.status === 'delivered' ? 'bg-green-100 text-green-800' :
-                        selectedOrderDetails.status === 'shipped' ? 'bg-blue-100 text-blue-800' :
+                        selectedOrderDetails.status === 'shipped' ? 'bg-red-100 text-red-800' :
                         selectedOrderDetails.status === 'processing' ? 'bg-yellow-100 text-yellow-800' :
                         'bg-gray-100 text-gray-800'
                       }`}>
@@ -2713,7 +2713,7 @@ export function AdminDashboard() {
                     <p><span className="font-medium">Total Points:</span> {selectedOrderDetails.totalPoints || 0}</p>
                     
                     {selectedOrderDetails.trackingNumber && (
-                      <div className="bg-blue-50 p-3 rounded-md">
+                      <div className="bg-red-50 p-3 rounded-md">
                         <p className="text-sm">
                           <span className="font-medium">Tracking Number:</span> {selectedOrderDetails.trackingNumber}
                         </p>
@@ -2721,7 +2721,7 @@ export function AdminDashboard() {
                           href={`https://shiprocket.co/tracking/${selectedOrderDetails.trackingNumber}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-blue-600 hover:text-blue-800 text-sm underline"
+                          className="text-red-600 hover:text-red-800 text-sm underline"
                         >
                           Track on Shiprocket →
                         </a>
@@ -2775,7 +2775,7 @@ export function AdminDashboard() {
               <div className="mt-6 flex justify-end space-x-3">
                 <button
                   onClick={() => setShowTrackingModal(true)}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 flex items-center space-x-2"
+                  className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 flex items-center space-x-2"
                 >
                   <Truck className="h-4 w-4" />
                   <span>{selectedOrderDetails.trackingNumber ? 'Update Tracking' : 'Add Tracking'}</span>
@@ -2844,7 +2844,7 @@ function CorporateOrdersOverview({
                 </div>
               )}
             </div>
-            <div className="mt-3 text-blue-600 text-sm font-medium">
+            <div className="mt-3 text-red-600 text-sm font-medium">
               Click to view orders →
             </div>
           </div>
@@ -2875,7 +2875,7 @@ function CorporateOrdersView({
       <div className="flex items-center mb-6">
         <button
           onClick={onBack}
-          className="mr-4 text-blue-600 hover:text-blue-700"
+          className="mr-4 text-red-600 hover:text-red-700"
         >
           ← Back to Overview
         </button>
@@ -2924,7 +2924,7 @@ function CorporateOrdersView({
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                     order.status === 'delivered' ? 'bg-green-100 text-green-800' :
-                    order.status === 'shipped' ? 'bg-blue-100 text-blue-800' :
+                    order.status === 'shipped' ? 'bg-red-100 text-red-800' :
                     order.status === 'processing' ? 'bg-yellow-100 text-yellow-800' :
                     'bg-gray-100 text-gray-800'
                   }`}>
@@ -2937,7 +2937,7 @@ function CorporateOrdersView({
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                   <button
                     onClick={() => onViewOrder(order)}
-                    className="text-blue-600 hover:text-blue-700"
+                    className="text-red-600 hover:text-red-700"
                   >
                     View Details
                   </button>
@@ -2976,7 +2976,7 @@ function OrderDetailsView({
       <div className="flex items-center mb-6">
         <button
           onClick={onBack}
-          className="mr-4 text-blue-600 hover:text-blue-700"
+          className="mr-4 text-red-600 hover:text-red-700"
         >
           ← Back to Orders
         </button>
