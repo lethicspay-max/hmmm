@@ -233,7 +233,7 @@ export function PrivacyPage() {
                   <Mail className="h-5 w-5 text-red-600" />
                   <div>
                     <p className="font-medium text-gray-900">Email</p>
-                    <p className="text-gray-600">Prema.surajinternational@gmail.com</p>
+                    <p className="text-gray-600">Prema.surajinternational@gmail.com | vignesh.surajinternationa@gmail.com | info@surajintl.com</p>
                   </div>
                 </div>
                 
