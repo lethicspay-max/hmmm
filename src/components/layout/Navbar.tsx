@@ -120,7 +120,7 @@ export function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
-            <Link to="/about" className="text-gray-700 hover:text-blue-600 transition-colors">
+            <Link to="/about" className="text-gray-700 hover:text-red-600 transition-colors">
               About
             </Link>
             <Link to="/contact" className="text-gray-700 hover:text-blue-600 transition-colors">
