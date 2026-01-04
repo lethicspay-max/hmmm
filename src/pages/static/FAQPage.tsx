@@ -232,7 +232,7 @@ export function FAQPage() {
               Contact Support
             </a>
             <a
-              href="mailto:rases@tapwell.co.in"
+              href="mailto:Prema.surajinternational@gmail.com"
               className="border border-red-600 text-red-600 px-6 py-3 rounded-lg font-medium hover:bg-red-600 hover:text-white transition-colors"
             >
               Email Us
