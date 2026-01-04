@@ -158,7 +158,7 @@ export function Navbar() {
                 </Link>
                 <Link
                   to="/corporate/register"
-                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+                  className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors"
                 >
                   Sign Up
                 </Link>
