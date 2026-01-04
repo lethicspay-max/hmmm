@@ -119,7 +119,7 @@ export function AboutPage() {
 
           <div className="mt-8 prose prose-lg text-gray-600">
             <p>
-              TapWell was born out of the belief that corporate gifting should be easy, efficient, and tailored to individual preferences. We recognized the challenges faced by companies in finding the perfect gifts for their stakeholders while managing the logistics and personalization.
+              Suraj International was born out of the belief that corporate gifting should be easy, efficient, and tailored to individual preferences. We recognized the challenges faced by companies in finding the perfect gifts for their stakeholders while managing the logistics and personalization.
             </p>To address this, we introduced the concept of company stores, empowering businesses to create their own customized store, complete with branded merchandise and a curated selection of products.
             <p>
               
