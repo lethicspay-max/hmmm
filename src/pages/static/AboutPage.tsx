@@ -33,7 +33,7 @@ export function AboutPage() {
                 and HR teams spend countless hours managing the process.
               </p>
               <p className="text-gray-600">
-                Tapwell eliminates these pain points with our innovative points-based system, 
+                Suraj International eliminates these pain points with our innovative points-based system, 
                 giving employees the freedom to choose while keeping corporate administrators in control.
               </p>
             </div>
