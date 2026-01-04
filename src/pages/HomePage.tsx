@@ -518,7 +518,7 @@ export function HomePage() {
 
           <div className="text-center mt-12">
             <p className="text-lg text-gray-600 mb-6">
-              Whatever the occasion, Tapwell makes corporate gifting simple, personal, and impactful.
+              Whatever the occasion, Suraj International makes corporate gifting simple, personal, and impactful.
             </p>
             <div className="mb-4">
               <Link
