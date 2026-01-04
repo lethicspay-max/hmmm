@@ -23,7 +23,7 @@ export function Footer() {
             <div className="flex space-x-4">
               <div className="flex items-center space-x-2 text-sm text-gray-300">
                 <Mail className="h-4 w-4" />
-                <span>Prema.surajinternational@gmail.com | vignesh.surajinternationa@gmail.com | info@surajintl.com</span>
+                <span>Prema.surajinternational@gmail.com</span>
               </div>
             </div>
           </div>
