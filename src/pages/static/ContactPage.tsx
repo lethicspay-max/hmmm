@@ -115,7 +115,7 @@ export function ContactPage() {
                   <div>
                     <h3 className="font-semibold text-gray-900">Business Hours</h3>
                     <p className="text-gray-600">
-                      Monday - Saturday: 10:00 AM - 7:00 PM IST<br />
+                      Monday - Friday: 10:00 AM - 7:30 PM IST<br />Saturday: 10:30 - 7:30<br />
                       Sunday: Closed
                     </p>
                   </div>
