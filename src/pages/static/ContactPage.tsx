@@ -92,7 +92,7 @@ export function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900">Call Us</h3>
-                    <p className="text-gray-600">(+91) 9769378543</p>
+                    <p className="text-gray-600">(+91) 63918 63918</p>
                   </div>
                 </div>
 
