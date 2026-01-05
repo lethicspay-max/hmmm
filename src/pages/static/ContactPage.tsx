@@ -103,10 +103,7 @@ export function ContactPage() {
                   <div>
                     <h3 className="font-semibold text-gray-900">Visit Us</h3>
                     <p className="text-gray-600">
-                      222-G, B Wing,<br />
-                      Express zone
-Western express highway malad east,<br />
-                      Mumbai 400097
+                      Gate No 7,<br /> Hind Rajasthan Shopping Centre,<br /> 8/272, opposite Sion Hospital, Sion West,<br /> Sion, Mumbai, Maharashtra 400019
                     </p>
                   </div>
                 </div>
