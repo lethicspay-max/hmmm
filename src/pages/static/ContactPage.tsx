@@ -133,8 +133,7 @@ Western express highway malad east,<br />
                 <a href="/faq" className="block text-red-600 hover:text-red-700 transition-colors">
                   Frequently Asked Questions
                 </a>
-                
-                </a>
+            
                 <a href="/corporate/login" className="block text-red-600 hover:text-red-700 transition-colors">
                   Corporate Login
                 </a>
