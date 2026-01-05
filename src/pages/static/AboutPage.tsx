@@ -107,7 +107,7 @@ export function AboutPage() {
             <div className="flex items-center">
               <img 
                 src="https://tapwell.in/wp-content/uploads/2024/07/Rases-Changoiwala.jpg"
-                alt="Rases Changoiwala"
+                alt="Raja"
                 className="w-12 h-12 rounded-full object-cover"
               />
               <div className="ml-4">
