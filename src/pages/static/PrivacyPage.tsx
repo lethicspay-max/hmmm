@@ -241,7 +241,7 @@ export function PrivacyPage() {
                   <Phone className="h-5 w-5 text-red-600" />
                   <div>
                     <p className="font-medium text-gray-900">Phone</p>
-                    <p className="text-gray-600">(+91) 9769378543</p>
+                    <p className="text-gray-600">(+91) 63918 63918</p>
                   </div>
                 </div>
               </div>
