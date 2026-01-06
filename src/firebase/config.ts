@@ -8,7 +8,7 @@ const firebaseConfig = {
   authDomain: "suraj-int.firebaseapp.com",
   projectId: "suraj-int",
   storageBucket: "suraj-int.firebasestorage.app",
-  messagingSenderId: "857008947741",
+  messagingSenderId: "844404284750",
   appId: "1:857008947741:web:c6d7b905954eb60376bcf4",
   measurementId: "G-Y4FZ9FLSLZ"
 };
