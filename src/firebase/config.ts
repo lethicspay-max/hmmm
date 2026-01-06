@@ -9,7 +9,7 @@ const firebaseConfig = {
   projectId: "suraj-int",
   storageBucket: "suraj-int.firebasestorage.app",
   messagingSenderId: "844404284750",
-  appId: "1:857008947741:web:c6d7b905954eb60376bcf4",
+  appId: "1:844404284750:web:25ae9bc382e148454e921f",
   measurementId: "G-Y4FZ9FLSLZ"
 };
 
