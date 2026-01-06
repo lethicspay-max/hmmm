@@ -15,7 +15,6 @@ import { PrivacyPage } from './pages/static/PrivacyPage';
 
 // Auth Pages
 import { AdminLogin } from './pages/auth/AdminLogin';
-import { AdminSetup } from './pages/auth/AdminSetup';
 import { CorporateLogin } from './pages/auth/CorporateLogin';
 import { CorporateRegister } from './pages/auth/CorporateRegister';
 import { ForgotPassword } from './pages/auth/ForgotPassword';
@@ -54,7 +53,6 @@ function App() {
 
           {/* Authentication Routes with Layout */}
           <Route path="/admin/login" element={<AppLayout><AdminLogin /></AppLayout>} />
-          <Route path="/admin/setup" element={<AppLayout><AdminSetup /></AppLayout>} />
           <Route path="/corporate/login" element={<AppLayout><CorporateLogin /></AppLayout>} />
           <Route path="/corporate/register" element={<AppLayout><CorporateRegister /></AppLayout>} />
           <Route path="/forgot-password" element={<AppLayout><ForgotPassword /></AppLayout>} />
