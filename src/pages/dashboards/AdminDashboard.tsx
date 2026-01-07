@@ -128,6 +128,7 @@ export function AdminDashboard() {
   // Search and filter states
   const [orderSearch, setOrderSearch] = useState('');
   const [orderStatusFilter, setOrderStatusFilter] = useState('all');
+  const [corporateSearch, setCorporateSearch] = useState('');
   const [corporateStatusFilter, setCorporateStatusFilter] = useState('all');
   const [contactStatusFilter, setContactStatusFilter] = useState('all');
   const [ticketStatusFilter, setTicketStatusFilter] = useState('all');
@@ -825,7 +826,12 @@ export function AdminDashboard() {
   });
 
   const filteredCorporates = corporates.filter(corporate => {
-    return corporateStatusFilter === 'all' || corporate.status === corporateStatusFilter;
+    const matchesStatus = corporateStatusFilter === 'all' || corporate.status === corporateStatusFilter;
+    const matchesSearch = corporateSearch === '' ||
+      corporate.companyName.toLowerCase().includes(corporateSearch.toLowerCase()) ||
+      corporate.contactName.toLowerCase().includes(corporateSearch.toLowerCase()) ||
+      corporate.email.toLowerCase().includes(corporateSearch.toLowerCase());
+    return matchesStatus && matchesSearch;
   });
 
   const filteredContactSubmissions = contactSubmissions.filter(submission => {
@@ -1675,6 +1681,18 @@ export function AdminDashboard() {
                 {/* Filter Controls */}
                 <div className="bg-white p-4 rounded-lg border mb-6">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Search Corporates
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Search by company, contact, or email..."
+                        value={corporateSearch}
+                        onChange={(e) => setCorporateSearch(e.target.value)}
+                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                      />
+                    </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Filter by Status
@@ -2813,15 +2831,17 @@ export function AdminDashboard() {
 }
 
 // Corporate Orders Overview Component
-function CorporateOrdersOverview({ 
-  orders, 
-  corporates, 
-  onSelectCorporate 
-}: { 
-  orders: Order[], 
-  corporates: Corporate[], 
-  onSelectCorporate: (corporateId: string) => void 
+function CorporateOrdersOverview({
+  orders,
+  corporates,
+  onSelectCorporate
+}: {
+  orders: Order[],
+  corporates: Corporate[],
+  onSelectCorporate: (corporateId: string) => void
 }) {
+  const [searchTerm, setSearchTerm] = useState('');
+
   const corporateOrderStats = corporates.map(corporate => {
     const corporateOrders = orders.filter(order => order.corporateId === corporate.id);
     return {
@@ -2832,11 +2852,24 @@ function CorporateOrdersOverview({
     };
   }).filter(corporate => corporate.orderCount > 0);
 
+  const filteredCorporates = corporateOrderStats.filter(corporate =>
+    corporate.companyName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div>
-      <h3 className="text-lg font-medium mb-4">Orders by Corporate ({corporateOrderStats.length} companies)</h3>
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="text-lg font-medium">Orders by Corporate ({filteredCorporates.length} companies)</h3>
+        <input
+          type="text"
+          placeholder="Search companies..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+        />
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {corporateOrderStats.map(corporate => (
+        {filteredCorporates.map(corporate => (
           <div 
             key={corporate.id}
             onClick={() => onSelectCorporate(corporate.id)}
