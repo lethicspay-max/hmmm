@@ -1362,18 +1362,14 @@ fire(0.1, {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
-              {corporate.logoUrl ? (
-                <img 
-                  src={corporate.logoUrl} 
+              {corporate.branding?.logo ? (
+                <img
+                  src={corporate.branding.logo}
                   alt={`${corporate.companyName} logo`}
-                  className="h-10 w-10 object-contain"
+                  className="h-10 w-auto max-h-10"
                 />
               ) : (
-                <img 
-                  src="https://surajintl.com/img/logo.png" 
-                  alt="Default logo"
-                  className="h-10 w-10 object-contain"
-                />
+                <Gift className="h-10 w-10 text-white" />
               )}
               <div>
                 <h1 className="text-xl font-bold text-white">{corporate.companyName}</h1>
