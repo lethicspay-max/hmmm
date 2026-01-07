@@ -875,14 +875,24 @@ fire(0.1, {
         employeeEmail: employee.email,
         corporateId: corporate.id,
         corporateName: corporate.companyName,
-        products: cart.map(item => ({
-          id: item.product.id,
-          name: item.product.name,
-          pointCost: item.product.pointCost,
-          quantity: item.quantity,
-          selectedSize: item.product.selectedSize,
-          selectedColor: item.product.selectedColor
-        })),
+        products: cart.map(item => {
+          const productData: any = {
+            id: item.product.id,
+            name: item.product.name,
+            pointCost: item.product.pointCost,
+            quantity: item.quantity
+          };
+
+          // Only include size and color if they have values
+          if (item.product.selectedSize) {
+            productData.selectedSize = item.product.selectedSize;
+          }
+          if (item.product.selectedColor) {
+            productData.selectedColor = item.product.selectedColor;
+          }
+
+          return productData;
+        }),
         totalPoints,
         shippingAddress: shippingInfo,
         status: 'pending',
