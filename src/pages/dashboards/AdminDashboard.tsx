@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { Users, Package, TrendingUp, DollarSign, Building2, UserCheck, AlertTriangle, Eye, Edit, Trash2, MessageSquare,
-  BarChart, 
-  Truck, 
+  BarChart,
+  Truck,
   Plus,
   Check,
   X,
@@ -11,9 +11,9 @@ import { Users, Package, TrendingUp, DollarSign, Building2, UserCheck, AlertTria
   RefreshCw,
   Upload
  } from 'lucide-react';
-import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, where, getDoc, writeBatch } from 'firebase/firestore';
-import { db } from '../../firebase/config';
+import { supabase } from '../../lib/supabase';
 import { exportOrdersToCSV, formatDateForFilename } from '../../utils/csvExport';
+import { CorporateProductCustomization } from '../../components/CorporateProductCustomization';
 
 interface Product {
   id: string;
@@ -919,8 +919,8 @@ export function AdminDashboard() {
         {/* Tabs */}
         <div className="bg-white rounded-lg shadow">
           <div className="border-b border-gray-200">
-            <nav className="-mb-px flex">
-              {['overview', 'products', 'orders', 'corporates', 'points', 'messages', 'tickets'].map((tab) => (
+            <nav className="-mb-px flex flex-wrap">
+              {['overview', 'products', 'orders', 'corporates', 'points', 'customization', 'messages', 'tickets'].map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
@@ -2086,6 +2086,10 @@ export function AdminDashboard() {
                   </div>
                 )}
               </div>
+            )}
+
+            {activeTab === 'customization' && (
+              <CorporateProductCustomization />
             )}
 
             {activeTab === 'tickets' && (

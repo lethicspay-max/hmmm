@@ -447,29 +447,69 @@ export function CompanySubPage() {
 
   const loadProducts = async () => {
     if (!corporate) return;
-    
+
     try {
-      const settingsQuery = query(
-        collection(db, 'corporateSettings'),
-        where('corporateId', '==', corporate.id)
-      );
-      const settingsSnapshot = await getDocs(settingsQuery);
-      
-      const selectedProductsIds = settingsSnapshot.empty ? [] : 
-        (settingsSnapshot.docs[0].data().selectedProducts || []);
-      
-      if (selectedProductsIds.length > 0) {
-        const productsSnapshot = await getDocs(collection(db, 'products'));
-        const allProducts = productsSnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        } as Product));
-        
-        const availableProducts = allProducts.filter(product => 
-          selectedProductsIds.includes(product.id) && product.stock > 0
-        );
-        setProducts(availableProducts);
+      // Get products that are active and in stock
+      const { data: productsData, error: productsError } = await supabase
+        .from('products')
+        .select('*')
+        .eq('status', 'active')
+        .gt('stock', 0);
+
+      if (productsError) throw productsError;
+
+      if (!productsData || productsData.length === 0) {
+        setProducts([]);
+        return;
       }
+
+      // Get product locks for this corporate
+      const { data: locksData, error: locksError } = await supabase
+        .from('corporate_product_locks')
+        .select('product_id, is_locked')
+        .eq('corporate_id', corporate.id);
+
+      if (locksError) throw locksError;
+
+      // Create a map of locked products
+      const lockedProductIds = new Set(
+        (locksData || [])
+          .filter((lock: any) => lock.is_locked)
+          .map((lock: any) => lock.product_id)
+      );
+
+      // Get custom pricing for this corporate
+      const { data: pricingData, error: pricingError } = await supabase
+        .from('corporate_product_pricing')
+        .select('product_id, custom_point_cost')
+        .eq('corporate_id', corporate.id);
+
+      if (pricingError) throw pricingError;
+
+      // Create a map of custom pricing
+      const customPricing = new Map(
+        (pricingData || []).map((item: any) => [item.product_id, item.custom_point_cost])
+      );
+
+      // Filter out locked products and apply custom pricing
+      const availableProducts = productsData
+        .filter((product: any) => !lockedProductIds.has(product.id))
+        .map((product: any) => {
+          const customPrice = customPricing.get(product.id);
+          return {
+            id: product.id,
+            name: product.name,
+            description: product.description,
+            pointCost: customPrice !== undefined ? customPrice : product.point_cost,
+            stock: product.stock,
+            category: product.category,
+            imageUrl: product.image_url,
+            sku: product.sku,
+            status: product.status,
+          };
+        });
+
+      setProducts(availableProducts);
     } catch (error) {
       console.error('Error loading products:', error);
     }
