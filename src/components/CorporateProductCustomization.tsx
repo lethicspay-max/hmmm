@@ -7,6 +7,8 @@ import {
   where,
   doc,
   setDoc,
+  addDoc,
+  updateDoc,
   Timestamp
 } from 'firebase/firestore';
 import { Building2, DollarSign, Lock, Unlock, Save, RefreshCw, AlertCircle } from 'lucide-react';
@@ -45,6 +47,7 @@ export function CorporateProductCustomization() {
   const [selectedCorporate, setSelectedCorporate] = useState<string>('');
   const [customPricing, setCustomPricing] = useState<Map<string, number | null>>(new Map());
   const [productLocks, setProductLocks] = useState<Map<string, boolean>>(new Map());
+  const [productSelectionLocked, setProductSelectionLocked] = useState(false);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
@@ -130,6 +133,19 @@ export function CorporateProductCustomization() {
 
       setCustomPricing(pricingMap);
       setProductLocks(locksMap);
+
+      const corporateSettingsQuery = query(
+        collection(db, 'corporateSettings'),
+        where('corporateId', '==', selectedCorporate)
+      );
+      const corporateSettingsSnapshot = await getDocs(corporateSettingsQuery);
+
+      if (!corporateSettingsSnapshot.empty) {
+        const settings = corporateSettingsSnapshot.docs[0].data();
+        setProductSelectionLocked(settings.productSelectionLocked || false);
+      } else {
+        setProductSelectionLocked(false);
+      }
     } catch (error) {
       console.error('Error loading customization:', error);
       setMessage({ type: 'error', text: 'Failed to load customization data' });
@@ -195,6 +211,26 @@ export function CorporateProductCustomization() {
         );
       }
 
+      const corporateSettingsQuery = query(
+        collection(db, 'corporateSettings'),
+        where('corporateId', '==', selectedCorporate)
+      );
+      const corporateSettingsSnapshot = await getDocs(corporateSettingsQuery);
+
+      if (corporateSettingsSnapshot.empty) {
+        await addDoc(collection(db, 'corporateSettings'), {
+          corporateId: selectedCorporate,
+          productSelectionLocked,
+          updatedAt: new Date().toISOString(),
+          createdAt: new Date().toISOString()
+        });
+      } else {
+        await updateDoc(corporateSettingsSnapshot.docs[0].ref, {
+          productSelectionLocked,
+          updatedAt: new Date().toISOString()
+        });
+      }
+
       setMessage({ type: 'success', text: 'Customization saved successfully!' });
       setTimeout(() => setMessage(null), 3000);
     } catch (error) {
@@ -256,6 +292,40 @@ export function CorporateProductCustomization() {
             ))}
           </select>
         </div>
+
+        {/* Product Selection Lock Toggle */}
+        {selectedCorporate && !loading && (
+          <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <Lock className="h-5 w-5 text-yellow-600" />
+                <div>
+                  <h3 className="font-medium text-gray-900">Lock Product Selection Feature</h3>
+                  <p className="text-sm text-gray-600">
+                    When enabled, this corporate will not be able to access the product selection feature in their dashboard.
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setProductSelectionLocked(!productSelectionLocked)}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                  productSelectionLocked ? 'bg-red-600' : 'bg-gray-300'
+                }`}
+              >
+                <span
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                    productSelectionLocked ? 'translate-x-6' : 'translate-x-1'
+                  }`}
+                />
+              </button>
+            </div>
+            {productSelectionLocked && (
+              <div className="mt-2 text-sm text-yellow-700 font-medium">
+                Product selection is LOCKED for this corporate
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Message Display */}
         {message && (

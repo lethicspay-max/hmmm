@@ -117,7 +117,8 @@ export function CorporateDashboard() {
   // New state for product customization
   const [corporateProductSettings, setCorporateProductSettings] = useState<{[key: string]: CorporateProductSetting}>({});
   const [customPrices, setCustomPrices] = useState<{[key: string]: string}>({});
-  
+  const [productSelectionLocked, setProductSelectionLocked] = useState(false);
+
   // Stats calculations
   const shippedCount = orders.filter(order => order.status === 'shipped').length;
   const deliveredCount = orders.filter(order => order.status === 'delivered').length;
@@ -215,6 +216,7 @@ export function CorporateDashboard() {
       if (!corporateDoc.empty) {
         const settings = corporateDoc.docs[0].data();
         setSelectedProducts(settings.selectedProducts || []);
+        setProductSelectionLocked(settings.productSelectionLocked || false);
       }
 
       // Load corporate product settings
@@ -825,7 +827,9 @@ export function CorporateDashboard() {
             <div className="bg-white rounded-lg shadow">
               <div className="border-b border-gray-200">
                 <nav className="-mb-px flex flex-wrap">
-                  {['overview', 'employees', 'products', 'customize products', 'orders', 'points', 'analytics', 'tickets', 'settings'].map((tab) => (
+                  {['overview', 'employees', 'products', 'orders', 'points', 'analytics', 'tickets', 'settings']
+                    .filter(tab => !(tab === 'products' && productSelectionLocked))
+                    .map((tab) => (
                     <button
                       key={tab}
                       onClick={() => setActiveTab(tab)}
@@ -1077,7 +1081,7 @@ export function CorporateDashboard() {
                   </div>
                 )}
 
-                {activeTab === 'products' && (
+                {activeTab === 'products' && !productSelectionLocked && (
                   <div>
                     <div className="flex justify-between items-center mb-6">
                       <h2 className="text-xl font-semibold">Product Selection</h2>
@@ -1164,112 +1168,6 @@ export function CorporateDashboard() {
                       <div className="text-center py-8">
                         <Package className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                         <p className="text-gray-600">No products found matching "{productSearchTerm}"</p>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {activeTab === 'customize products' && (
-                  <div>
-                    <div className="mb-6">
-                      <h2 className="text-xl font-semibold mb-2">Select Products</h2>
-                      <p className="text-gray-600">
-                        Choose products to make available for your employees. Pricing is set by the administrator. Once selected, products cannot be changed.
-                      </p>
-                    </div>
-
-                    {/* Search Bar */}
-                    <div className="mb-6">
-                      <div className="relative">
-                        <Search className="h-5 w-5 text-gray-400 absolute left-3 top-3" />
-                        <input
-                          type="text"
-                          placeholder="Search products by name, description, or category..."
-                          value={productSearchTerm}
-                          onChange={(e) => setProductSearchTerm(e.target.value)}
-                          className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
-                        />
-                      </div>
-                      {productSearchTerm && (
-                        <p className="text-sm text-gray-600 mt-2">
-                          Showing {filteredProducts.length} of {availableProducts.length} products
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {filteredProducts
-                        .filter(product => !isProductLocked(product.id))
-                        .map(product => {
-                        const isSelected = isProductCustomized(product.id);
-                        const setting = corporateProductSettings[product.id];
-                        const displayPrice = getDisplayPrice(product);
-
-                        return (
-                          <div key={product.id} className={`border rounded-lg overflow-hidden ${isSelected ? 'bg-gray-50' : 'bg-white'}`}>
-                            <div className="relative">
-                              <img
-                                src={product.imageUrl}
-                                alt={product.name}
-                                className="w-full h-48 object-cover"
-                              />
-                              {isSelected && (
-                                <div className="absolute top-2 right-2">
-                                  <span className="bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center">
-                                    <Lock className="h-3 w-3 mr-1" />
-                                    Selected
-                                  </span>
-                                </div>
-                              )}
-                            </div>
-                            <div className="p-4">
-                              <h3 className="font-semibold text-lg mb-2">{product.name}</h3>
-                              <p className="text-gray-600 text-sm mb-3">{product.description}</p>
-
-                              <div className="mb-3">
-                                <div className="flex items-center justify-between p-2 bg-red-50 rounded">
-                                  <span className="text-sm font-medium text-gray-700">Price:</span>
-                                  <span className="text-red-600 font-bold">{displayPrice} points</span>
-                                </div>
-                                {setting && setting.customPrice !== null && (
-                                  <p className="text-xs text-gray-500 mt-1 text-center">
-                                    Custom pricing applied by administrator
-                                  </p>
-                                )}
-                              </div>
-
-                              {!isSelected ? (
-                                <button
-                                  onClick={() => handleSaveProductCustomization(product.id)}
-                                  className="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 transition-colors font-medium"
-                                >
-                                  Select Product
-                                </button>
-                              ) : (
-                                <div className="flex items-center justify-center py-2 bg-green-100 rounded-md">
-                                  <Lock className="h-4 w-4 mr-2 text-green-600" />
-                                  <span className="text-sm font-medium text-green-600">
-                                    Selected
-                                  </span>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-
-                    {filteredProducts.length === 0 && productSearchTerm && (
-                      <div className="text-center py-8">
-                        <Package className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                        <p className="text-gray-600">No products found matching "{productSearchTerm}"</p>
-                      </div>
-                    )}
-
-                    {filteredProducts.length === 0 && !productSearchTerm && (
-                      <div className="text-center py-8">
-                        <Package className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                        <p className="text-gray-600">No products available</p>
                       </div>
                     )}
                   </div>
