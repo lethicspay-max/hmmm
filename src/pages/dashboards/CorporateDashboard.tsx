@@ -338,31 +338,43 @@ export function CorporateDashboard() {
   const downloadOrdersCSV = async () => {
     try {
       const dataToExport = (orderSearchTerm || (orderStatusFilter && orderStatusFilter !== 'all')) ? filteredOrders : orders;
-      
+
       if (!dataToExport || dataToExport.length === 0) {
         alert('No orders to export');
         return;
       }
 
+      // Fetch all products to get SKU and other details
+      const productsSnapshot = await getDocs(collection(db, 'products'));
+      const productsMap = new Map();
+      productsSnapshot.forEach(doc => {
+        productsMap.set(doc.id, { id: doc.id, ...doc.data() });
+      });
+
       const csvData = dataToExport.map(order => {
         const employeeProfile = employeeProfiles[order.employeeEmail] || {};
-        const product = order.products && order.products.length > 0 ? order.products[0] : {};
-        
+
+        // Get product details from the order
+        const orderProduct = order.products && order.products.length > 0 ? order.products[0] : null;
+
+        // Fetch full product details from products collection
+        const fullProduct = orderProduct ? productsMap.get(orderProduct.id) : null;
+
         return {
           id: order.id || 'N/A',
           employeeName: employeeProfile.name || order.employeeName || 'Unknown',
           employeeEmail: order.employeeEmail || 'N/A',
           employeePhone: employeeProfile.phone || order.employeePhone || order.shippingAddress?.phone || 'N/A',
           corporateName: userProfile?.companyName || 'N/A',
-          productName: product.name || 'N/A',
-          productSKU: product.id || 'N/A',
-          productWeight: product.weight || 'N/A',
-          productSize: product.selectedSize || 'N/A',
-          productColor: product.selectedColor || 'N/A',
+          productName: orderProduct?.name || 'N/A',
+          productSKU: fullProduct?.sku || orderProduct?.id || 'N/A',
+          productWeight: fullProduct?.weight || 'N/A',
+          productSize: orderProduct?.selectedSize || 'N/A',
+          productColor: orderProduct?.selectedColor || 'N/A',
           pointsUsed: order.totalPoints || order.pointsUsed || 0,
           status: order.status || 'N/A',
           orderDate: order.createdAt ? new Date(order.createdAt).toLocaleDateString() : 'N/A',
-          shippingAddress: order.shippingAddress ? 
+          shippingAddress: order.shippingAddress ?
             `${order.shippingAddress.addressLine1 || ''} ${order.shippingAddress.addressLine2 || ''} ${order.shippingAddress.city || ''} ${order.shippingAddress.state || ''} ${order.shippingAddress.zipCode || ''}`.trim() : 'N/A',
           trackingNumber: order.trackingNumber || ''
         };

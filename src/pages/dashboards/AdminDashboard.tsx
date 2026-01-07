@@ -649,42 +649,55 @@ export function AdminDashboard() {
     // Determine which data to export based on active filters
     const hasActiveFilters = orderSearch || (orderStatusFilter && orderStatusFilter !== 'all');
     const dataToExport = hasActiveFilters ? filteredOrders : orders;
-    
+
     if (!dataToExport || dataToExport.length === 0) {
       alert('No data to export');
       return;
     }
 
     try {
+      // Fetch all products to get SKU and other details
+      const productsSnapshot = await getDocs(collection(db, 'products'));
+      const productsMap = new Map();
+      productsSnapshot.forEach(doc => {
+        productsMap.set(doc.id, { id: doc.id, ...doc.data() });
+      });
+
       // Transform the data to match CSV format with employee profile data
       const csvData = dataToExport.map(order => {
         // Find employee profile by email
         const employeeProfile = employeeProfiles.find(emp => emp.email === order.employeeEmail);
-        
+
+        // Get product details from the order
+        const orderProduct = order.products && order.products.length > 0 ? order.products[0] : null;
+
+        // Fetch full product details from products collection
+        const fullProduct = orderProduct ? productsMap.get(orderProduct.id) : null;
+
         return {
           id: order.id,
           employeeName: employeeProfile?.name || order.employeeName || 'N/A',
           employeeEmail: order.employeeEmail || 'N/A',
           employeePhone: employeeProfile?.phone || order.shippingAddress?.phone || 'N/A',
           corporateName: order.corporateName || 'N/A',
-          productName: order.products && order.products.length > 0 ? order.products[0].name : 'N/A',
-          productSKU: order.products && order.products.length > 0 ? order.products[0].sku || 'N/A' : 'N/A',
-          productWeight: order.products && order.products.length > 0 ? order.products[0].weight || 'N/A' : 'N/A',
-          productSize: order.products && order.products.length > 0 ? order.products[0].size || 'N/A' : 'N/A',
-          productColor: order.products && order.products.length > 0 ? order.products[0].color || 'N/A' : 'N/A',
+          productName: orderProduct?.name || 'N/A',
+          productSKU: fullProduct?.sku || orderProduct?.id || 'N/A',
+          productWeight: fullProduct?.weight || 'N/A',
+          productSize: orderProduct?.selectedSize || 'N/A',
+          productColor: orderProduct?.selectedColor || 'N/A',
           pointsUsed: order.totalPoints || 0,
           status: order.status,
           orderDate: order.createdAt ? order.createdAt.split('T')[0] : 'N/A',
-          shippingAddress: order.shippingAddress ? 
+          shippingAddress: order.shippingAddress ?
             `${order.shippingAddress.addressLine1 || ''} ${order.shippingAddress.addressLine2 || ''} ${order.shippingAddress.city || ''} ${order.shippingAddress.state || ''} ${order.shippingAddress.zipCode || ''}`.trim() : 'N/A',
           trackingNumber: order.trackingNumber || ''
         };
       });
 
-      const filename = hasActiveFilters 
+      const filename = hasActiveFilters
         ? `admin-orders-filtered-${formatDateForFilename(new Date())}.csv`
         : `admin-orders-${formatDateForFilename(new Date())}.csv`;
-      
+
       exportOrdersToCSV(csvData, filename);
     } catch (error) {
       console.error('Error exporting CSV:', error);
