@@ -1720,23 +1720,6 @@ export function CorporateDashboard() {
                 />
               </div>
 
-              {/* Form for additional fields */}
-              <div className="space-y-4 mb-6">
-
-                <div>
-                  <label htmlFor="companyBannerUrl" className="block text-sm font-medium text-gray-700 mb-2">
-                    Company Banner URL
-                  </label>
-                  <input
-                    type="url"
-                    id="companyBannerUrl"
-                    name="companyBannerUrl"
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
-                    placeholder="https://example.com/banner-image.jpg"
-                  />
-                </div>
-              </div>
-
               {/* Product Details */}
               <div className="space-y-6">
                 <div>
@@ -2076,6 +2059,7 @@ function CompanyInfoSettings({
 function BrandingSettings({ corporateId, onUpdate }: { corporateId: string, onUpdate: () => void }) {
   const [branding, setBranding] = useState({
     logo: '',
+    banner: '',
     primaryColor: '#2563eb',
     secondaryColor: '#1d4ed8',
     greeting: '',
@@ -2100,6 +2084,7 @@ function BrandingSettings({ corporateId, onUpdate }: { corporateId: string, onUp
         if (settings.branding) {
           setBranding({
             logo: settings.branding.logo || '',
+            banner: settings.branding.banner || '',
             primaryColor: settings.branding.primaryColor || '#2563eb',
             secondaryColor: settings.branding.secondaryColor || '#1d4ed8',
             greeting: settings.branding.greeting || '',
@@ -2165,7 +2150,25 @@ function BrandingSettings({ corporateId, onUpdate }: { corporateId: string, onUp
           </div>
         )}
       </div>
-      
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Company Banner URL
+        </label>
+        <input
+          type="url"
+          value={branding.banner}
+          onChange={(e) => setBranding({...branding, banner: e.target.value})}
+          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
+          placeholder="https://example.com/banner.jpg"
+        />
+        {branding.banner && (
+          <div className="mt-2">
+            <img src={branding.banner} alt="Banner preview" className="w-full h-32 object-cover rounded" />
+          </div>
+        )}
+      </div>
+
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
