@@ -318,12 +318,14 @@ export function CorporateDashboard() {
     setFilteredOrders(filtered);
   }, [orders, employees, orderSearchTerm, orderStatusFilter]);
 
-  // Filter products based on search term
-  const filteredProducts = availableProducts.filter(product =>
-    product.name.toLowerCase().includes(productSearchTerm.toLowerCase()) ||
-    product.description?.toLowerCase().includes(productSearchTerm.toLowerCase()) ||
-    product.category?.toLowerCase().includes(productSearchTerm.toLowerCase())
-  );
+  // Filter products based on search term and exclude locked products
+  const filteredProducts = availableProducts.filter(product => {
+    const matchesSearch = product.name.toLowerCase().includes(productSearchTerm.toLowerCase()) ||
+      product.description?.toLowerCase().includes(productSearchTerm.toLowerCase()) ||
+      product.category?.toLowerCase().includes(productSearchTerm.toLowerCase());
+    const isLocked = isProductLocked(product.id);
+    return matchesSearch && !isLocked;
+  });
 
   const downloadOrdersCSV = async () => {
     try {
