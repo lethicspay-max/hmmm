@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import {
   Users,
@@ -318,14 +318,22 @@ export function CorporateDashboard() {
     setFilteredOrders(filtered);
   }, [orders, employees, orderSearchTerm, orderStatusFilter]);
 
+  // Helper function to check if product is locked
+  const isProductLocked = (productId: string): boolean => {
+    const setting = corporateProductSettings[productId];
+    return setting !== undefined && setting.isLocked === true;
+  };
+
   // Filter products based on search term and exclude locked products
-  const filteredProducts = availableProducts.filter(product => {
-    const matchesSearch = product.name.toLowerCase().includes(productSearchTerm.toLowerCase()) ||
-      product.description?.toLowerCase().includes(productSearchTerm.toLowerCase()) ||
-      product.category?.toLowerCase().includes(productSearchTerm.toLowerCase());
-    const isLocked = isProductLocked(product.id);
-    return matchesSearch && !isLocked;
-  });
+  const filteredProducts = useMemo(() => {
+    return availableProducts.filter(product => {
+      const matchesSearch = product.name.toLowerCase().includes(productSearchTerm.toLowerCase()) ||
+        product.description?.toLowerCase().includes(productSearchTerm.toLowerCase()) ||
+        product.category?.toLowerCase().includes(productSearchTerm.toLowerCase());
+      const isLocked = isProductLocked(product.id);
+      return matchesSearch && !isLocked;
+    });
+  }, [availableProducts, productSearchTerm, corporateProductSettings]);
 
   const downloadOrdersCSV = async () => {
     try {
@@ -639,11 +647,6 @@ export function CorporateDashboard() {
   const isProductCustomized = (productId: string): boolean => {
     const setting = corporateProductSettings[productId];
     return setting !== undefined && (setting.selectedByCorporate === true);
-  };
-
-  const isProductLocked = (productId: string): boolean => {
-    const setting = corporateProductSettings[productId];
-    return setting !== undefined && setting.isLocked === true;
   };
 
   const handleDeleteEmployee = async (employeeId: string) => {
