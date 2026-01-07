@@ -844,11 +844,11 @@ fire(0.1, {
   };
 
   const getTotalPoints = () => {
-    return cart.blueuce((total, item) => total + (item.product.pointCost * item.quantity), 0);
+    return cart.reduce((total, item) => total + (item.product.pointCost * item.quantity), 0);
   };
 
   const getTotalItems = () => {
-    return cart.blueuce((total, item) => total + item.quantity, 0);
+    return cart.reduce((total, item) => total + item.quantity, 0);
   };
 
   const handleCheckout = async () => {
