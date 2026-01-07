@@ -11,7 +11,7 @@ import {
   updateDoc,
   Timestamp
 } from 'firebase/firestore';
-import { Building2, DollarSign, Lock, Unlock, Save, RefreshCw, AlertCircle } from 'lucide-react';
+import { Building2, DollarSign, Lock, Unlock, Save, RefreshCw, AlertCircle, Search } from 'lucide-react';
 
 interface Product {
   id: string;
@@ -45,6 +45,7 @@ export function CorporateProductCustomization() {
   const [corporates, setCorporates] = useState<Corporate[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedCorporate, setSelectedCorporate] = useState<string>('');
+  const [searchTerm, setSearchTerm] = useState<string>('');
   const [customPricing, setCustomPricing] = useState<Map<string, number | null>>(new Map());
   const [productLocks, setProductLocks] = useState<Map<string, boolean>>(new Map());
   const [productSelectionLocked, setProductSelectionLocked] = useState(false);
@@ -258,6 +259,16 @@ export function CorporateProductCustomization() {
     return productLocks.get(productId) || false;
   };
 
+  // Filter corporates based on search term
+  const filteredCorporates = corporates.filter((corp) => {
+    const searchLower = searchTerm.toLowerCase();
+    return (
+      corp.companyName.toLowerCase().includes(searchLower) ||
+      corp.contactName.toLowerCase().includes(searchLower) ||
+      corp.email.toLowerCase().includes(searchLower)
+    );
+  });
+
   // Group products by category
   const productsByCategory = products.reduce((acc, product) => {
     if (!acc[product.category]) {
@@ -282,18 +293,41 @@ export function CorporateProductCustomization() {
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Select Corporate Company
           </label>
+
+          {/* Search Input */}
+          <div className="relative mb-3 max-w-md">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Search className="h-5 w-5 text-gray-400" />
+            </div>
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search by company name, contact, or email..."
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 focus:border-red-500"
+            />
+          </div>
+
+          {/* Dropdown */}
           <select
             value={selectedCorporate}
             onChange={(e) => setSelectedCorporate(e.target.value)}
             className="w-full max-w-md border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
           >
             <option value="">-- Select a Corporate --</option>
-            {corporates.map((corp) => (
+            {filteredCorporates.map((corp) => (
               <option key={corp.id} value={corp.id}>
                 {corp.companyName} ({corp.contactName})
               </option>
             ))}
           </select>
+
+          {/* Show count when searching */}
+          {searchTerm && (
+            <p className="mt-2 text-sm text-gray-600">
+              Found {filteredCorporates.length} corporate{filteredCorporates.length !== 1 ? 's' : ''}
+            </p>
+          )}
         </div>
 
         {/* Product Selection Lock Toggle */}
