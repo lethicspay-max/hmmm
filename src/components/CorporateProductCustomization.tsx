@@ -34,6 +34,7 @@ interface CorporateProductSetting {
   productId: string;
   customPrice: number | null;
   isLocked: boolean;
+  selectedByCorporate?: boolean;
   createdAt: Timestamp;
   updatedAt: Timestamp;
 }
@@ -275,8 +276,8 @@ export function CorporateProductCustomization() {
           <>
             <div className="mb-4 flex justify-between items-center">
               <p className="text-sm text-gray-600">
-                Customize pricing and product access for this corporate. Leave price empty to use default pricing.
-                Locked products are marked as selected/customized and prevent re-selection.
+                Set custom pricing and control product visibility for this corporate. Leave price empty to use default pricing.
+                Locked products are hidden from the corporate and cannot be selected.
               </p>
               <div className="flex space-x-2">
                 <button
@@ -359,7 +360,7 @@ export function CorporateProductCustomization() {
                                   ? 'bg-red-100 text-red-600 hover:bg-red-200'
                                   : 'bg-green-100 text-green-600 hover:bg-green-200'
                               }`}
-                              title={locked ? 'Product is locked (selected/customized by corporate)' : 'Product is unlocked (can be selected)'}
+                              title={locked ? 'Product is locked (hidden from corporate, cannot be selected)' : 'Product is unlocked (visible to corporate, can be selected)'}
                             >
                               {locked ? <Lock className="h-5 w-5" /> : <Unlock className="h-5 w-5" />}
                             </button>

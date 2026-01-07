@@ -60,6 +60,7 @@ interface CorporateProductSetting {
   productId: string;
   customPrice: number | null;
   isLocked: boolean;
+  selectedByCorporate?: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -590,38 +591,36 @@ export function CorporateDashboard() {
     }
   };
 
-  const handleSaveProductCustomization = async (productId: string, customPrice: string) => {
+  const handleSaveProductCustomization = async (productId: string) => {
     try {
       if (!currentUser?.uid) return;
 
       const docId = `${currentUser.uid}_${productId}`;
-      const customPriceValue = customPrice ? parseFloat(customPrice) : null;
+
+      // Get existing settings to preserve admin-set values
+      const docRef = doc(db, 'corporateProductSettings', docId);
+      const docSnap = await getDoc(docRef);
+
+      const existingData = docSnap.exists() ? docSnap.data() : {};
 
       const productSettingData = {
+        ...existingData,
         corporateId: currentUser.uid,
         productId: productId,
-        customPrice: customPriceValue,
-        isLocked: true,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        selectedByCorporate: true,
+        updatedAt: new Date().toISOString(),
+        ...(docSnap.exists() ? {} : { createdAt: new Date().toISOString() })
       };
 
-      await setDoc(doc(db, 'corporateProductSettings', docId), productSettingData);
+      await setDoc(docRef, productSettingData, { merge: true });
 
       // Reload the settings
       await loadCorporateProductSettings();
 
-      // Clear the custom price input
-      setCustomPrices(prev => {
-        const newPrices = { ...prev };
-        delete newPrices[productId];
-        return newPrices;
-      });
-
-      alert('Product customization saved successfully!');
+      alert('Product selected successfully!');
     } catch (error) {
-      console.error('Error saving product customization:', error);
-      alert('Error saving product customization. Please try again.');
+      console.error('Error selecting product:', error);
+      alert('Error selecting product. Please try again.');
     }
   };
 
@@ -635,7 +634,12 @@ export function CorporateDashboard() {
 
   const isProductCustomized = (productId: string): boolean => {
     const setting = corporateProductSettings[productId];
-    return setting !== undefined && setting.isLocked;
+    return setting !== undefined && (setting.selectedByCorporate === true);
+  };
+
+  const isProductLocked = (productId: string): boolean => {
+    const setting = corporateProductSettings[productId];
+    return setting !== undefined && setting.isLocked === true;
   };
 
   const handleDeleteEmployee = async (employeeId: string) => {
@@ -1168,9 +1172,9 @@ export function CorporateDashboard() {
                 {activeTab === 'customize products' && (
                   <div>
                     <div className="mb-6">
-                      <h2 className="text-xl font-semibold mb-2">Customize Products</h2>
+                      <h2 className="text-xl font-semibold mb-2">Select Products</h2>
                       <p className="text-gray-600">
-                        Set custom prices for products and lock them for your employees. Once selected and saved, products cannot be selected again.
+                        Choose products to make available for your employees. Pricing is set by the administrator. Once selected, products cannot be changed.
                       </p>
                     </div>
 
@@ -1194,19 +1198,22 @@ export function CorporateDashboard() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {filteredProducts.map(product => {
-                        const isLocked = isProductCustomized(product.id);
+                      {filteredProducts
+                        .filter(product => !isProductLocked(product.id))
+                        .map(product => {
+                        const isSelected = isProductCustomized(product.id);
                         const setting = corporateProductSettings[product.id];
+                        const displayPrice = getDisplayPrice(product);
 
                         return (
-                          <div key={product.id} className={`border rounded-lg overflow-hidden ${isLocked ? 'bg-gray-50' : 'bg-white'}`}>
+                          <div key={product.id} className={`border rounded-lg overflow-hidden ${isSelected ? 'bg-gray-50' : 'bg-white'}`}>
                             <div className="relative">
                               <img
                                 src={product.imageUrl}
                                 alt={product.name}
                                 className="w-full h-48 object-cover"
                               />
-                              {isLocked && (
+                              {isSelected && (
                                 <div className="absolute top-2 right-2">
                                   <span className="bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center">
                                     <Lock className="h-3 w-3 mr-1" />
@@ -1220,54 +1227,29 @@ export function CorporateDashboard() {
                               <p className="text-gray-600 text-sm mb-3">{product.description}</p>
 
                               <div className="mb-3">
-                                <div className="flex items-center justify-between mb-1">
-                                  <span className="text-sm font-medium text-gray-700">Default Price:</span>
-                                  <span className="text-red-600 font-medium">{product.pointCost} points</span>
+                                <div className="flex items-center justify-between p-2 bg-red-50 rounded">
+                                  <span className="text-sm font-medium text-gray-700">Price:</span>
+                                  <span className="text-red-600 font-bold">{displayPrice} points</span>
                                 </div>
-
-                                {isLocked && setting && (
-                                  <div className="flex items-center justify-between p-2 bg-green-50 rounded mt-2">
-                                    <span className="text-sm font-medium text-green-700">Your Price:</span>
-                                    <span className="text-green-700 font-bold">
-                                      {setting.customPrice !== null ? `${setting.customPrice} points` : 'Default price'}
-                                    </span>
-                                  </div>
+                                {setting && setting.customPrice !== null && (
+                                  <p className="text-xs text-gray-500 mt-1 text-center">
+                                    Custom pricing applied by administrator
+                                  </p>
                                 )}
                               </div>
 
-                              {!isLocked ? (
-                                <div className="space-y-3">
-                                  <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                      Custom Price (optional)
-                                    </label>
-                                    <input
-                                      type="number"
-                                      placeholder={`Default: ${product.pointCost}`}
-                                      value={customPrices[product.id] || ''}
-                                      onChange={(e) => setCustomPrices(prev => ({
-                                        ...prev,
-                                        [product.id]: e.target.value
-                                      }))}
-                                      className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
-                                      min="0"
-                                    />
-                                    <p className="text-xs text-gray-500 mt-1">
-                                      Leave empty to use default price
-                                    </p>
-                                  </div>
-                                  <button
-                                    onClick={() => handleSaveProductCustomization(product.id, customPrices[product.id] || '')}
-                                    className="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 transition-colors font-medium"
-                                  >
-                                    Select & Save
-                                  </button>
-                                </div>
+                              {!isSelected ? (
+                                <button
+                                  onClick={() => handleSaveProductCustomization(product.id)}
+                                  className="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 transition-colors font-medium"
+                                >
+                                  Select Product
+                                </button>
                               ) : (
-                                <div className="flex items-center justify-center py-2 bg-gray-100 rounded-md">
-                                  <Lock className="h-4 w-4 mr-2 text-gray-600" />
-                                  <span className="text-sm font-medium text-gray-600">
-                                    Already Selected
+                                <div className="flex items-center justify-center py-2 bg-green-100 rounded-md">
+                                  <Lock className="h-4 w-4 mr-2 text-green-600" />
+                                  <span className="text-sm font-medium text-green-600">
+                                    Selected
                                   </span>
                                 </div>
                               )}
