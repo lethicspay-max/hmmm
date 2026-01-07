@@ -455,6 +455,25 @@ export function CompanySubPage() {
     if (!corporate) return;
 
     try {
+      // Get selected products from corporateSettings
+      const settingsQuery = query(
+        collection(db, 'corporateSettings'),
+        where('corporateId', '==', corporate.id)
+      );
+      const settingsSnapshot = await getDocs(settingsQuery);
+
+      if (settingsSnapshot.empty) {
+        setProducts([]);
+        return;
+      }
+
+      const selectedProductsIds = settingsSnapshot.docs[0].data().selectedProducts || [];
+
+      if (selectedProductsIds.length === 0) {
+        setProducts([]);
+        return;
+      }
+
       // Get all active products from Firebase
       const productsQuery = query(
         collection(db, 'products'),
@@ -472,53 +491,47 @@ export function CompanySubPage() {
         ...doc.data()
       }));
 
-      // Filter products with stock > 0
-      const productsInStock = allProducts.filter((product: any) => product.stock > 0);
+      // Filter to only selected products with stock > 0
+      const productsInStock = allProducts.filter((product: any) =>
+        selectedProductsIds.includes(product.id) && product.stock > 0
+      );
 
       if (productsInStock.length === 0) {
         setProducts([]);
         return;
       }
 
-      // Get corporate product settings to filter selected products and apply custom pricing
-      const settingsQuery = query(
+      // Get corporate product settings for custom pricing
+      const customPricingQuery = query(
         collection(db, 'corporateProductSettings'),
         where('corporateId', '==', corporate.id)
       );
-      const settingsSnapshot = await getDocs(settingsQuery);
+      const customPricingSnapshot = await getDocs(customPricingQuery);
 
-      // Create a map of settings and custom pricing from corporateProductSettings
-      const productSettings = new Map();
-      settingsSnapshot.docs.forEach(doc => {
+      // Create a map of custom pricing from corporateProductSettings
+      const customPricing = new Map();
+      customPricingSnapshot.docs.forEach(doc => {
         const data = doc.data();
-        productSettings.set(data.productId, {
-          customPrice: data.customPrice,
-          selectedByCorporate: data.selectedByCorporate,
-          isLocked: data.isLocked
-        });
+        if (data.customPrice !== null && data.customPrice !== undefined) {
+          customPricing.set(data.productId, data.customPrice);
+        }
       });
 
-      // Filter to only show products that have been selected by the corporate
-      const availableProducts = productsInStock
-        .filter((product: any) => {
-          const setting = productSettings.get(product.id);
-          return setting && setting.selectedByCorporate === true;
-        })
-        .map((product: any) => {
-          const setting = productSettings.get(product.id);
-          const customPrice = setting?.customPrice;
-          return {
-            id: product.id,
-            name: product.name,
-            description: product.description,
-            pointCost: customPrice !== undefined && customPrice !== null ? customPrice : product.pointCost,
-            stock: product.stock,
-            category: product.category,
-            imageUrl: product.imageUrl,
-            sizes: product.sizes,
-            colors: product.colors,
-          };
-        });
+      // Apply custom pricing to products
+      const availableProducts = productsInStock.map((product: any) => {
+        const customPrice = customPricing.get(product.id);
+        return {
+          id: product.id,
+          name: product.name,
+          description: product.description,
+          pointCost: customPrice !== undefined && customPrice !== null ? customPrice : product.pointCost,
+          stock: product.stock,
+          category: product.category,
+          imageUrl: product.imageUrl,
+          sizes: product.sizes,
+          colors: product.colors,
+        };
+      });
 
       setProducts(availableProducts);
     } catch (error) {
