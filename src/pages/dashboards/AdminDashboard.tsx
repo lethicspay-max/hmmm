@@ -170,6 +170,11 @@ export function AdminDashboard() {
     loadData();
   }, []);
 
+  const getProductSKU = (productId: string): string => {
+    const product = products.find(p => p.id === productId);
+    return product?.sku || 'N/A';
+  };
+
   const loadData = async () => {
     try {
       setTicketsLoading(true);
@@ -1615,14 +1620,14 @@ export function AdminDashboard() {
                                   {order.products && order.products.length > 0 ? (
                                     <div>
                                       <div>{order.products[0].name}</div>
-                                      <div className="text-xs text-gray-500">SKU: {order.products[0].sku || 'N/A'}</div>
+                                      <div className="text-xs text-gray-500">SKU: {getProductSKU(order.products[0].id)}</div>
                                     </div>
                                   ) : 'N/A'}
                                 </div>
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="text-sm text-gray-900">
-                                  {order.products && order.products.length > 0 ? order.products[0].sku || 'N/A' : 'N/A'}
+                                  {order.products && order.products.length > 0 ? getProductSKU(order.products[0].id) : 'N/A'}
                                 </div>
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap">
@@ -2791,7 +2796,7 @@ export function AdminDashboard() {
                           )}
                           <div className="flex-1">
                             <h5 className="font-medium">{product.name}</h5>
-                            <p className="text-sm text-gray-600">SKU: {product.sku}</p>
+                            <p className="text-sm text-gray-600">SKU: {getProductSKU(product.id)}</p>
                             <p className="text-sm text-gray-600">Quantity: {product.quantity}</p>
                             <p className="text-sm text-gray-600">Points: {product.pointCost} each</p>
                           </div>
