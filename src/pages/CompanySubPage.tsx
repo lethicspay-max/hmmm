@@ -309,6 +309,12 @@ export function CompanySubPage() {
   }, [slug]);
 
   useEffect(() => {
+    if (corporate && authStep === 'authenticated') {
+      loadProducts();
+    }
+  }, [corporate, authStep]);
+
+  useEffect(() => {
     if (employee && activeTab === 'orders') {
       loadOrders();
     }
@@ -449,65 +455,64 @@ export function CompanySubPage() {
     if (!corporate) return;
 
     try {
-      // Get products that are active and in stock
-      const { data: productsData, error: productsError } = await supabase
-        .from('products')
-        .select('*')
-        .eq('status', 'active')
-        .gt('stock', 0);
+      // Get all active products from Firebase
+      const productsQuery = query(
+        collection(db, 'products'),
+        where('status', '==', 'active')
+      );
+      const productsSnapshot = await getDocs(productsQuery);
 
-      if (productsError) throw productsError;
-
-      if (!productsData || productsData.length === 0) {
+      if (productsSnapshot.empty) {
         setProducts([]);
         return;
       }
 
-      // Get product locks for this corporate
-      const { data: locksData, error: locksError } = await supabase
-        .from('corporate_product_locks')
-        .select('product_id, is_locked')
-        .eq('corporate_id', corporate.id);
+      const allProducts = productsSnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
 
-      if (locksError) throw locksError;
+      // Filter products with stock > 0
+      const productsInStock = allProducts.filter((product: any) => product.stock > 0);
 
-      // Create a map of locked products
-      const lockedProductIds = new Set(
-        (locksData || [])
-          .filter((lock: any) => lock.is_locked)
-          .map((lock: any) => lock.product_id)
+      if (productsInStock.length === 0) {
+        setProducts([]);
+        return;
+      }
+
+      // Get corporate product settings for custom pricing
+      const settingsQuery = query(
+        collection(db, 'corporateProductSettings'),
+        where('corporateId', '==', corporate.id)
       );
+      const settingsSnapshot = await getDocs(settingsQuery);
 
-      // Get custom pricing for this corporate
-      const { data: pricingData, error: pricingError } = await supabase
-        .from('corporate_product_pricing')
-        .select('product_id, custom_point_cost')
-        .eq('corporate_id', corporate.id);
+      // Create a map of custom pricing from corporateProductSettings
+      const customPricing = new Map();
+      settingsSnapshot.docs.forEach(doc => {
+        const data = doc.data();
+        // Document ID format: {corporateId}_{productId}
+        if (data.customPrice !== null && data.customPrice !== undefined) {
+          customPricing.set(data.productId, data.customPrice);
+        }
+      });
 
-      if (pricingError) throw pricingError;
-
-      // Create a map of custom pricing
-      const customPricing = new Map(
-        (pricingData || []).map((item: any) => [item.product_id, item.custom_point_cost])
-      );
-
-      // Filter out locked products and apply custom pricing
-      const availableProducts = productsData
-        .filter((product: any) => !lockedProductIds.has(product.id))
-        .map((product: any) => {
-          const customPrice = customPricing.get(product.id);
-          return {
-            id: product.id,
-            name: product.name,
-            description: product.description,
-            pointCost: customPrice !== undefined ? customPrice : product.point_cost,
-            stock: product.stock,
-            category: product.category,
-            imageUrl: product.image_url,
-            sku: product.sku,
-            status: product.status,
-          };
-        });
+      // All products are visible to employees regardless of lock status
+      // The isLocked field is only for preventing re-selection in corporate dashboard
+      const availableProducts = productsInStock.map((product: any) => {
+        const customPrice = customPricing.get(product.id);
+        return {
+          id: product.id,
+          name: product.name,
+          description: product.description,
+          pointCost: customPrice !== undefined ? customPrice : product.pointCost,
+          stock: product.stock,
+          category: product.category,
+          imageUrl: product.imageUrl,
+          sizes: product.sizes,
+          colors: product.colors,
+        };
+      });
 
       setProducts(availableProducts);
     } catch (error) {

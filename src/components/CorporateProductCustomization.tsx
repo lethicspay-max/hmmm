@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { db } from '../firebase/config';
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  doc,
+  setDoc,
+  Timestamp
+} from 'firebase/firestore';
 import { Building2, DollarSign, Lock, Unlock, Save, RefreshCw, AlertCircle } from 'lucide-react';
 
 interface Product {
@@ -20,14 +29,13 @@ interface Corporate {
   status: string;
 }
 
-interface CustomPricing {
+interface CorporateProductSetting {
+  corporateId: string;
   productId: string;
-  customPointCost: number | null;
-}
-
-interface ProductLock {
-  productId: string;
+  customPrice: number | null;
   isLocked: boolean;
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
 }
 
 export function CorporateProductCustomization() {
@@ -53,21 +61,19 @@ export function CorporateProductCustomization() {
 
   const loadCorporates = async () => {
     try {
-      const { data, error } = await supabase
-        .from('users')
-        .select('*')
-        .eq('role', 'corporate')
-        .eq('status', 'approved')
-        .order('company_name');
+      const corporatesQuery = query(
+        collection(db, 'users'),
+        where('role', '==', 'corporate'),
+        where('status', '==', 'approved')
+      );
+      const snapshot = await getDocs(corporatesQuery);
 
-      if (error) throw error;
-
-      const mapped = (data || []).map((corp: any) => ({
-        id: corp.id,
-        companyName: corp.company_name,
-        contactName: corp.contact_name,
-        email: corp.email,
-        status: corp.status,
+      const mapped = snapshot.docs.map((docSnap) => ({
+        id: docSnap.id,
+        companyName: docSnap.data().companyName || docSnap.data().company_name || '',
+        contactName: docSnap.data().contactName || docSnap.data().contact_name || '',
+        email: docSnap.data().email || '',
+        status: docSnap.data().status || '',
       }));
 
       setCorporates(mapped);
@@ -78,23 +84,24 @@ export function CorporateProductCustomization() {
 
   const loadProducts = async () => {
     try {
-      const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .eq('status', 'active')
-        .order('category', { ascending: true });
+      const productsQuery = query(
+        collection(db, 'products'),
+        where('status', '==', 'active')
+      );
+      const snapshot = await getDocs(productsQuery);
 
-      if (error) throw error;
-
-      const mapped = (data || []).map((prod: any) => ({
-        id: prod.id,
-        name: prod.name,
-        sku: prod.sku,
-        pointCost: prod.point_cost,
-        category: prod.category,
-        imageUrl: prod.image_url,
-        status: prod.status,
+      const mapped = snapshot.docs.map((docSnap) => ({
+        id: docSnap.id,
+        name: docSnap.data().name || '',
+        sku: docSnap.data().sku || '',
+        pointCost: docSnap.data().pointCost || 0,
+        category: docSnap.data().category || '',
+        imageUrl: docSnap.data().imageUrl || '',
+        status: docSnap.data().status || '',
       }));
+
+      // Sort by category
+      mapped.sort((a, b) => a.category.localeCompare(b.category));
 
       setProducts(mapped);
     } catch (error) {
@@ -107,32 +114,20 @@ export function CorporateProductCustomization() {
 
     setLoading(true);
     try {
-      // Load custom pricing
-      const { data: pricingData, error: pricingError } = await supabase
-        .from('corporate_product_pricing')
-        .select('*')
-        .eq('corporate_id', selectedCorporate);
+      const settingsSnapshot = await getDocs(collection(db, 'corporateProductSettings'));
 
-      if (pricingError) throw pricingError;
-
-      const pricingMap = new Map<string, number>();
-      (pricingData || []).forEach((item: any) => {
-        pricingMap.set(item.product_id, item.custom_point_cost);
-      });
-      setCustomPricing(pricingMap);
-
-      // Load product locks
-      const { data: locksData, error: locksError } = await supabase
-        .from('corporate_product_locks')
-        .select('*')
-        .eq('corporate_id', selectedCorporate);
-
-      if (locksError) throw locksError;
-
+      const pricingMap = new Map<string, number | null>();
       const locksMap = new Map<string, boolean>();
-      (locksData || []).forEach((item: any) => {
-        locksMap.set(item.product_id, item.is_locked);
+
+      settingsSnapshot.docs.forEach((docSnap) => {
+        const data = docSnap.data();
+        if (data.corporateId === selectedCorporate) {
+          pricingMap.set(data.productId, data.customPrice ?? null);
+          locksMap.set(data.productId, data.isLocked || false);
+        }
       });
+
+      setCustomPricing(pricingMap);
       setProductLocks(locksMap);
     } catch (error) {
       console.error('Error loading customization:', error);
@@ -172,64 +167,31 @@ export function CorporateProductCustomization() {
     setMessage(null);
 
     try {
-      // Save custom pricing
-      const pricingUpdates: any[] = [];
-      const pricingDeletes: string[] = [];
-
-      customPricing.forEach((cost, productId) => {
-        if (cost !== null && cost !== undefined) {
-          pricingUpdates.push({
-            corporate_id: selectedCorporate,
-            product_id: productId,
-            custom_point_cost: cost,
-            updated_at: new Date().toISOString(),
-          });
-        } else {
-          pricingDeletes.push(productId);
-        }
+      // Get all products that have either custom pricing or lock status set
+      const productsToSave = products.filter(product => {
+        const hasCustomPrice = customPricing.has(product.id) && customPricing.get(product.id) !== null;
+        const hasLockStatus = productLocks.has(product.id);
+        return hasCustomPrice || hasLockStatus;
       });
 
-      // Delete removed custom pricing
-      if (pricingDeletes.length > 0) {
-        const { error: deleteError } = await supabase
-          .from('corporate_product_pricing')
-          .delete()
-          .eq('corporate_id', selectedCorporate)
-          .in('product_id', pricingDeletes);
+      // Save each product setting using setDoc with merge
+      for (const product of productsToSave) {
+        const docId = `${selectedCorporate}_${product.id}`;
+        const customPrice = customPricing.get(product.id) ?? null;
+        const isLocked = productLocks.get(product.id) || false;
 
-        if (deleteError) throw deleteError;
-      }
-
-      // Upsert custom pricing
-      if (pricingUpdates.length > 0) {
-        const { error: pricingError } = await supabase
-          .from('corporate_product_pricing')
-          .upsert(pricingUpdates, {
-            onConflict: 'corporate_id,product_id',
-          });
-
-        if (pricingError) throw pricingError;
-      }
-
-      // Save product locks
-      const lockUpdates: any[] = [];
-      productLocks.forEach((isLocked, productId) => {
-        lockUpdates.push({
-          corporate_id: selectedCorporate,
-          product_id: productId,
-          is_locked: isLocked,
-          updated_at: new Date().toISOString(),
-        });
-      });
-
-      if (lockUpdates.length > 0) {
-        const { error: lockError } = await supabase
-          .from('corporate_product_locks')
-          .upsert(lockUpdates, {
-            onConflict: 'corporate_id,product_id',
-          });
-
-        if (lockError) throw lockError;
+        await setDoc(
+          doc(db, 'corporateProductSettings', docId),
+          {
+            corporateId: selectedCorporate,
+            productId: product.id,
+            customPrice: customPrice,
+            isLocked: isLocked,
+            updatedAt: Timestamp.now(),
+            createdAt: Timestamp.now()
+          },
+          { merge: true }
+        );
       }
 
       setMessage({ type: 'success', text: 'Customization saved successfully!' });
@@ -314,6 +276,7 @@ export function CorporateProductCustomization() {
             <div className="mb-4 flex justify-between items-center">
               <p className="text-sm text-gray-600">
                 Customize pricing and product access for this corporate. Leave price empty to use default pricing.
+                Locked products are marked as selected/customized and prevent re-selection.
               </p>
               <div className="flex space-x-2">
                 <button
@@ -352,7 +315,7 @@ export function CorporateProductCustomization() {
                         <div
                           key={product.id}
                           className={`flex items-center justify-between p-4 border rounded-lg transition-colors ${
-                            locked ? 'bg-gray-50 border-gray-300' : 'bg-white border-gray-200 hover:border-red-300'
+                            locked ? 'bg-red-50 border-red-300' : 'bg-white border-gray-200 hover:border-red-300'
                           }`}
                         >
                           <div className="flex items-center space-x-4 flex-1">
@@ -384,8 +347,7 @@ export function CorporateProductCustomization() {
                                 placeholder={product.pointCost.toString()}
                                 value={customPricing.get(product.id) ?? ''}
                                 onChange={(e) => handlePricingChange(product.id, e.target.value)}
-                                disabled={locked}
-                                className="w-24 border border-gray-300 rounded px-2 py-1 text-sm focus:ring-2 focus:ring-red-500 focus:border-red-500 disabled:bg-gray-100"
+                                className="w-24 border border-gray-300 rounded px-2 py-1 text-sm focus:ring-2 focus:ring-red-500 focus:border-red-500"
                               />
                               <span className="text-sm text-gray-500">pts</span>
                             </div>
@@ -397,7 +359,7 @@ export function CorporateProductCustomization() {
                                   ? 'bg-red-100 text-red-600 hover:bg-red-200'
                                   : 'bg-green-100 text-green-600 hover:bg-green-200'
                               }`}
-                              title={locked ? 'Product is locked (hidden from corporate)' : 'Product is unlocked (visible to corporate)'}
+                              title={locked ? 'Product is locked (selected/customized by corporate)' : 'Product is unlocked (can be selected)'}
                             >
                               {locked ? <Lock className="h-5 w-5" /> : <Unlock className="h-5 w-5" />}
                             </button>

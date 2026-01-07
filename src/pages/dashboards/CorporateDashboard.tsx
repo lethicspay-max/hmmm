@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import { 
-  Users, 
-  Package, 
-  Award, 
+import {
+  Users,
+  Package,
+  Award,
   Settings,
   Plus,
   Upload,
@@ -19,9 +19,11 @@ import {
   Search,
   Truck,
   CheckCircle,
-  Clock
+  Clock,
+  Lock,
+  Unlock
 } from 'lucide-react';
-import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, where, getDoc } from 'firebase/firestore';
+import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, where, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../../firebase/config';
 import { exportOrdersToCSV, formatDateForFilename } from '../../utils/csvExport';
 
@@ -48,6 +50,18 @@ interface Product {
   stock: number;
   category: string;
   imageUrl: string;
+  sizes?: string[];
+  colors?: string[];
+}
+
+interface CorporateProductSetting {
+  id: string;
+  corporateId: string;
+  productId: string;
+  customPrice: number | null;
+  isLocked: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface Order {
@@ -98,6 +112,10 @@ export function CorporateDashboard() {
 
   const [selectedProductForView, setSelectedProductForView] = useState<Product | null>(null);
   const [showProductViewModal, setShowProductViewModal] = useState(false);
+
+  // New state for product customization
+  const [corporateProductSettings, setCorporateProductSettings] = useState<{[key: string]: CorporateProductSetting}>({});
+  const [customPrices, setCustomPrices] = useState<{[key: string]: string}>({});
   
   // Stats calculations
   const shippedCount = orders.filter(order => order.status === 'shipped').length;
@@ -198,6 +216,9 @@ export function CorporateDashboard() {
         setSelectedProducts(settings.selectedProducts || []);
       }
 
+      // Load corporate product settings
+      await loadCorporateProductSettings();
+
       // Load corporate points
       if (currentUser?.uid) {
         const corporateUserDoc = await getDoc(doc(db, 'users', currentUser.uid));
@@ -217,6 +238,31 @@ export function CorporateDashboard() {
     } catch (error) {
       console.error('Error loading data:', error);
       setLoading(false);
+    }
+  };
+
+  const loadCorporateProductSettings = async () => {
+    try {
+      if (!currentUser?.uid) return;
+
+      const settingsQuery = query(
+        collection(db, 'corporateProductSettings'),
+        where('corporateId', '==', currentUser.uid)
+      );
+      const settingsSnapshot = await getDocs(settingsQuery);
+
+      const settingsMap: {[key: string]: CorporateProductSetting} = {};
+      settingsSnapshot.docs.forEach(doc => {
+        const data = doc.data();
+        settingsMap[data.productId] = {
+          id: doc.id,
+          ...data
+        } as CorporateProductSetting;
+      });
+
+      setCorporateProductSettings(settingsMap);
+    } catch (error) {
+      console.error('Error loading corporate product settings:', error);
     }
   };
 
@@ -513,12 +559,12 @@ export function CorporateDashboard() {
   };
 
   const handleProductSelection = async (productId: string, selected: boolean) => {
-    const newSelection = selected 
+    const newSelection = selected
       ? [...selectedProducts, productId]
       : selectedProducts.filter(id => id !== productId);
-    
+
     setSelectedProducts(newSelection);
-    
+
     try {
       // Update or create corporate settings
       const corporateSettingsQuery = query(
@@ -526,7 +572,7 @@ export function CorporateDashboard() {
         where('corporateId', '==', currentUser?.uid)
       );
       const existingSettings = await getDocs(corporateSettingsQuery);
-      
+
       if (existingSettings.empty) {
         await addDoc(collection(db, 'corporateSettings'), {
           corporateId: currentUser?.uid,
@@ -542,6 +588,54 @@ export function CorporateDashboard() {
     } catch (error) {
       console.error('Error updating product selection:', error);
     }
+  };
+
+  const handleSaveProductCustomization = async (productId: string, customPrice: string) => {
+    try {
+      if (!currentUser?.uid) return;
+
+      const docId = `${currentUser.uid}_${productId}`;
+      const customPriceValue = customPrice ? parseFloat(customPrice) : null;
+
+      const productSettingData = {
+        corporateId: currentUser.uid,
+        productId: productId,
+        customPrice: customPriceValue,
+        isLocked: true,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+
+      await setDoc(doc(db, 'corporateProductSettings', docId), productSettingData);
+
+      // Reload the settings
+      await loadCorporateProductSettings();
+
+      // Clear the custom price input
+      setCustomPrices(prev => {
+        const newPrices = { ...prev };
+        delete newPrices[productId];
+        return newPrices;
+      });
+
+      alert('Product customization saved successfully!');
+    } catch (error) {
+      console.error('Error saving product customization:', error);
+      alert('Error saving product customization. Please try again.');
+    }
+  };
+
+  const getDisplayPrice = (product: Product): number => {
+    const setting = corporateProductSettings[product.id];
+    if (setting && setting.customPrice !== null) {
+      return setting.customPrice;
+    }
+    return product.pointCost;
+  };
+
+  const isProductCustomized = (productId: string): boolean => {
+    const setting = corporateProductSettings[productId];
+    return setting !== undefined && setting.isLocked;
   };
 
   const handleDeleteEmployee = async (employeeId: string) => {
@@ -726,8 +820,8 @@ export function CorporateDashboard() {
             {/* Tabs */}
             <div className="bg-white rounded-lg shadow">
               <div className="border-b border-gray-200">
-                <nav className="-mb-px flex">
-                  {['overview', 'employees', 'products', 'orders', 'points', 'analytics', 'tickets', 'settings'].map((tab) => (
+                <nav className="-mb-px flex flex-wrap">
+                  {['overview', 'employees', 'products', 'customize products', 'orders', 'points', 'analytics', 'tickets', 'settings'].map((tab) => (
                     <button
                       key={tab}
                       onClick={() => setActiveTab(tab)}
@@ -1006,45 +1100,194 @@ export function CorporateDashboard() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {filteredProducts.map(product => (
-                        <div key={product.id} className="border rounded-lg overflow-hidden">
-                          <img 
-                            src={product.imageUrl} 
-                            alt={product.name}
-                            className="w-full h-48 object-cover"
-                          />
-                          <div className="p-4">
-                            <div className="flex items-center justify-between mb-2">
-                              <h3 className="font-semibold text-lg">{product.name}</h3>
-                              <label className="flex items-center">
-                                <input
-                                  type="checkbox"
-                                  checked={selectedProducts.includes(product.id)}
-                                  onChange={(e) => handleProductSelection(product.id, e.target.checked)}
-                                  className="mr-2"
-                                />
-                                <span className="text-sm">Select</span>
-                              </label>
+                      {filteredProducts.map(product => {
+                        const isCustomized = isProductCustomized(product.id);
+                        const displayPrice = getDisplayPrice(product);
+                        return (
+                          <div key={product.id} className="border rounded-lg overflow-hidden">
+                            <div className="relative">
+                              <img
+                                src={product.imageUrl}
+                                alt={product.name}
+                                className="w-full h-48 object-cover"
+                              />
+                              {isCustomized && (
+                                <div className="absolute top-2 right-2">
+                                  <span className="bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center">
+                                    <CheckCircle className="h-3 w-3 mr-1" />
+                                    Customized
+                                  </span>
+                                </div>
+                              )}
                             </div>
-                            <p className="text-gray-600 text-sm mb-2">{product.description}</p>
-                            <div className="flex justify-between items-center">
-                              <span className="text-red-600 font-medium">{product.pointCost} points</span>
-                              <button
-                                onClick={() => handleViewProduct(product)}
-                                className="bg-gray-600 text-white px-3 py-2 rounded-md hover:bg-gray-700 text-sm"
-                              >
-                                View
-                              </button>
+                            <div className="p-4">
+                              <div className="flex items-center justify-between mb-2">
+                                <h3 className="font-semibold text-lg">{product.name}</h3>
+                                <label className="flex items-center">
+                                  <input
+                                    type="checkbox"
+                                    checked={selectedProducts.includes(product.id)}
+                                    onChange={(e) => handleProductSelection(product.id, e.target.checked)}
+                                    className="mr-2"
+                                  />
+                                  <span className="text-sm">Select</span>
+                                </label>
+                              </div>
+                              <p className="text-gray-600 text-sm mb-2">{product.description}</p>
+                              <div className="flex justify-between items-center">
+                                <div className="flex flex-col">
+                                  <span className="text-red-600 font-medium">{displayPrice} points</span>
+                                  {isCustomized && displayPrice !== product.pointCost && (
+                                    <span className="text-xs text-gray-500 line-through">
+                                      Original: {product.pointCost} points
+                                    </span>
+                                  )}
+                                </div>
+                                <button
+                                  onClick={() => handleViewProduct(product)}
+                                  className="bg-gray-600 text-white px-3 py-2 rounded-md hover:bg-gray-700 text-sm"
+                                >
+                                  View
+                                </button>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
 
                     {filteredProducts.length === 0 && productSearchTerm && (
                       <div className="text-center py-8">
                         <Package className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                         <p className="text-gray-600">No products found matching "{productSearchTerm}"</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {activeTab === 'customize products' && (
+                  <div>
+                    <div className="mb-6">
+                      <h2 className="text-xl font-semibold mb-2">Customize Products</h2>
+                      <p className="text-gray-600">
+                        Set custom prices for products and lock them for your employees. Once selected and saved, products cannot be selected again.
+                      </p>
+                    </div>
+
+                    {/* Search Bar */}
+                    <div className="mb-6">
+                      <div className="relative">
+                        <Search className="h-5 w-5 text-gray-400 absolute left-3 top-3" />
+                        <input
+                          type="text"
+                          placeholder="Search products by name, description, or category..."
+                          value={productSearchTerm}
+                          onChange={(e) => setProductSearchTerm(e.target.value)}
+                          className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                        />
+                      </div>
+                      {productSearchTerm && (
+                        <p className="text-sm text-gray-600 mt-2">
+                          Showing {filteredProducts.length} of {availableProducts.length} products
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {filteredProducts.map(product => {
+                        const isLocked = isProductCustomized(product.id);
+                        const setting = corporateProductSettings[product.id];
+
+                        return (
+                          <div key={product.id} className={`border rounded-lg overflow-hidden ${isLocked ? 'bg-gray-50' : 'bg-white'}`}>
+                            <div className="relative">
+                              <img
+                                src={product.imageUrl}
+                                alt={product.name}
+                                className="w-full h-48 object-cover"
+                              />
+                              {isLocked && (
+                                <div className="absolute top-2 right-2">
+                                  <span className="bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center">
+                                    <Lock className="h-3 w-3 mr-1" />
+                                    Selected
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+                            <div className="p-4">
+                              <h3 className="font-semibold text-lg mb-2">{product.name}</h3>
+                              <p className="text-gray-600 text-sm mb-3">{product.description}</p>
+
+                              <div className="mb-3">
+                                <div className="flex items-center justify-between mb-1">
+                                  <span className="text-sm font-medium text-gray-700">Default Price:</span>
+                                  <span className="text-red-600 font-medium">{product.pointCost} points</span>
+                                </div>
+
+                                {isLocked && setting && (
+                                  <div className="flex items-center justify-between p-2 bg-green-50 rounded mt-2">
+                                    <span className="text-sm font-medium text-green-700">Your Price:</span>
+                                    <span className="text-green-700 font-bold">
+                                      {setting.customPrice !== null ? `${setting.customPrice} points` : 'Default price'}
+                                    </span>
+                                  </div>
+                                )}
+                              </div>
+
+                              {!isLocked ? (
+                                <div className="space-y-3">
+                                  <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                      Custom Price (optional)
+                                    </label>
+                                    <input
+                                      type="number"
+                                      placeholder={`Default: ${product.pointCost}`}
+                                      value={customPrices[product.id] || ''}
+                                      onChange={(e) => setCustomPrices(prev => ({
+                                        ...prev,
+                                        [product.id]: e.target.value
+                                      }))}
+                                      className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                                      min="0"
+                                    />
+                                    <p className="text-xs text-gray-500 mt-1">
+                                      Leave empty to use default price
+                                    </p>
+                                  </div>
+                                  <button
+                                    onClick={() => handleSaveProductCustomization(product.id, customPrices[product.id] || '')}
+                                    className="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 transition-colors font-medium"
+                                  >
+                                    Select & Save
+                                  </button>
+                                </div>
+                              ) : (
+                                <div className="flex items-center justify-center py-2 bg-gray-100 rounded-md">
+                                  <Lock className="h-4 w-4 mr-2 text-gray-600" />
+                                  <span className="text-sm font-medium text-gray-600">
+                                    Already Selected
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {filteredProducts.length === 0 && productSearchTerm && (
+                      <div className="text-center py-8">
+                        <Package className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                        <p className="text-gray-600">No products found matching "{productSearchTerm}"</p>
+                      </div>
+                    )}
+
+                    {filteredProducts.length === 0 && !productSearchTerm && (
+                      <div className="text-center py-8">
+                        <Package className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                        <p className="text-gray-600">No products available</p>
                       </div>
                     )}
                   </div>

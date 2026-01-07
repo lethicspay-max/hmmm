@@ -11,20 +11,7 @@ import { Users, Package, TrendingUp, DollarSign, Building2, UserCheck, AlertTria
   RefreshCw,
   Upload
  } from 'lucide-react';
-import { db } from '../../firebase/config';
-import {
-  collection,
-  getDocs,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  doc,
-  query,
-  where,
-  getDoc,
-  writeBatch,
-  setDoc
-} from 'firebase/firestore';
+import { supabase } from '../../lib/supabase';
 import { exportOrdersToCSV, formatDateForFilename } from '../../utils/csvExport';
 import { CorporateProductCustomization } from '../../components/CorporateProductCustomization';
 
