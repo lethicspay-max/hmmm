@@ -480,39 +480,45 @@ export function CompanySubPage() {
         return;
       }
 
-      // Get corporate product settings for custom pricing
+      // Get corporate product settings to filter selected products and apply custom pricing
       const settingsQuery = query(
         collection(db, 'corporateProductSettings'),
         where('corporateId', '==', corporate.id)
       );
       const settingsSnapshot = await getDocs(settingsQuery);
 
-      // Create a map of custom pricing from corporateProductSettings
-      const customPricing = new Map();
+      // Create a map of settings and custom pricing from corporateProductSettings
+      const productSettings = new Map();
       settingsSnapshot.docs.forEach(doc => {
         const data = doc.data();
-        // Document ID format: {corporateId}_{productId}
-        if (data.customPrice !== null && data.customPrice !== undefined) {
-          customPricing.set(data.productId, data.customPrice);
-        }
+        productSettings.set(data.productId, {
+          customPrice: data.customPrice,
+          selectedByCorporate: data.selectedByCorporate,
+          isLocked: data.isLocked
+        });
       });
 
-      // All products are visible to employees regardless of lock status
-      // The isLocked field is only for preventing re-selection in corporate dashboard
-      const availableProducts = productsInStock.map((product: any) => {
-        const customPrice = customPricing.get(product.id);
-        return {
-          id: product.id,
-          name: product.name,
-          description: product.description,
-          pointCost: customPrice !== undefined ? customPrice : product.pointCost,
-          stock: product.stock,
-          category: product.category,
-          imageUrl: product.imageUrl,
-          sizes: product.sizes,
-          colors: product.colors,
-        };
-      });
+      // Filter to only show products that have been selected by the corporate
+      const availableProducts = productsInStock
+        .filter((product: any) => {
+          const setting = productSettings.get(product.id);
+          return setting && setting.selectedByCorporate === true;
+        })
+        .map((product: any) => {
+          const setting = productSettings.get(product.id);
+          const customPrice = setting?.customPrice;
+          return {
+            id: product.id,
+            name: product.name,
+            description: product.description,
+            pointCost: customPrice !== undefined && customPrice !== null ? customPrice : product.pointCost,
+            stock: product.stock,
+            category: product.category,
+            imageUrl: product.imageUrl,
+            sizes: product.sizes,
+            colors: product.colors,
+          };
+        });
 
       setProducts(availableProducts);
     } catch (error) {
