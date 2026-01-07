@@ -3074,6 +3074,13 @@ function OrderDetailsView({
                 <div>
                   <div className="font-medium">{product.name}</div>
                   <div className="text-sm text-gray-600">Quantity: {product.quantity}</div>
+                  {(product.selectedSize || product.selectedColor) && (
+                    <div className="text-sm text-gray-600 mt-1">
+                      {product.selectedSize && <span>Size: {product.selectedSize}</span>}
+                      {product.selectedSize && product.selectedColor && <span className="mx-1">•</span>}
+                      {product.selectedColor && <span>Color: {product.selectedColor}</span>}
+                    </div>
+                  )}
                 </div>
                 <div className="text-right">
                   <div className="font-medium">{product.pointCost} points each</div>
