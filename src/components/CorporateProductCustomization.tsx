@@ -118,17 +118,20 @@ export function CorporateProductCustomization() {
 
     setLoading(true);
     try {
-      const settingsSnapshot = await getDocs(collection(db, 'corporateProductSettings'));
+      // Query only settings for the selected corporate (optimized)
+      const settingsQuery = query(
+        collection(db, 'corporateProductSettings'),
+        where('corporateId', '==', selectedCorporate)
+      );
+      const settingsSnapshot = await getDocs(settingsQuery);
 
       const pricingMap = new Map<string, number | null>();
       const locksMap = new Map<string, boolean>();
 
       settingsSnapshot.docs.forEach((docSnap) => {
         const data = docSnap.data();
-        if (data.corporateId === selectedCorporate) {
-          pricingMap.set(data.productId, data.customPrice ?? null);
-          locksMap.set(data.productId, data.isLocked || false);
-        }
+        pricingMap.set(data.productId, data.customPrice ?? null);
+        locksMap.set(data.productId, data.isLocked || false);
       });
 
       setCustomPricing(pricingMap);
