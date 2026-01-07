@@ -53,12 +53,14 @@ interface CorporateBranding {
   secondaryColor?: string;
   greeting?: string;
   festivalGreeting?: string;
+  banner?: string;
   branding?: {
     primaryColor?: string;
     secondaryColor?: string;
     accentColor?: string;
     logoUrl?: string;
     description?: string;
+    banner?: string;
   };
 }
 
@@ -1500,16 +1502,28 @@ fire(0.1, {
         )}
 
         {activeTab === 'products' && (
-          products.length === 0 ? (
-            <div className="text-center py-12">
-              <Package className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No Products Available</h3>
-              <p className="text-gray-600">
-                Your company hasn't selected any products yet. Please contact your HR department.
-              </p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <>
+            {/* Company Banner */}
+            {corporate?.branding?.banner && (
+              <div className="mb-8 rounded-lg overflow-hidden shadow-md">
+                <img
+                  src={corporate.branding.banner}
+                  alt="Company Banner"
+                  className="w-full h-48 md:h-64 object-cover"
+                />
+              </div>
+            )}
+
+            {products.length === 0 ? (
+              <div className="text-center py-12">
+                <Package className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">No Products Available</h3>
+                <p className="text-gray-600">
+                  Your company hasn't selected any products yet. Please contact your HR department.
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {products.map(product => (
                 <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
                   <img 
@@ -1547,7 +1561,8 @@ fire(0.1, {
                 </div>
               ))}
             </div>
-          )
+            )}
+          </>
         )}
 
         {activeTab === 'orders' && (
