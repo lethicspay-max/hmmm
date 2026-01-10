@@ -1,0 +1,42 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Helper function to check if user is admin
+    function isAdmin() {
+      return isAuthenticated() &&
+             firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // Product images - admins can upload, anyone authenticated can read
+    match /products/{productId}/{allPaths=**} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
+    // Corporate uploads - corporates can upload to their own folder
+    match /corporates/{corporateId}/{allPaths=**} {
+      allow read: if isAuthenticated() && (
+        isAdmin() || request.auth.uid == corporateId
+      );
+      allow write: if isAuthenticated() && (
+        isAdmin() || request.auth.uid == corporateId
+      );
+    }
+
+    // Admin uploads - only admins can access
+    match /admin/{allPaths=**} {
+      allow read, write: if isAdmin();
+    }
+
+    // Block all other paths by default
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

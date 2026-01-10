@@ -1,0 +1,57 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "corporateProductSettings",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "corporateId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "isLocked",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "corporateProductSettings",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "corporateId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "productId",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "corporateSettings",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "corporateId",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "users",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "role",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "status",
+          "order": "ASCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
