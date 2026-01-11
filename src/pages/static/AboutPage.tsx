@@ -165,7 +165,7 @@ export function AboutPage() {
                 alt="Vidya Jaiswar"
                 className="w-20 h-20 rounded-full object-cover mx-auto mb-4"
               />
-              <h3 className="text-xl font-semibold mb-1">Vidya Jaiswar</h3>
+              <h3 className="text-xl font-semibold mb-1">Sayali Chavanr</h3>
               <p className="text-purple-600 mb-2">Administration & Operations</p>
             </div>
 
