@@ -1130,11 +1130,11 @@ export function CorporateDashboard() {
                         const displayPrice = getDisplayPrice(product);
                         return (
                           <div key={product.id} className="border rounded-lg overflow-hidden">
-                            <div className="relative">
+                            <div className="relative bg-gray-50">
                               <img
                                 src={product.imageUrl}
                                 alt={product.name}
-                                className="w-full h-48 object-cover"
+                                className="w-full h-48 object-contain"
                               />
                               {isCustomized && (
                                 <div className="absolute top-2 right-2">
@@ -1627,11 +1627,11 @@ export function CorporateDashboard() {
               </div>
 
               {/* Product Image */}
-              <div className="mb-6">
-                <img 
-                  src={selectedProductForView.imageUrl} 
+              <div className="mb-6 bg-gray-50 rounded-lg flex items-center justify-center" style={{height: '16rem'}}>
+                <img
+                  src={selectedProductForView.imageUrl}
                   alt={selectedProductForView.name}
-                  className="w-full h-64 object-cover rounded-lg"
+                  className="max-h-64 max-w-full object-contain rounded-lg"
                 />
               </div>
 

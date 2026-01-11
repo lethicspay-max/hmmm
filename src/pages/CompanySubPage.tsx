@@ -1532,12 +1532,14 @@ fire(0.1, {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {products.map(product => (
                 <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                  <img 
-                    src={product.imageUrl} 
-                    alt={product.name}
-                    className="w-full h-48 object-cover cursor-pointer"
-                    onClick={() => openViewModal(product)}
-                  />
+                  <div className="bg-gray-50 flex items-center justify-center h-48">
+                    <img
+                      src={product.imageUrl}
+                      alt={product.name}
+                      className="w-full h-full object-contain cursor-pointer"
+                      onClick={() => openViewModal(product)}
+                    />
+                  </div>
                   <div className="p-4">
                     <h3 className="font-semibold text-lg mb-2">{product.name}</h3>
                     <div className="flex justify-between items-center mb-3">
@@ -1710,11 +1712,11 @@ fire(0.1, {
               
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-6">
                 {/* Product Image */}
-                <div className="space-y-4">
+                <div className="space-y-4 bg-gray-50 rounded-lg flex items-center justify-center" style={{height: '24rem'}}>
                   <img
                     src={selectedProductForView.imageUrl}
                     alt={selectedProductForView.name}
-                    className="w-full h-96 object-cover rounded-lg"
+                    className="max-h-96 max-w-full object-contain rounded-lg"
                   />
                 </div>
 

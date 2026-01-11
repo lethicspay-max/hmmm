@@ -1390,10 +1390,10 @@ export function AdminDashboard() {
                           <tr key={product.id} className="hover:bg-gray-50">
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="flex items-center">
-                                <img 
-                                  src={product.imageUrl} 
+                                <img
+                                  src={product.imageUrl}
                                   alt={product.name}
-                                  className="h-10 w-10 rounded-lg object-cover mr-4"
+                                  className="h-10 w-10 rounded-lg object-contain bg-gray-50 mr-4"
                                 />
                                 <div>
                                   <div className="text-sm font-medium text-gray-900">{product.name}</div>
