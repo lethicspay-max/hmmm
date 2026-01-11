@@ -1564,49 +1564,52 @@ fire(0.1, {
 
                 return (
                   <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                    <div className="relative bg-gray-50 flex items-center justify-center h-48 group">
-                      <img
-                        src={getProductImageUrl(product)}
-                        alt={product.name}
-                        className="w-full h-full object-contain cursor-pointer"
-                        onClick={() => openViewModal(product)}
-                      />
+                    <div className="bg-gray-50">
+                      <div className="relative flex items-center justify-center h-48">
+                        <img
+                          src={getProductImageUrl(product)}
+                          alt={product.name}
+                          className="w-full h-full object-contain cursor-pointer"
+                          onClick={() => openViewModal(product)}
+                        />
+
+                        {hasMultipleImages && (
+                          <>
+                            <button
+                              onClick={(e) => navigateProductImage(product.id, 'prev', productImages.length, e)}
+                              className="absolute left-2 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 transition-colors"
+                              aria-label="Previous image"
+                            >
+                              <ChevronLeft className="h-5 w-5 text-gray-700" />
+                            </button>
+
+                            <button
+                              onClick={(e) => navigateProductImage(product.id, 'next', productImages.length, e)}
+                              className="absolute right-2 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 transition-colors"
+                              aria-label="Next image"
+                            >
+                              <ChevronRight className="h-5 w-5 text-gray-700" />
+                            </button>
+                          </>
+                        )}
+                      </div>
 
                       {hasMultipleImages && (
-                        <>
-                          <button
-                            onClick={(e) => navigateProductImage(product.id, 'prev', productImages.length, e)}
-                            className="absolute left-2 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 transition-colors"
-                            aria-label="Previous image"
-                          >
-                            <ChevronLeft className="h-5 w-5 text-gray-600" />
-                          </button>
-
-                          <button
-                            onClick={(e) => navigateProductImage(product.id, 'next', productImages.length, e)}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 transition-colors"
-                            aria-label="Next image"
-                          >
-                            <ChevronRight className="h-5 w-5 text-gray-600" />
-                          </button>
-
-                          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 bg-black/30 backdrop-blur-sm px-2.5 py-1.5 rounded-full">
-                            {productImages.map((_, index) => (
-                              <div
-                                key={index}
-                                className={`rounded-full transition-all cursor-pointer ${
-                                  index === currentIndex
-                                    ? 'h-2 w-6 bg-white shadow-md'
-                                    : 'h-2 w-2 bg-white/60 hover:bg-white/80'
-                                }`}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setProductImageIndexes(prev => ({ ...prev, [product.id]: index }));
-                                }}
-                              />
-                            ))}
-                          </div>
-                        </>
+                        <div className="flex justify-center gap-2 pb-3">
+                          {productImages.map((_, index) => (
+                            <button
+                              key={index}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setProductImageIndexes(prev => ({ ...prev, [product.id]: index }));
+                              }}
+                              className={`w-2 h-2 rounded-full transition-colors ${
+                                index === currentIndex ? 'bg-red-600' : 'bg-gray-300'
+                              }`}
+                              aria-label={`View image ${index + 1}`}
+                            />
+                          ))}
+                        </div>
                       )}
                     </div>
                     <div className="p-4">
