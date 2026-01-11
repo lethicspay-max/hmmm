@@ -30,7 +30,7 @@ service cloud.firestore {
       // Users can read their own profile
       // Admins can read any profile
       allow read: if (
-        (resource.data.role == 'corporate' && resource.data.status == 'approved') ||
+        resource.data.role == 'corporate' ||
         (isAuthenticated() && (isOwner(userId) || isAdmin()))
       );
 
@@ -80,20 +80,13 @@ service cloud.firestore {
 
     // Employees Collection
     match /employees/{employeeId} {
-      // Admins can read all employees
-      // Corporates can read their own employees
-      // Employees can read their own profile
-      allow read: if isAuthenticated() && (
-        isAdmin() ||
-        resource.data.corporateId == request.auth.uid ||
-        isOwner(employeeId)
-      );
+      // Anyone can read employees (needed for company subpage login/registration)
+      // This allows employees to check if their email exists and login
+      allow read: if true;
 
-      // Admins and corporates can create employees
-      allow create: if isAuthenticated() && (
-        isAdmin() ||
-        (isCorporate() && request.resource.data.corporateId == request.auth.uid)
-      );
+      // Anyone can create employees (for self-registration on company pages)
+      // Admins and corporates can also create employees
+      allow create: if true;
 
       // Admins and corporates can update their employees
       // Employees can update limited fields on their own profile
