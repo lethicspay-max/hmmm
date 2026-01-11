@@ -19,7 +19,7 @@ import {
   orderBy 
 } from 'firebase/firestore';
 import { db, auth } from '../firebase/config';
-import { Gift, ShoppingCart, LogOut, Plus, Minus, Truck, Package, Star, Eye, EyeOff, Mail, Lock, ArrowLeft, CheckCircle, X, User as UserIcon, Clock, Send, MessageSquare } from 'lucide-react';
+import { Gift, ShoppingCart, LogOut, Plus, Minus, Truck, Package, Star, Eye, EyeOff, Mail, Lock, ArrowLeft, CheckCircle, X, User as UserIcon, Clock, Send, MessageSquare, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface Employee {
   id: string;
@@ -38,6 +38,7 @@ interface Product {
   stock: number;
   category: string;
   imageUrl: string;
+  imageUrls?: string[];
   sizes?: string[];
   colors?: string[];
 }
@@ -158,6 +159,7 @@ export function CompanySubPage() {
   const [selectedProductForView, setSelectedProductForView] = useState<Product | null>(null);
   const [selectedSize, setSelectedSize] = useState<string>('');
   const [selectedColor, setSelectedColor] = useState<string>('');
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   
   // Notification state
   const [notification, setNotification] = useState<{
@@ -757,6 +759,7 @@ fire(0.1, {
     setSelectedProductForView(product);
     setSelectedSize('');
     setSelectedColor('');
+    setCurrentImageIndex(0);
   };
 
   const closeViewModal = () => {
@@ -1711,13 +1714,56 @@ fire(0.1, {
               </button>
               
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-6">
-                {/* Product Image */}
-                <div className="space-y-4 bg-gray-50 rounded-lg flex items-center justify-center" style={{height: '24rem'}}>
-                  <img
-                    src={selectedProductForView.imageUrl}
-                    alt={selectedProductForView.name}
-                    className="max-h-96 max-w-full object-contain rounded-lg"
-                  />
+                {/* Product Image Carousel */}
+                <div className="space-y-4">
+                  {(() => {
+                    const images = selectedProductForView.imageUrls && selectedProductForView.imageUrls.length > 0
+                      ? selectedProductForView.imageUrls
+                      : [selectedProductForView.imageUrl];
+
+                    return (
+                      <div className="relative">
+                        <div className="bg-gray-50 rounded-lg flex items-center justify-center" style={{height: '24rem'}}>
+                          <img
+                            src={images[currentImageIndex]}
+                            alt={`${selectedProductForView.name} ${currentImageIndex + 1}`}
+                            className="max-h-96 max-w-full object-contain rounded-lg"
+                          />
+                        </div>
+
+                        {/* Navigation buttons */}
+                        {images.length > 1 && (
+                          <>
+                            <button
+                              onClick={() => setCurrentImageIndex(prev => prev === 0 ? images.length - 1 : prev - 1)}
+                              className="absolute left-2 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 transition-colors"
+                            >
+                              <ChevronLeft className="h-5 w-5 text-gray-700" />
+                            </button>
+                            <button
+                              onClick={() => setCurrentImageIndex(prev => prev === images.length - 1 ? 0 : prev + 1)}
+                              className="absolute right-2 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 transition-colors"
+                            >
+                              <ChevronRight className="h-5 w-5 text-gray-700" />
+                            </button>
+
+                            {/* Image indicators */}
+                            <div className="flex justify-center gap-2 mt-3">
+                              {images.map((_, index) => (
+                                <button
+                                  key={index}
+                                  onClick={() => setCurrentImageIndex(index)}
+                                  className={`w-2 h-2 rounded-full transition-colors ${
+                                    index === currentImageIndex ? 'bg-red-600' : 'bg-gray-300'
+                                  }`}
+                                />
+                              ))}
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    );
+                  })()}
                 </div>
 
                 {/* Product Details */}

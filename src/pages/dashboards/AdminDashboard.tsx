@@ -37,6 +37,7 @@ interface Product {
   stock: number;
   category: string;
   imageUrl: string;
+  imageUrls?: string[];
   status: 'active' | 'inactive';
 }
 
@@ -154,6 +155,7 @@ export function AdminDashboard() {
     stock: 0,
     category: '',
     imageUrl: '',
+    imageUrls: [] as string[],
     weight: '',
     sizes: [] as string[],
     colors: [] as string[]
@@ -161,6 +163,7 @@ export function AdminDashboard() {
   const [editingProduct, setEditingProduct] = useState<string | null>(null);
   const [customSize, setCustomSize] = useState('');
   const [customColor, setCustomColor] = useState('');
+  const [newImageUrl, setNewImageUrl] = useState('');
 
   // Standard sizes and colors
   const standardSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', '2XL', '3XL'];
@@ -314,12 +317,12 @@ export function AdminDashboard() {
 
   const handleAddProduct = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!newProduct.name || !newProduct.sku || newProduct.pointCost <= 0) {
       alert('Please fill in all required fields');
       return;
     }
-    
+
     try {
       // Check if SKU already exists
       const skuQuery = query(
@@ -327,18 +330,18 @@ export function AdminDashboard() {
         where('sku', '==', newProduct.sku)
       );
       const skuSnapshot = await getDocs(skuQuery);
-      
+
       if (!skuSnapshot.empty) {
         alert('SKU already exists. Please use a unique SKU.');
         return;
       }
-      
+
       await addDoc(collection(db, 'products'), {
         ...newProduct,
         status: 'active',
         createdAt: new Date().toISOString(),
       });
-      
+
       setNewProduct({
         name: '',
         sku: '',
@@ -347,13 +350,15 @@ export function AdminDashboard() {
         stock: 0,
         category: '',
         imageUrl: '',
+        imageUrls: [],
         weight: '',
         sizes: [],
         colors: []
       });
       setCustomSize('');
       setCustomColor('');
-      
+      setNewImageUrl('');
+
       loadData();
     } catch (error) {
       console.error('Error adding product:', error);
@@ -372,12 +377,14 @@ export function AdminDashboard() {
         stock: 0,
         category: '',
         imageUrl: '',
+        imageUrls: [],
         weight: '',
         sizes: [],
         colors: []
       });
       setCustomSize('');
       setCustomColor('');
+      setNewImageUrl('');
       loadData();
     } catch (error) {
       console.error('Error updating product:', error);
@@ -1130,15 +1137,65 @@ export function AdminDashboard() {
                       
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Image URL
+                          Product Images
                         </label>
-                        <input
-                          type="url"
-                          value={newProduct.imageUrl}
-                          onChange={(e) => setNewProduct({...newProduct, imageUrl: e.target.value})}
-                          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
-                          placeholder="Enter image URL"
-                        />
+
+                        {/* Add new image */}
+                        <div className="flex gap-2 mb-3">
+                          <input
+                            type="url"
+                            value={newImageUrl}
+                            onChange={(e) => setNewImageUrl(e.target.value)}
+                            className="flex-1 border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                            placeholder="Enter image URL"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (newImageUrl.trim()) {
+                                const updatedImages = [...newProduct.imageUrls, newImageUrl.trim()];
+                                setNewProduct({
+                                  ...newProduct,
+                                  imageUrls: updatedImages,
+                                  imageUrl: updatedImages[0]
+                                });
+                                setNewImageUrl('');
+                              }
+                            }}
+                            className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+                          >
+                            Add
+                          </button>
+                        </div>
+
+                        {/* Display added images */}
+                        {newProduct.imageUrls.length > 0 && (
+                          <div className="space-y-2">
+                            {newProduct.imageUrls.map((url, index) => (
+                              <div key={index} className="flex items-center gap-2 p-2 bg-gray-50 rounded border">
+                                <img src={url} alt={`Product ${index + 1}`} className="w-16 h-16 object-contain bg-white rounded" />
+                                <span className="flex-1 text-sm text-gray-600 truncate">{url}</span>
+                                {index === 0 && (
+                                  <span className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded">Primary</span>
+                                )}
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const updatedImages = newProduct.imageUrls.filter((_, i) => i !== index);
+                                    setNewProduct({
+                                      ...newProduct,
+                                      imageUrls: updatedImages,
+                                      imageUrl: updatedImages[0] || ''
+                                    });
+                                  }}
+                                  className="text-red-600 hover:text-red-800"
+                                >
+                                  <X className="h-5 w-5" />
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        )}
                       </div>
 
                       <div>
@@ -1334,12 +1391,14 @@ export function AdminDashboard() {
                               stock: 0,
                               category: '',
                               imageUrl: '',
+                              imageUrls: [],
                               weight: '',
                               sizes: [],
                               colors: []
                             });
                             setCustomSize('');
                             setCustomColor('');
+                            setNewImageUrl('');
                           }}
                           className="bg-gray-600 text-white px-6 py-2 rounded-md hover:bg-gray-700 transition-colors"
                         >
@@ -1454,6 +1513,7 @@ export function AdminDashboard() {
                                     stock: product.stock,
                                     category: product.category,
                                     imageUrl: product.imageUrl,
+                                    imageUrls: product.imageUrls || [],
                                     weight: product.weight || '',
                                     sizes: product.sizes || [],
                                     colors: product.colors || []

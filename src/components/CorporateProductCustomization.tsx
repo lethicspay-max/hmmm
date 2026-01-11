@@ -20,6 +20,7 @@ interface Product {
   pointCost: number;
   category: string;
   imageUrl: string;
+  imageUrls?: string[];
   status: string;
 }
 

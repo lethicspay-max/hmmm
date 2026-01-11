@@ -21,7 +21,9 @@ import {
   CheckCircle,
   Clock,
   Lock,
-  Unlock
+  Unlock,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, where, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../../firebase/config';
@@ -50,6 +52,7 @@ interface Product {
   stock: number;
   category: string;
   imageUrl: string;
+  imageUrls?: string[];
   sizes?: string[];
   colors?: string[];
 }
@@ -113,6 +116,7 @@ export function CorporateDashboard() {
 
   const [selectedProductForView, setSelectedProductForView] = useState<Product | null>(null);
   const [showProductViewModal, setShowProductViewModal] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   // New state for product customization
   const [corporateProductSettings, setCorporateProductSettings] = useState<{[key: string]: CorporateProductSetting}>({});
@@ -146,6 +150,7 @@ export function CorporateDashboard() {
 
   const handleViewProduct = (product: Product) => {
     setSelectedProductForView(product);
+    setCurrentImageIndex(0);
     setShowProductViewModal(true);
   };
 
@@ -1626,13 +1631,56 @@ export function CorporateDashboard() {
                 </button>
               </div>
 
-              {/* Product Image */}
-              <div className="mb-6 bg-gray-50 rounded-lg flex items-center justify-center" style={{height: '16rem'}}>
-                <img
-                  src={selectedProductForView.imageUrl}
-                  alt={selectedProductForView.name}
-                  className="max-h-64 max-w-full object-contain rounded-lg"
-                />
+              {/* Product Image Carousel */}
+              <div className="mb-6">
+                {(() => {
+                  const images = selectedProductForView.imageUrls && selectedProductForView.imageUrls.length > 0
+                    ? selectedProductForView.imageUrls
+                    : [selectedProductForView.imageUrl];
+
+                  return (
+                    <div className="relative">
+                      <div className="bg-gray-50 rounded-lg flex items-center justify-center" style={{height: '16rem'}}>
+                        <img
+                          src={images[currentImageIndex]}
+                          alt={`${selectedProductForView.name} ${currentImageIndex + 1}`}
+                          className="max-h-64 max-w-full object-contain rounded-lg"
+                        />
+                      </div>
+
+                      {/* Navigation buttons */}
+                      {images.length > 1 && (
+                        <>
+                          <button
+                            onClick={() => setCurrentImageIndex(prev => prev === 0 ? images.length - 1 : prev - 1)}
+                            className="absolute left-2 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 transition-colors"
+                          >
+                            <ChevronLeft className="h-5 w-5 text-gray-700" />
+                          </button>
+                          <button
+                            onClick={() => setCurrentImageIndex(prev => prev === images.length - 1 ? 0 : prev + 1)}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 transition-colors"
+                          >
+                            <ChevronRight className="h-5 w-5 text-gray-700" />
+                          </button>
+
+                          {/* Image indicators */}
+                          <div className="flex justify-center gap-2 mt-3">
+                            {images.map((_, index) => (
+                              <button
+                                key={index}
+                                onClick={() => setCurrentImageIndex(index)}
+                                className={`w-2 h-2 rounded-full transition-colors ${
+                                  index === currentImageIndex ? 'bg-red-600' : 'bg-gray-300'
+                                }`}
+                              />
+                            ))}
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  );
+                })()}
               </div>
 
               {/* Product Details */}
