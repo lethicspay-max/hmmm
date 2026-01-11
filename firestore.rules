@@ -27,12 +27,8 @@ service cloud.firestore {
     // Users Collection
     match /users/{userId} {
       // Users can read their own profile
-      // Admins can read all profiles
-      // Anyone can read corporate users (for public company pages accessed via slug)
       allow read: if isAuthenticated() && (
-        isOwner(userId) ||
-        isAdmin() ||
-        resource.data.role == 'corporate'
+        isOwner(userId) || isAdmin()
       );
 
       // Only admins can create users (registration handled via Firebase Auth + Cloud Functions)

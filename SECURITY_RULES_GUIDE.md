@@ -62,7 +62,6 @@ firebase deploy --only firestore:rules,storage:rules
 #### 1. Users Collection (`/users/{userId}`)
 - ✅ Users can read their own profile
 - ✅ Admins can read all profiles
-- ✅ Anyone authenticated can read corporate users (enables public company pages via `/company/:slug`)
 - ✅ Only admins can create users
 - ✅ Users can update their own profile (but cannot change `role` or `status`)
 - ✅ Only admins can delete users
