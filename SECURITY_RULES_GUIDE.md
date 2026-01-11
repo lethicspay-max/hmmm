@@ -80,7 +80,44 @@ firebase deploy --only firestore:rules,storage:rules
 - ✅ Corporates can only read their own product settings
 - ✅ Only admins can modify product settings
 
-#### 5. Default Deny
+#### 5. Employees Collection (`/employees/{employeeId}`)
+- ✅ Admins can read all employees
+- ✅ Corporates can read their own employees (where `corporateId` matches)
+- ✅ Employees can read their own profile
+- ✅ Admins and corporates can create employees under their corporate
+- ✅ Employees can update limited fields on their profile (cannot change points or corporateId)
+- ✅ Only admins and parent corporates can delete employees
+
+#### 6. Orders Collection (`/orders/{orderId}`)
+- ✅ Admins can read all orders
+- ✅ Corporates can read orders from their employees
+- ✅ Employees can read their own orders
+- ✅ Employees can create orders for themselves
+- ✅ Only admins can update order status
+- ✅ Only admins can delete orders
+
+#### 7. Tickets Collection (`/tickets/{ticketId}`)
+- ✅ Admins can read all tickets
+- ✅ Corporates can read tickets related to their account
+- ✅ Employees can read their own tickets
+- ✅ Any authenticated user can create tickets
+- ✅ Admins can update any ticket
+- ✅ Ticket creators can add messages (limited updates)
+- ✅ Only admins can delete tickets
+
+#### 8. Point Transactions Collection (`/pointTransactions/{transactionId}`)
+- ✅ Admins can read all transactions
+- ✅ Corporates can read their own transactions
+- ✅ Employees can read their own transactions
+- ✅ Admins and corporates can create transactions
+- ✅ Only admins can update or delete transactions
+
+#### 9. Contact Submissions Collection (`/contactSubmissions/{submissionId}`)
+- ✅ Only admins can read contact submissions
+- ✅ Anyone can create contact submissions (public contact form)
+- ✅ Only admins can update or delete submissions
+
+#### 10. Default Deny
 - ❌ All other collections are blocked by default
 
 ### Storage Security Rules

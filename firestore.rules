@@ -81,6 +81,128 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // Employees Collection
+    match /employees/{employeeId} {
+      // Admins can read all employees
+      // Corporates can read their own employees
+      // Employees can read their own profile
+      allow read: if isAuthenticated() && (
+        isAdmin() ||
+        resource.data.corporateId == request.auth.uid ||
+        isOwner(employeeId)
+      );
+
+      // Admins and corporates can create employees
+      allow create: if isAuthenticated() && (
+        isAdmin() ||
+        (isCorporate() && request.resource.data.corporateId == request.auth.uid)
+      );
+
+      // Admins and corporates can update their employees
+      // Employees can update limited fields on their own profile
+      allow update: if isAuthenticated() && (
+        isAdmin() ||
+        (isCorporate() && resource.data.corporateId == request.auth.uid) ||
+        (isOwner(employeeId) && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['corporateId', 'points']))
+      );
+
+      // Admins and corporates can delete employees
+      allow delete: if isAuthenticated() && (
+        isAdmin() ||
+        (isCorporate() && resource.data.corporateId == request.auth.uid)
+      );
+    }
+
+    // Orders Collection
+    match /orders/{orderId} {
+      // Admins can read all orders
+      // Corporates can read orders from their employees
+      // Employees can read their own orders
+      allow read: if isAuthenticated() && (
+        isAdmin() ||
+        resource.data.corporateId == request.auth.uid ||
+        resource.data.employeeId == request.auth.uid
+      );
+
+      // Admins can create orders (for testing)
+      // Employees can create orders for themselves
+      allow create: if isAuthenticated() && (
+        isAdmin() ||
+        request.resource.data.employeeId == request.auth.uid
+      );
+
+      // Only admins can update orders (status changes, etc.)
+      allow update: if isAdmin();
+
+      // Only admins can delete orders
+      allow delete: if isAdmin();
+    }
+
+    // Tickets Collection
+    match /tickets/{ticketId} {
+      // Admins can read all tickets
+      // Corporates can read their own tickets
+      // Employees can read their own tickets
+      allow read: if isAuthenticated() && (
+        isAdmin() ||
+        resource.data.corporateId == request.auth.uid ||
+        resource.data.employeeId == request.auth.uid
+      );
+
+      // Anyone authenticated can create tickets
+      allow create: if isAuthenticated();
+
+      // Admins can update any ticket
+      // Ticket creators can update their own tickets (limited fields)
+      allow update: if isAuthenticated() && (
+        isAdmin() ||
+        (resource.data.employeeId == request.auth.uid &&
+         !request.resource.data.diff(resource.data).affectedKeys().hasAny(['status', 'createdAt']))
+      );
+
+      // Only admins can delete tickets
+      allow delete: if isAdmin();
+    }
+
+    // Point Transactions Collection
+    match /pointTransactions/{transactionId} {
+      // Admins can read all transactions
+      // Corporates can read their own transactions
+      // Employees can read their own transactions
+      allow read: if isAuthenticated() && (
+        isAdmin() ||
+        resource.data.corporateId == request.auth.uid ||
+        resource.data.employeeId == request.auth.uid
+      );
+
+      // Admins and corporates can create transactions
+      allow create: if isAuthenticated() && (
+        isAdmin() ||
+        (isCorporate() && request.resource.data.corporateId == request.auth.uid)
+      );
+
+      // Only admins can update transactions
+      allow update: if isAdmin();
+
+      // Only admins can delete transactions
+      allow delete: if isAdmin();
+    }
+
+    // Contact Submissions Collection
+    match /contactSubmissions/{submissionId} {
+      // Only admins can read contact submissions
+      allow read: if isAdmin();
+
+      // Anyone can create contact submissions (for contact form)
+      allow create: if true;
+
+      // Only admins can update submissions
+      allow update: if isAdmin();
+
+      // Only admins can delete submissions
+      allow delete: if isAdmin();
+    }
+
     // Block all other collections by default
     match /{document=**} {
       allow read, write: if false;
