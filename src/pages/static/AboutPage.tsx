@@ -154,7 +154,7 @@ export function AboutPage() {
                 alt="Ashima Kothari"
                 className="w-20 h-20 rounded-full object-cover mx-auto mb-4"
               />
-              <h3 className="text-xl font-semibold mb-1">Ashima Kothari</h3>
+              <h3 className="text-xl font-semibold mb-1">Vignesh Subramaniam</h3>
               <p className="text-green-600 mb-2">CFO & CO-FOUNDER</p>
               <p className="text-gray-600">Technology leader</p>
             </div>
