@@ -1890,9 +1890,9 @@ fire(0.1, {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center space-y-2">
             <p className="text-sm opacity-90">
-              Poweblue by{' '}
+              Powered by{' '}
               <a 
-                href="https://clientsark.com" 
+                href="https://surajgiftings.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="font-semibold hover:opacity-80 transition-opacity"
