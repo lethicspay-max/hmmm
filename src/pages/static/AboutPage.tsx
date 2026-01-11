@@ -111,8 +111,8 @@ export function AboutPage() {
                 className="w-12 h-12 rounded-full object-cover"
               />
               <div className="ml-4">
-                <p className="font-semibold">Rases Changoiwala</p>
-                <p className="text-sm text-gray-500">Founder & CEO, Tapwell</p>
+                <p className="font-semibold">Raja</p>
+                <p className="text-sm text-gray-500">Founder & CEO, Suraj International</p>
               </div>
             </div>
           </div>
