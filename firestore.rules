@@ -26,9 +26,12 @@ service cloud.firestore {
 
     // Users Collection
     match /users/{userId} {
+      // Allow anyone to read corporate users (for public company pages)
       // Users can read their own profile
-      allow read: if isAuthenticated() && (
-        isOwner(userId) || isAdmin()
+      // Admins can read any profile
+      allow read: if (
+        (resource.data.role == 'corporate' && resource.data.status == 'approved') ||
+        (isAuthenticated() && (isOwner(userId) || isAdmin()))
       );
 
       // Only admins can create users (registration handled via Firebase Auth + Cloud Functions)
@@ -48,8 +51,8 @@ service cloud.firestore {
 
     // Products Collection
     match /products/{productId} {
-      // Anyone authenticated can read active products
-      allow read: if isAuthenticated();
+      // Anyone can read active products (for public company pages)
+      allow read: if true;
 
       // Only admins can write products
       allow create, update, delete: if isAdmin();
@@ -57,12 +60,9 @@ service cloud.firestore {
 
     // Corporate Settings Collection
     match /corporateSettings/{settingId} {
-      // Admins can read all settings
-      // Corporates can only read their own settings
-      allow read: if isAuthenticated() && (
-        isAdmin() ||
-        resource.data.corporateId == request.auth.uid
-      );
+      // Anyone can read settings (for public company pages)
+      // This allows employees to see their company's branding before logging in
+      allow read: if true;
 
       // Only admins can write settings
       allow create, update, delete: if isAdmin();
@@ -70,12 +70,9 @@ service cloud.firestore {
 
     // Corporate Product Settings Collection
     match /corporateProductSettings/{settingId} {
-      // Admins can read all settings
-      // Corporates can only read their own settings
-      allow read: if isAuthenticated() && (
-        isAdmin() ||
-        resource.data.corporateId == request.auth.uid
-      );
+      // Anyone can read product settings (for public company pages)
+      // This allows employees to see customized products before logging in
+      allow read: if true;
 
       // Only admins can write product settings
       allow write: if isAdmin();
