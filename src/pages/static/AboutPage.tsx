@@ -150,7 +150,7 @@ export function AboutPage() {
             </div>
             <div className="bg-white p-6 rounded-lg shadow-md text-center">
               <img 
-                src="https://tapwell.in/wp-content/uploads/2024/07/Ashima-Kothari-1.jpg"
+                src="https://photoswaly.in/wp-content/uploads/2024/05/no-dp_16.webp"
                 alt="Ashima Kothari"
                 className="w-20 h-20 rounded-full object-cover mx-auto mb-4"
               />
