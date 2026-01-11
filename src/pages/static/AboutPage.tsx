@@ -140,7 +140,7 @@ export function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-white p-6 rounded-lg shadow-md text-center">
               <img 
-                src="https://tapwell.in/wp-content/uploads/2024/07/Rases-Changoiwala.jpg"
+                src="https://photoswaly.in/wp-content/uploads/2024/05/no-dp_16.webp"
                 alt="Rases Changoiwala"
                 className="w-20 h-20 rounded-full object-cover mx-auto mb-4"
               />
