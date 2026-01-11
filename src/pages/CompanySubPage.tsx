@@ -1888,7 +1888,7 @@ fire(0.1, {
                       <img
                         src={item.product.imageUrl}
                         alt={item.product.name}
-                        className="w-16 h-16 object-cover rounded"
+                        className="w-16 h-16 object-contain rounded bg-gray-50"
                       />
                       <div className="flex-1">
                         <h3 className="font-medium">{item.product.name}</h3>

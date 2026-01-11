@@ -2788,10 +2788,10 @@ export function AdminDashboard() {
                       <div key={index} className="border rounded-lg p-3">
                         <div className="flex items-center space-x-3">
                           {product.imageUrl && (
-                            <img 
-                              src={product.imageUrl} 
+                            <img
+                              src={product.imageUrl}
                               alt={product.name}
-                              className="w-12 h-12 object-cover rounded"
+                              className="w-12 h-12 object-contain rounded bg-gray-50"
                             />
                           )}
                           <div className="flex-1">
