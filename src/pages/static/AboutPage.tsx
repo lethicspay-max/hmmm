@@ -161,7 +161,7 @@ export function AboutPage() {
 
             <div className="bg-white p-6 rounded-lg shadow-md text-center">
               <img 
-                src="https://companyshop.in/images/aboutus/vidya-3.jpg"
+                src="https://photoswaly.in/wp-content/uploads/2024/05/no-dp_16.webp"
                 alt="Vidya Jaiswar"
                 className="w-20 h-20 rounded-full object-cover mx-auto mb-4"
               />
