@@ -172,7 +172,7 @@ export function AboutPage() {
 
             <div className="bg-white p-6 rounded-lg shadow-md text-center">
               <img 
-                src="https://companyshop.in/images/aboutus/ayushi-4.jpg"
+                src="https://photoswaly.in/wp-content/uploads/2024/05/no-dp_16.webp
                 alt="Ayushi Patel"
                 className="w-20 h-20 rounded-full object-cover mx-auto mb-4"
               />
