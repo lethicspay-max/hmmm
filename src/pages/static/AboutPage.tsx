@@ -177,7 +177,7 @@ export function AboutPage() {
                 className="w-20 h-20 rounded-full object-cover mx-auto mb-4"
               />
               <h3 className="text-xl font-semibold mb-1">Smit Bhatt</h3>
-              <p className="text-orange-600 mb-2">Business development & Operations</p>
+              <p className="text-orange-600 mb-2">Procurement Manager</p>
             </div>
           </div>
         </div>
