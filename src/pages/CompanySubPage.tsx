@@ -535,6 +535,7 @@ export function CompanySubPage() {
           stock: product.stock,
           category: product.category,
           imageUrl: product.imageUrl,
+          imageUrls: product.imageUrls,
           sizes: product.sizes,
           colors: product.colors,
         };
