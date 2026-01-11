@@ -1576,29 +1576,33 @@ fire(0.1, {
                         <>
                           <button
                             onClick={(e) => navigateProductImage(product.id, 'prev', productImages.length, e)}
-                            className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                            className="absolute left-2 top-1/2 -translate-y-1/2 bg-white shadow-lg hover:shadow-xl text-gray-800 hover:text-black p-2.5 rounded-full transition-all hover:scale-110 z-10"
                             aria-label="Previous image"
                           >
-                            <ChevronLeft className="h-4 w-4" />
+                            <ChevronLeft className="h-5 w-5" />
                           </button>
 
                           <button
                             onClick={(e) => navigateProductImage(product.id, 'next', productImages.length, e)}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                            className="absolute right-2 top-1/2 -translate-y-1/2 bg-white shadow-lg hover:shadow-xl text-gray-800 hover:text-black p-2.5 rounded-full transition-all hover:scale-110 z-10"
                             aria-label="Next image"
                           >
-                            <ChevronRight className="h-4 w-4" />
+                            <ChevronRight className="h-5 w-5" />
                           </button>
 
-                          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5">
+                          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 bg-black/30 backdrop-blur-sm px-2.5 py-1.5 rounded-full">
                             {productImages.map((_, index) => (
                               <div
                                 key={index}
-                                className={`h-1.5 rounded-full transition-all ${
+                                className={`rounded-full transition-all cursor-pointer ${
                                   index === currentIndex
-                                    ? 'w-6 bg-white'
-                                    : 'w-1.5 bg-white/60'
+                                    ? 'h-2 w-6 bg-white shadow-md'
+                                    : 'h-2 w-2 bg-white/60 hover:bg-white/80'
                                 }`}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setProductImageIndexes(prev => ({ ...prev, [product.id]: index }));
+                                }}
                               />
                             ))}
                           </div>
