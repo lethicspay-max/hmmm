@@ -144,9 +144,9 @@ export function AboutPage() {
                 alt="Rases Changoiwala"
                 className="w-20 h-20 rounded-full object-cover mx-auto mb-4"
               />
-              <h3 className="text-xl font-semibold mb-1">Rases Changoiwala</h3>
+              <h3 className="text-xl font-semibold mb-1">RAJA</h3>
               <p className="text-red-600 mb-2">Founder & CEO</p>
-              <p className="text-gray-600">Technology leader</p>
+              
             </div>
             <div className="bg-white p-6 rounded-lg shadow-md text-center">
               <img 
@@ -156,6 +156,7 @@ export function AboutPage() {
               />
               <h3 className="text-xl font-semibold mb-1">Ashima Kothari</h3>
               <p className="text-green-600 mb-2">CFO & CO-FOUNDER</p>
+              <p className="text-gray-600">Technology leader</p>
             </div>
 
             <div className="bg-white p-6 rounded-lg shadow-md text-center">
