@@ -1576,18 +1576,18 @@ fire(0.1, {
                         <>
                           <button
                             onClick={(e) => navigateProductImage(product.id, 'prev', productImages.length, e)}
-                            className="absolute left-2 top-1/2 -translate-y-1/2 bg-white shadow-lg hover:shadow-xl text-gray-800 hover:text-black p-2.5 rounded-full transition-all hover:scale-110 z-10"
+                            className="absolute left-2 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 transition-colors"
                             aria-label="Previous image"
                           >
-                            <ChevronLeft className="h-5 w-5" />
+                            <ChevronLeft className="h-5 w-5 text-gray-600" />
                           </button>
 
                           <button
                             onClick={(e) => navigateProductImage(product.id, 'next', productImages.length, e)}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 bg-white shadow-lg hover:shadow-xl text-gray-800 hover:text-black p-2.5 rounded-full transition-all hover:scale-110 z-10"
+                            className="absolute right-2 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 transition-colors"
                             aria-label="Next image"
                           >
-                            <ChevronRight className="h-5 w-5" />
+                            <ChevronRight className="h-5 w-5 text-gray-600" />
                           </button>
 
                           <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 bg-black/30 backdrop-blur-sm px-2.5 py-1.5 rounded-full">
