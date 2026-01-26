@@ -34,8 +34,13 @@ service cloud.firestore {
         (isAuthenticated() && (isOwner(userId) || isAdmin()))
       );
 
-      // Only admins can create users (registration handled via Firebase Auth + Cloud Functions)
-      allow create: if isAdmin();
+      // Allow users to create their own profile during registration
+      // or admins can create any user profile
+      allow create: if isAdmin() || (
+        isAuthenticated() &&
+        isOwner(userId) &&
+        request.resource.data.role in ['corporate']
+      );
 
       // Users can update their own profile (limited fields)
       // Admins can update any user
