@@ -28,6 +28,12 @@ import {
 import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, where, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../../firebase/config';
 import { exportOrdersToCSV, formatDateForFilename } from '../../utils/csvExport';
+import {
+  validateEmployee,
+  validateBulkEmployees,
+  sanitizeEmployeeData,
+  VALIDATION_RULES
+} from '../../utils/employeeValidation';
 
 interface CorporateDashboardProps {
   corporateId: string;
@@ -394,36 +400,52 @@ export function CorporateDashboard() {
 
   const handleAddEmployee = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Check if corporate has enough points for initial allocation
-    if (employeeForm.points > corporatePoints.available) {
-      alert(`Insufficient points available. You have ${corporatePoints.available} points available, but trying to allocate ${employeeForm.points} points.`);
+
+    // Validate employee data
+    const validationResult = validateEmployee(
+      {
+        ...employeeForm,
+        corporateId: currentUser?.uid || '',
+        corporateCompany: userProfile?.companyName
+      },
+      employees,
+      corporatePoints.available
+    );
+
+    // Display validation errors
+    if (!validationResult.valid) {
+      alert('Validation Error:\n\n' + validationResult.errors.join('\n'));
       return;
     }
-    
+
     try {
-      await addDoc(collection(db, 'employees'), {
+      // Sanitize employee data before submission
+      const sanitizedData = sanitizeEmployeeData({
         ...employeeForm,
         corporateId: currentUser?.uid,
-        corporateCompany: userProfile?.companyName,
+        corporateCompany: userProfile?.companyName
+      });
+
+      await addDoc(collection(db, 'employees'), {
+        ...sanitizedData,
         status: 'active',
         createdAt: new Date().toISOString(),
       });
-      
+
       // Update corporate used points
       if (employeeForm.points > 0) {
         const corporateRef = doc(db, 'users', currentUser?.uid || '');
         const corporateDoc = await getDoc(corporateRef);
-        
+
         if (corporateDoc.exists()) {
           const currentData = corporateDoc.data();
           const currentUsedPoints = currentData.usedPoints || 0;
-          
+
           await updateDoc(corporateRef, {
             usedPoints: currentUsedPoints + employeeForm.points,
             updatedAt: new Date().toISOString()
           });
-          
+
           // Log the point transaction
           await addDoc(collection(db, 'pointTransactions'), {
             type: 'corporate_to_employee',
@@ -431,73 +453,94 @@ export function CorporateDashboard() {
             toId: 'new_employee',
             points: employeeForm.points,
             reason: `Initial point allocation to new employee: ${employeeForm.name}`,
-            createdAt: new Date().toISOString()
+            createdAt: new Date().toISOString(),
+            corporateId: currentUser?.uid
           });
         }
       }
-      
+
+      alert(`Employee ${employeeForm.name} added successfully!`);
+
       setEmployeeForm({
         email: '',
         name: '',
         points: 100,
       });
-      
+
       loadData();
     } catch (error) {
       console.error('Error adding employee:', error);
+      alert('Failed to add employee. Please try again.');
     }
   };
 
   const handleBulkUpload = async () => {
-    if (!bulkEmployees.trim()) return;
-
-    // Parse and validate total points needed
-    const lines = bulkEmployees.trim().split('\n');
-    let totalPointsNeeded = 0;
-    const employeeData = [];
-
-    for (const line of lines) {
-      const [email, name, points = '100'] = line.split(',').map(s => s.trim());
-      if (email && name) {
-        const pointsNum = parseInt(points);
-        totalPointsNeeded += pointsNum;
-        employeeData.push({
-          email,
-          name,
-          points: pointsNum,
-          corporateId: currentUser?.uid,
-          corporateCompany: userProfile?.companyName,
-          status: 'active',
-          createdAt: new Date().toISOString(),
-        });
-      }
+    if (!bulkEmployees.trim()) {
+      alert('Please enter employee data in CSV format');
+      return;
     }
 
-    // Check if corporate has enough points
-    if (totalPointsNeeded > corporatePoints.available) {
-      alert(`Insufficient points available. You need ${totalPointsNeeded} points but only have ${corporatePoints.available} available.`);
+    // Validate bulk employee data
+    const validationResult = validateBulkEmployees(
+      bulkEmployees,
+      employees,
+      corporatePoints.available
+    );
+
+    // Display validation errors
+    if (!validationResult.valid) {
+      alert('Validation Errors:\n\n' + validationResult.errors.join('\n'));
       return;
     }
 
     try {
+      // Parse employee data
+      const lines = bulkEmployees.trim().split('\n');
+      let totalPointsNeeded = 0;
+      const employeeData = [];
+
+      for (const line of lines) {
+        const [email, name, points = '100'] = line.split(',').map(s => s.trim());
+        if (email && name) {
+          const pointsNum = parseInt(points) || 0;
+          totalPointsNeeded += pointsNum;
+
+          // Sanitize employee data
+          const sanitizedData = sanitizeEmployeeData({
+            email,
+            name,
+            points: pointsNum,
+            corporateId: currentUser?.uid,
+            corporateCompany: userProfile?.companyName
+          });
+
+          employeeData.push({
+            ...sanitizedData,
+            status: 'active',
+            createdAt: new Date().toISOString(),
+          });
+        }
+      }
+
+      // Add all employees to database
       for (const employee of employeeData) {
         await addDoc(collection(db, 'employees'), employee);
       }
-      
+
       // Update corporate used points
       if (totalPointsNeeded > 0) {
         const corporateRef = doc(db, 'users', currentUser?.uid || '');
         const corporateDoc = await getDoc(corporateRef);
-        
+
         if (corporateDoc.exists()) {
           const currentData = corporateDoc.data();
           const currentUsedPoints = currentData.usedPoints || 0;
-          
+
           await updateDoc(corporateRef, {
             usedPoints: currentUsedPoints + totalPointsNeeded,
             updatedAt: new Date().toISOString()
           });
-          
+
           // Log the point transaction
           await addDoc(collection(db, 'pointTransactions'), {
             type: 'corporate_to_employee',
@@ -505,15 +548,18 @@ export function CorporateDashboard() {
             toId: 'bulk_upload',
             points: totalPointsNeeded,
             reason: `Bulk upload of ${employeeData.length} employees`,
-            createdAt: new Date().toISOString()
+            createdAt: new Date().toISOString(),
+            corporateId: currentUser?.uid
           });
         }
       }
 
+      alert(`Successfully uploaded ${employeeData.length} employees!`);
       setBulkEmployees('');
       loadData();
     } catch (error) {
       console.error('Error bulk uploading employees:', error);
+      alert('Failed to upload employees. Please try again.');
     }
   };
 

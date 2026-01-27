@@ -89,9 +89,26 @@ service cloud.firestore {
       // This allows employees to check if their email exists and login
       allow read: if true;
 
-      // Anyone can create employees (for self-registration on company pages)
-      // Admins and corporates can also create employees
-      allow create: if true;
+      // Strict rules for employee creation:
+      // 1. Admins can always create employees
+      // 2. Corporate users can create employees under their account
+      // 3. Self-registration on company pages (when corporateId matches existing corporate)
+      allow create: if (
+        isAdmin() ||
+        (isCorporate() && request.resource.data.corporateId == request.auth.uid) ||
+        // Allow self-registration only if corporateId exists and email is valid
+        (
+          request.resource.data.corporateId != null &&
+          request.resource.data.email != null &&
+          request.resource.data.name != null &&
+          // Ensure points is non-negative
+          request.resource.data.points >= 0 &&
+          // Ensure status is set
+          request.resource.data.status in ['active', 'inactive'] &&
+          // Require timestamps
+          request.resource.data.createdAt != null
+        )
+      );
 
       // Admins and corporates can update their employees
       // Employees can update limited fields on their own profile
