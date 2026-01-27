@@ -122,18 +122,18 @@ service cloud.firestore {
         isAdmin() ||
         // Corporate can update their employees
         (isCorporate() && resource.data.corporateId == request.auth.uid) ||
-        // Employee updating their own record with restrictions
+        // Employee updating their own record with restrictions (by email match)
         (
-          isOwner(employeeId) &&
+          request.auth.token.email == resource.data.email &&
           // Cannot change critical fields
           !request.resource.data.diff(resource.data).affectedKeys().hasAny(['corporateId', 'points', 'status', 'email']) &&
           // Can only update allowed fields: name, hasPassword, updatedAt
           request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name', 'hasPassword', 'updatedAt'])
         ) ||
         // Special case: Employee setting hasPassword during first-time authentication
-        // This allows the authenticated user to mark their account as having a password
+        // This matches by email since the employee's Firestore doc ID != Auth UID
         (
-          isOwner(employeeId) &&
+          request.auth.token.email == resource.data.email &&
           resource.data.hasPassword == false &&
           request.resource.data.hasPassword == true &&
           request.resource.data.diff(resource.data).affectedKeys().hasOnly(['hasPassword', 'updatedAt']) &&

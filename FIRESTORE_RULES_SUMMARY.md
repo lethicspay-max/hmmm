@@ -20,12 +20,20 @@ Employees can be created by:
 3. Validated self-registration (with required fields)
 
 ### Update Access (Enhanced) ⭐
+**CRITICAL CHANGE**: Uses email matching instead of document ID matching
+
+Why? Employee Firestore document IDs don't match their Firebase Auth UIDs:
+- Corporate creates employee → Firestore generates document ID (e.g., "abc123")
+- Employee creates Auth account → Firebase generates Auth UID (e.g., "xyz789")
+- These IDs are different! So we match by email instead.
+
 Added special rule for first-time password setup:
 
 ```javascript
 // Special case: Employee setting hasPassword during first-time authentication
+// Matches by email since employee's Firestore doc ID != Auth UID
 (
-  isOwner(employeeId) &&
+  request.auth.token.email == resource.data.email &&
   resource.data.hasPassword == false &&
   request.resource.data.hasPassword == true &&
   request.resource.data.diff(resource.data).affectedKeys().hasOnly(['hasPassword', 'updatedAt']) &&
@@ -39,6 +47,7 @@ Added special rule for first-time password setup:
 
 **What this enables**:
 - Authenticated employees can update their `hasPassword` flag from `false` to `true`
+- **Matches by email** (not document ID) since Firestore doc ID ≠ Firebase Auth UID
 - This happens after they create their Firebase Auth account during first-time setup
 - They can ONLY change `hasPassword` and `updatedAt` fields
 - All other fields must remain unchanged

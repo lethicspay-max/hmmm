@@ -272,8 +272,14 @@ This is the critical rule for employee authentication:
 
 **Purpose**: Allow newly authenticated employees to mark their account as having a password
 
+**IMPORTANT**: This rule matches by **email**, not document ID, because:
+- When corporate creates employee → Firestore generates document ID (e.g., "abc123xyz")
+- When employee creates Auth account → Firebase generates Auth UID (e.g., "xyz789abc")
+- These IDs are DIFFERENT! So we match `request.auth.token.email == resource.data.email`
+
 **Conditions**:
-- Employee must be authenticated (isOwner)
+- Employee must be authenticated
+- **Email must match** (`request.auth.token.email == resource.data.email`)
 - Current hasPassword must be `false`
 - New hasPassword must be `true`
 - ONLY hasPassword and updatedAt can change
@@ -281,17 +287,19 @@ This is the critical rule for employee authentication:
 
 ```typescript
 // During first-time setup, after Firebase Auth account is created
-await updateDoc(doc(db, 'employees', currentUser.uid), {
+// Note: employee.id is the Firestore document ID (NOT the Auth UID)
+await updateDoc(doc(db, 'employees', employee.id), {
   hasPassword: true,
   updatedAt: new Date().toISOString()
 });
 ```
 
 **Why This Rule Exists**:
-1. Employee is added by corporate (hasPassword = false)
-2. Employee creates Firebase Auth account on subpage
-3. Employee needs to update Firestore record to mark hasPassword = true
-4. This rule allows that specific update while preventing abuse
+1. Employee is added by corporate with Firestore-generated ID (hasPassword = false)
+2. Employee creates Firebase Auth account on subpage (gets different Auth UID)
+3. Employee needs to update Firestore record using the Firestore document ID
+4. Rule verifies identity by matching email instead of UID
+5. This allows the specific update while preventing abuse
 
 ### Prevented Actions
 
@@ -773,12 +781,23 @@ await updateDoc(doc(db, 'employees', currentUser.uid), {
 
 **Symptom**: Cannot update hasPassword during first-time setup
 
-**Cause**: User not authenticated or trying to change other fields
+**Cause**: User not authenticated, trying to change other fields, or email mismatch
 
 **Solution**:
 1. Ensure user is authenticated with Firebase Auth
-2. Only update hasPassword and updatedAt
-3. Verify hasPassword is currently false
+2. Verify the authenticated user's email matches the employee document's email
+3. Only update hasPassword and updatedAt (no other fields)
+4. Verify hasPassword is currently false
+5. Use the Firestore document ID (not Auth UID) when calling updateDoc
+
+**Common Mistake**:
+```typescript
+// WRONG - Using Auth UID as document ID
+await updateDoc(doc(db, 'employees', currentUser.uid), { ... });
+
+// CORRECT - Using Firestore document ID
+await updateDoc(doc(db, 'employees', employee.id), { ... });
+```
 
 ### Corporate Cannot Update Employee
 
