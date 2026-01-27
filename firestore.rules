@@ -52,10 +52,23 @@ service cloud.firestore {
 
       // Users can update their own profile (limited fields)
       // Admins can update any user
+      // Authenticated users can update corporate statistics (for order tracking)
       allow update: if isAdmin() || (
         isOwner(userId) &&
         // Prevent users from changing their role or status
         !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role', 'status'])
+      ) || (
+        isAuthenticated() &&
+        resource.data.role == 'corporate' &&
+        // Only allow updating order statistics fields
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'totalOrders', 'totalOrderValue', 'lastOrderDate', 'updatedAt'
+        ]) &&
+        // Ensure statistics are only increasing (orders only add, never subtract)
+        (!request.resource.data.keys().hasAny(['totalOrders']) ||
+         request.resource.data.totalOrders >= resource.data.get('totalOrders', 0)) &&
+        (!request.resource.data.keys().hasAny(['totalOrderValue']) ||
+         request.resource.data.totalOrderValue >= resource.data.get('totalOrderValue', 0))
       );
 
       // Only admins can delete users
@@ -67,8 +80,20 @@ service cloud.firestore {
       // Anyone can read active products (for public company pages)
       allow read: if true;
 
-      // Only admins can write products
-      allow create, update, delete: if isAdmin();
+      // Admins can create/delete products and update all fields
+      allow create, delete: if isAdmin();
+
+      // Admins can update all product fields
+      // Authenticated users (employees) can ONLY decrease stock during order placement
+      allow update: if isAdmin() || (
+        isAuthenticated() &&
+        // Only the 'stock' field is being changed
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['stock']) &&
+        // Stock is decreasing (not increasing)
+        request.resource.data.stock <= resource.data.stock &&
+        // Stock cannot be negative
+        request.resource.data.stock >= 0
+      );
     }
 
     // Corporate Settings Collection
@@ -77,8 +102,21 @@ service cloud.firestore {
       // This allows employees to see their company's branding before logging in
       allow read: if true;
 
-      // Only admins can write settings
-      allow create, update, delete: if isAdmin();
+      // Admins can create/update/delete any settings
+      // Corporates can create/update their own settings
+      allow create: if isAdmin() || (
+        isCorporate() &&
+        request.resource.data.corporateId == request.auth.uid
+      );
+
+      allow update: if isAdmin() || (
+        isCorporate() &&
+        resource.data.corporateId == request.auth.uid &&
+        request.resource.data.corporateId == request.auth.uid
+      );
+
+      // Only admins can delete settings
+      allow delete: if isAdmin();
     }
 
     // Corporate Product Settings Collection
