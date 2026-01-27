@@ -86,7 +86,9 @@ service cloud.firestore {
     // Employees Collection
     match /employees/{employeeId} {
       // Anyone can read employees (needed for company subpage login/registration)
-      // This allows employees to check if their email exists and login
+      // This allows employees to check if their email exists during authentication
+      // SECURITY NOTE: Only non-sensitive data should be stored in employee records
+      // since read access is public for authentication purposes
       allow read: if true;
 
       // Strict rules for employee creation:
@@ -110,12 +112,37 @@ service cloud.firestore {
         )
       );
 
-      // Admins and corporates can update their employees
-      // Employees can update limited fields on their own profile
+      // Update rules for different scenarios:
+      // 1. Admins can update any field
+      // 2. Corporate users can update employees under their account
+      // 3. Employees (after auth) can update LIMITED fields only
+      // 4. During first-time setup: authenticated employee can update hasPassword field
       allow update: if isAuthenticated() && (
+        // Admin can update everything
         isAdmin() ||
+        // Corporate can update their employees
         (isCorporate() && resource.data.corporateId == request.auth.uid) ||
-        (isOwner(employeeId) && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['corporateId', 'points']))
+        // Employee updating their own record with restrictions
+        (
+          isOwner(employeeId) &&
+          // Cannot change critical fields
+          !request.resource.data.diff(resource.data).affectedKeys().hasAny(['corporateId', 'points', 'status', 'email']) &&
+          // Can only update allowed fields: name, hasPassword, updatedAt
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name', 'hasPassword', 'updatedAt'])
+        ) ||
+        // Special case: Employee setting hasPassword during first-time authentication
+        // This allows the authenticated user to mark their account as having a password
+        (
+          isOwner(employeeId) &&
+          resource.data.hasPassword == false &&
+          request.resource.data.hasPassword == true &&
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['hasPassword', 'updatedAt']) &&
+          // Ensure they cannot change anything else during this operation
+          request.resource.data.corporateId == resource.data.corporateId &&
+          request.resource.data.email == resource.data.email &&
+          request.resource.data.points == resource.data.points &&
+          request.resource.data.status == resource.data.status
+        )
       );
 
       // Admins and corporates can delete employees
