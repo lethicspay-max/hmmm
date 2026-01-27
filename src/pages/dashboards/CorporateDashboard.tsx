@@ -148,6 +148,10 @@ export function CorporateDashboard() {
   // Bulk employee upload
   const [bulkEmployees, setBulkEmployees] = useState('');
 
+  // Loading states for employee operations
+  const [addingEmployee, setAddingEmployee] = useState(false);
+  const [uploadingBulk, setUploadingBulk] = useState(false);
+
   useEffect(() => {
     if (currentUser) {
       loadData();
@@ -401,6 +405,9 @@ export function CorporateDashboard() {
   const handleAddEmployee = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Prevent double submission
+    if (addingEmployee) return;
+
     // Validate employee data
     const validationResult = validateEmployee(
       {
@@ -417,6 +424,8 @@ export function CorporateDashboard() {
       alert('Validation Error:\n\n' + validationResult.errors.join('\n'));
       return;
     }
+
+    setAddingEmployee(true);
 
     try {
       // Sanitize employee data before submission
@@ -467,10 +476,12 @@ export function CorporateDashboard() {
         points: 100,
       });
 
-      loadData();
+      await loadData();
     } catch (error) {
       console.error('Error adding employee:', error);
       alert('Failed to add employee. Please try again.');
+    } finally {
+      setAddingEmployee(false);
     }
   };
 
@@ -479,6 +490,9 @@ export function CorporateDashboard() {
       alert('Please enter employee data in CSV format');
       return;
     }
+
+    // Prevent double submission
+    if (uploadingBulk) return;
 
     // Validate bulk employee data
     const validationResult = validateBulkEmployees(
@@ -492,6 +506,8 @@ export function CorporateDashboard() {
       alert('Validation Errors:\n\n' + validationResult.errors.join('\n'));
       return;
     }
+
+    setUploadingBulk(true);
 
     try {
       // Parse employee data
@@ -556,10 +572,12 @@ export function CorporateDashboard() {
 
       alert(`Successfully uploaded ${employeeData.length} employees!`);
       setBulkEmployees('');
-      loadData();
+      await loadData();
     } catch (error) {
       console.error('Error bulk uploading employees:', error);
       alert('Failed to upload employees. Please try again.');
+    } finally {
+      setUploadingBulk(false);
     }
   };
 
@@ -1020,9 +1038,10 @@ export function CorporateDashboard() {
                           />
                           <button
                             type="submit"
-                            className="w-full bg-red-600 text-white py-2 rounded-md hover:bg-red-700"
+                            disabled={addingEmployee}
+                            className="w-full bg-red-600 text-white py-2 rounded-md hover:bg-red-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
                           >
-                            Add Employee
+                            {addingEmployee ? 'Adding Employee...' : 'Add Employee'}
                           </button>
                         </form>
                       </div>
@@ -1073,9 +1092,10 @@ export function CorporateDashboard() {
                           </div>
                           <button
                             onClick={handleBulkUpload}
-                            className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700"
+                            disabled={uploadingBulk}
+                            className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
                           >
-                            Upload Employees
+                            {uploadingBulk ? 'Uploading Employees...' : 'Upload Employees'}
                           </button>
                         </div>
                       </div>
