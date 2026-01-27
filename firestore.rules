@@ -24,6 +24,14 @@ service cloud.firestore {
       return isAuthenticated() && request.auth.uid == userId;
     }
 
+    // Helper function to check if employee owns resource by email
+    // (since employee's Firestore doc ID != Firebase Auth UID)
+    function isEmployeeOwner(resourceEmployeeEmail) {
+      return isAuthenticated() &&
+             request.auth.token.email != null &&
+             request.auth.token.email == resourceEmployeeEmail;
+    }
+
     // Users Collection
     match /users/{userId} {
       // Allow anyone to read corporate users (for public company pages)
@@ -117,6 +125,7 @@ service cloud.firestore {
       // 2. Corporate users can update employees under their account
       // 3. Employees (after auth) can update LIMITED fields only
       // 4. During first-time setup: authenticated employee can update hasPassword field
+      // 5. During order placement: employee can DECREASE their own points
       allow update: if isAuthenticated() && (
         // Admin can update everything
         isAdmin() ||
@@ -142,6 +151,21 @@ service cloud.firestore {
           request.resource.data.email == resource.data.email &&
           request.resource.data.points == resource.data.points &&
           request.resource.data.status == resource.data.status
+        ) ||
+        // Special case: Employee spending points (order placement)
+        // Employee can ONLY decrease points (not increase)
+        (
+          request.auth.token.email == resource.data.email &&
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['points', 'updatedAt']) &&
+          // Points must decrease (spending), not increase (cheating)
+          request.resource.data.points < resource.data.points &&
+          // Points cannot go negative
+          request.resource.data.points >= 0 &&
+          // Cannot change other fields
+          request.resource.data.corporateId == resource.data.corporateId &&
+          request.resource.data.email == resource.data.email &&
+          request.resource.data.status == resource.data.status &&
+          request.resource.data.hasPassword == resource.data.hasPassword
         )
       );
 
@@ -156,18 +180,18 @@ service cloud.firestore {
     match /orders/{orderId} {
       // Admins can read all orders
       // Corporates can read orders from their employees
-      // Employees can read their own orders
+      // Employees can read their own orders (matched by email)
       allow read: if isAuthenticated() && (
         isAdmin() ||
         resource.data.corporateId == request.auth.uid ||
-        resource.data.employeeId == request.auth.uid
+        isEmployeeOwner(resource.data.employeeEmail)
       );
 
       // Admins can create orders (for testing)
-      // Employees can create orders for themselves
+      // Employees can create orders for themselves (matched by email)
       allow create: if isAuthenticated() && (
         isAdmin() ||
-        request.resource.data.employeeId == request.auth.uid
+        isEmployeeOwner(request.resource.data.employeeEmail)
       );
 
       // Only admins can update orders (status changes, etc.)
@@ -180,22 +204,22 @@ service cloud.firestore {
     // Tickets Collection
     match /tickets/{ticketId} {
       // Admins can read all tickets
-      // Corporates can read their own tickets
-      // Employees can read their own tickets
+      // Corporates can read tickets from their employees
+      // Employees can read their own tickets (matched by email)
       allow read: if isAuthenticated() && (
         isAdmin() ||
         resource.data.corporateId == request.auth.uid ||
-        resource.data.employeeId == request.auth.uid
+        isEmployeeOwner(resource.data.employeeEmail)
       );
 
       // Anyone authenticated can create tickets
       allow create: if isAuthenticated();
 
       // Admins can update any ticket
-      // Ticket creators can update their own tickets (limited fields)
+      // Employees can update their own tickets (limited fields, matched by email)
       allow update: if isAuthenticated() && (
         isAdmin() ||
-        (resource.data.employeeId == request.auth.uid &&
+        (isEmployeeOwner(resource.data.employeeEmail) &&
          !request.resource.data.diff(resource.data).affectedKeys().hasAny(['status', 'createdAt']))
       );
 
@@ -206,12 +230,12 @@ service cloud.firestore {
     // Point Transactions Collection
     match /pointTransactions/{transactionId} {
       // Admins can read all transactions
-      // Corporates can read their own transactions
-      // Employees can read their own transactions
+      // Corporates can read transactions from their employees
+      // Employees can read their own transactions (matched by email)
       allow read: if isAuthenticated() && (
         isAdmin() ||
         resource.data.corporateId == request.auth.uid ||
-        resource.data.employeeId == request.auth.uid
+        isEmployeeOwner(resource.data.employeeEmail)
       );
 
       // Admins and corporates can create transactions
