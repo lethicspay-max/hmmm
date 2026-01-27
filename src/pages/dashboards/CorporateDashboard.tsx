@@ -152,6 +152,9 @@ export function CorporateDashboard() {
   const [addingEmployee, setAddingEmployee] = useState(false);
   const [uploadingBulk, setUploadingBulk] = useState(false);
 
+  // Employee search
+  const [employeeSearchTerm, setEmployeeSearchTerm] = useState('');
+
   useEffect(() => {
     if (currentUser) {
       loadData();
@@ -349,6 +352,19 @@ export function CorporateDashboard() {
       return matchesSearch && !isLocked;
     });
   }, [availableProducts, productSearchTerm, corporateProductSettings]);
+
+  // Filter employees based on search term
+  const filteredEmployees = useMemo(() => {
+    if (!employeeSearchTerm.trim()) {
+      return employees;
+    }
+    const searchLower = employeeSearchTerm.toLowerCase();
+    return employees.filter(employee => {
+      const name = employee.name?.toLowerCase() || '';
+      const email = employee.email?.toLowerCase() || '';
+      return name.includes(searchLower) || email.includes(searchLower);
+    });
+  }, [employees, employeeSearchTerm]);
 
   const downloadOrdersCSV = async () => {
     try {
@@ -1104,7 +1120,33 @@ export function CorporateDashboard() {
                     {/* Employees List */}
                     <div className="bg-white rounded-lg border">
                       <div className="px-6 py-4 border-b border-gray-200">
-                        <h3 className="text-lg font-medium">Current Employees ({employees.length})</h3>
+                        <div className="flex items-center justify-between mb-4">
+                          <h3 className="text-lg font-medium">Current Employees ({employees.length})</h3>
+                        </div>
+                        {/* Search Bar */}
+                        <div className="relative">
+                          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                          <input
+                            type="text"
+                            placeholder="Search employees by name or email..."
+                            value={employeeSearchTerm}
+                            onChange={(e) => setEmployeeSearchTerm(e.target.value)}
+                            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                          />
+                          {employeeSearchTerm && (
+                            <button
+                              onClick={() => setEmployeeSearchTerm('')}
+                              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                            >
+                              <X className="h-5 w-5" />
+                            </button>
+                          )}
+                        </div>
+                        {employeeSearchTerm && (
+                          <p className="text-sm text-gray-600 mt-2">
+                            Showing {filteredEmployees.length} of {employees.length} employees
+                          </p>
+                        )}
                       </div>
                       
                       {/* Bulk Add Points to All Employees */}
@@ -1137,33 +1179,39 @@ export function CorporateDashboard() {
                       </div>
 
                       <div className="divide-y divide-gray-200">
-                        {employees.map(employee => (
-                          <div key={employee.id} className="px-6 py-4 flex items-center justify-between">
-                            <div>
-                              <p className="font-medium text-gray-900">{employee.name}</p>
-                              <p className="text-sm text-gray-500">{employee.email}</p>
-                            </div>
-                            <div className="flex items-center space-x-4">
-                              <div className="flex items-center space-x-2">
-                                <span className="text-sm text-gray-500">Points:</span>
-                                <input
-                                  type="number"
-                                  min="0"
-                                  max={employee.points + corporatePoints.available}
-                                  value={employee.points}
-                                  onChange={(e) => handleUpdateEmployeePoints(employee.id, parseInt(e.target.value))}
-                                  className="w-20 px-2 py-1 border border-gray-300 rounded text-sm"
-                                />
+                        {filteredEmployees.length > 0 ? (
+                          filteredEmployees.map(employee => (
+                            <div key={employee.id} className="px-6 py-4 flex items-center justify-between">
+                              <div>
+                                <p className="font-medium text-gray-900">{employee.name}</p>
+                                <p className="text-sm text-gray-500">{employee.email}</p>
                               </div>
-                              <button
-                                onClick={() => handleDeleteEmployee(employee.id)}
-                                className="text-red-600 hover:text-red-800"
-                              >
-                                <Trash2 className="h-4 w-4" />
-                              </button>
+                              <div className="flex items-center space-x-4">
+                                <div className="flex items-center space-x-2">
+                                  <span className="text-sm text-gray-500">Points:</span>
+                                  <input
+                                    type="number"
+                                    min="0"
+                                    max={employee.points + corporatePoints.available}
+                                    value={employee.points}
+                                    onChange={(e) => handleUpdateEmployeePoints(employee.id, parseInt(e.target.value))}
+                                    className="w-20 px-2 py-1 border border-gray-300 rounded text-sm"
+                                  />
+                                </div>
+                                <button
+                                  onClick={() => handleDeleteEmployee(employee.id)}
+                                  className="text-red-600 hover:text-red-800"
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </button>
+                              </div>
                             </div>
+                          ))
+                        ) : (
+                          <div className="px-6 py-8 text-center text-gray-500">
+                            {employeeSearchTerm ? 'No employees found matching your search.' : 'No employees yet. Add your first employee above.'}
                           </div>
-                        ))}
+                        )}
                       </div>
                     </div>
                   </div>
