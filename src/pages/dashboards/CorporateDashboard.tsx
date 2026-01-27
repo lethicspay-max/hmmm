@@ -747,12 +747,56 @@ export function CorporateDashboard() {
   };
 
   const handleDeleteEmployee = async (employeeId: string) => {
-    if (window.confirm('Are you sure you want to remove this employee?')) {
+    const employee = employees.find(emp => emp.id === employeeId);
+    if (!employee) return;
+
+    const confirmMessage = employee.points > 0
+      ? `Are you sure you want to remove this employee?\n\n${employee.points} points will be returned to your corporate account.`
+      : 'Are you sure you want to remove this employee?';
+
+    if (window.confirm(confirmMessage)) {
       try {
+        // Refund employee's points back to corporate if they have any
+        if (employee.points > 0 && currentUser?.uid) {
+          const corporateRef = doc(db, 'users', currentUser.uid);
+          const corporateDoc = await getDoc(corporateRef);
+
+          if (corporateDoc.exists()) {
+            const currentData = corporateDoc.data();
+            const currentUsedPoints = currentData.usedPoints || 0;
+
+            // Reduce usedPoints to effectively refund the points
+            await updateDoc(corporateRef, {
+              usedPoints: Math.max(0, currentUsedPoints - employee.points),
+              updatedAt: new Date().toISOString()
+            });
+
+            // Log the point refund transaction
+            await addDoc(collection(db, 'pointTransactions'), {
+              employeeId: employee.id,
+              employeeName: employee.name,
+              employeeEmail: employee.email,
+              corporateId: currentUser.uid,
+              amount: employee.points,
+              type: 'refund',
+              reason: `Points refunded from deleted employee: ${employee.name}`,
+              createdAt: new Date().toISOString()
+            });
+          }
+        }
+
+        // Delete the employee
         await deleteDoc(doc(db, 'employees', employeeId));
+
+        // Show success message
+        alert(employee.points > 0
+          ? `Employee removed successfully. ${employee.points} points have been returned to your account.`
+          : 'Employee removed successfully.');
+
         loadData();
       } catch (error) {
         console.error('Error deleting employee:', error);
+        alert('Failed to delete employee. Please try again.');
       }
     }
   };

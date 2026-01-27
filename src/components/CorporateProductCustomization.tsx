@@ -251,6 +251,22 @@ export function CorporateProductCustomization() {
     setMessage(null);
   };
 
+  const handleLockAll = () => {
+    const newLocks = new Map(productLocks);
+    products.forEach(product => {
+      newLocks.set(product.id, true);
+    });
+    setProductLocks(newLocks);
+  };
+
+  const handleUnlockAll = () => {
+    const newLocks = new Map(productLocks);
+    products.forEach(product => {
+      newLocks.set(product.id, false);
+    });
+    setProductLocks(newLocks);
+  };
+
   const getEffectivePrice = (productId: string, defaultPrice: number): number => {
     const customPrice = customPricing.get(productId);
     return customPrice !== null && customPrice !== undefined ? customPrice : defaultPrice;
@@ -382,27 +398,48 @@ export function CorporateProductCustomization() {
         {/* Products List */}
         {selectedCorporate && !loading && (
           <>
-            <div className="mb-4 flex justify-between items-center">
-              <p className="text-sm text-gray-600">
-                Set custom pricing and control product visibility for this corporate. Leave price empty to use default pricing.
-                Locked products are hidden from the corporate and cannot be selected.
-              </p>
-              <div className="flex space-x-2">
+            <div className="mb-4 space-y-3">
+              <div className="flex justify-between items-center">
+                <p className="text-sm text-gray-600">
+                  Set custom pricing and control product visibility for this corporate. Leave price empty to use default pricing.
+                  Locked products are hidden from the corporate and cannot be selected.
+                </p>
+                <div className="flex space-x-2">
+                  <button
+                    onClick={resetCustomization}
+                    disabled={saving}
+                    className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors flex items-center space-x-2"
+                  >
+                    <RefreshCw className="h-4 w-4" />
+                    <span>Reset</span>
+                  </button>
+                  <button
+                    onClick={saveCustomization}
+                    disabled={saving}
+                    className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors flex items-center space-x-2 disabled:opacity-50"
+                  >
+                    <Save className="h-4 w-4" />
+                    <span>{saving ? 'Saving...' : 'Save Changes'}</span>
+                  </button>
+                </div>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="text-sm font-medium text-gray-700">Quick Actions:</span>
                 <button
-                  onClick={resetCustomization}
+                  onClick={handleLockAll}
                   disabled={saving}
-                  className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors flex items-center space-x-2"
+                  className="px-3 py-1.5 bg-red-100 text-red-700 rounded-md hover:bg-red-200 transition-colors flex items-center space-x-1.5 text-sm disabled:opacity-50"
                 >
-                  <RefreshCw className="h-4 w-4" />
-                  <span>Reset</span>
+                  <Lock className="h-4 w-4" />
+                  <span>Lock All</span>
                 </button>
                 <button
-                  onClick={saveCustomization}
+                  onClick={handleUnlockAll}
                   disabled={saving}
-                  className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors flex items-center space-x-2 disabled:opacity-50"
+                  className="px-3 py-1.5 bg-green-100 text-green-700 rounded-md hover:bg-green-200 transition-colors flex items-center space-x-1.5 text-sm disabled:opacity-50"
                 >
-                  <Save className="h-4 w-4" />
-                  <span>{saving ? 'Saving...' : 'Save Changes'}</span>
+                  <Unlock className="h-4 w-4" />
+                  <span>Unlock All</span>
                 </button>
               </div>
             </div>
